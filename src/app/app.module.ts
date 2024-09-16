@@ -46,7 +46,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { initializeApp } from 'firebase/app';
 //import { getAnalytics } from 'firebase/analytics';
 // charts
-import { GoogleChartsModule } from 'angular-google-charts';
+//import { GoogleChartsModule } from 'angular-google-charts';
 
 //TODO pass to object
 const LANG = (function (defaultValue: String) {
@@ -78,7 +78,7 @@ export const TRANSACTION_SERVICE = new InjectionToken('TransactionService');
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    GoogleChartsModule,
+    //GoogleChartsModule,
   ],
   exports: [],
   declarations: [

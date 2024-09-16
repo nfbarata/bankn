@@ -40,27 +40,29 @@
   </div>
 </div>
 
-<div class="table-responsive">
-<table *ngIf="hasRealTransactions" class="table table-hover">
+<div *ngIf="hasRealTransactions" class="table-responsive text-nowrap">
+<table class="table table-sm table-hover">
 	<tbody>
 		<ng-container *ngFor="let transaction of transactions; let i = index;">
-		<!-- header group -->
-		<tr *ngIf="transaction.hide!=true && (i==0 || i>0 && transaction.date.getTime()!=transactions[i-1].date.getTime())">
-			<th>{{transaction.date | date:'shortDate'}}&nbsp;</th>
-			<th class="w-75">&nbsp;</th>
-			<th>{{transaction.balanceAfter | dinero}}&nbsp;</th>
-		</tr>
-		<!-- detail group -->
-		<tr *ngIf="transaction.hide!=true" [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
-			<td>{{ transaction.category | category }}&nbsp;</td>
-			<td>{{ transaction.description }}&nbsp;</td>
-			<td>{{transaction | transaction}}&nbsp;</td>
-		</tr>
+      <!-- header group -->
+      <tr class="table-active" *ngIf="transaction.hide!=true && (i==0 || i>0 && transaction.date.getTime()!=transactions[i-1].date.getTime())">
+        <th scope="col" width="20%">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="70%"></th>
+        <th class="text-end" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
+      </tr>
+      <!-- detail group -->
+      <tr *ngIf="transaction.hide!=true" [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
+        <td>{{ transaction.category | category }}&nbsp;</td>
+        <td>{{ transaction.description }}&nbsp;</td>
+        <td class="text-end" scope="row">{{transaction | transaction}}</td>
+      </tr>
 	 	</ng-container>
 	</tbody>
-	<!-- footer group -->
-    <caption>
-    	Initial value {{ initialBalance | dinero}}
-  	</caption>
+  <tfoot class="table-group-divider">
+    <tr class="table-active">
+      <td class="" colspan="2">Initial value</td>
+      <td class="text-end" scope="row">{{ initialBalance | dinero}}</td>
+    </tr>
+  </tfoot>
 </table>
 </div>

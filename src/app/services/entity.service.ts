@@ -80,6 +80,7 @@ export class EntityService {
   public static toJson(entity: Entity): any {
     return {
       name: entity.name,
+      id: entity.id,
       descriptionPatterns: entity.descriptionPatterns,
       referenceCategory:
       entity.referenceCategory == null ? '' : CategoryService.toJson(entity.referenceCategory),
@@ -88,6 +89,8 @@ export class EntityService {
 
   public static fromJson(json: any): Entity {
     var entity = new Entity(json.name);
+    if(json.id)
+      entity.importId(json.id);
     entity.descriptionPatterns = json.descriptionPatterns;
     if (json.referenceCategory)
       entity.referenceCategory = CategoryService.fromJson(json.referenceCategory);

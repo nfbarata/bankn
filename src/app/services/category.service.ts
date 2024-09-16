@@ -94,6 +94,7 @@ export class CategoryService {
 
     var json = {
       name: category.name,
+      id: category.id,
       descriptionPatterns: category.descriptionPatterns,
       innerCategories: innerCategories
     };
@@ -102,6 +103,8 @@ export class CategoryService {
 
   public static fromJson(json: any): Category {
     var category = new Category(json.name);
+    if(json.id)
+      category.importId(json.id);
     category.descriptionPatterns = json.descriptionPatterns;
     if (json.innerCategories)
       for(let c = 0; c < json.innerCategories.length; c++)

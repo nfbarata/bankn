@@ -5,7 +5,7 @@ import { Dinero } from 'dinero.js';
 import { MathService } from '../services/math.service';
 
 export class Account {
-  private _id: string; //uuid
+  private _id: string;
   name: string;
   description: string;
 
