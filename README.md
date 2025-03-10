@@ -1,6 +1,8 @@
 # bankn
 
-Production: https://nfbarata-bankn.firebaseapp.com
+Production: 
+https://nfbarata-bankn.web.app/
+https://nfbarata-bankn.firebaseapp.com
 
 ## Dev
 
