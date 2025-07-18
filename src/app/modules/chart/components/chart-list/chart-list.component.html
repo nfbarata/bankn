@@ -14,14 +14,7 @@
     <account-select-card></account-select-card>
   </div>
 </div>
-<div
-  *ngIf="
-    accounts.length > 0 &&
-    selectedAccounts.length > 0 &&
-    transactions.length == 0
-  "
-  class="row"
->
+<div *ngIf="accounts.length > 0 && selectedAccounts.length > 0 && transactions.length == 0" class="row">
   <div class="col-sm-5">
     <transaction-create-card></transaction-create-card>
   </div>
@@ -29,4 +22,8 @@
   <div class="col-sm-5">
     <transactions-import-card></transactions-import-card>
   </div>
+</div>
+
+<div *ngIf="accounts.length > 0 && selectedAccounts.length > 0 && transactions.length > 0" style="width: 800px;">
+  <canvas #chart></canvas>
 </div>

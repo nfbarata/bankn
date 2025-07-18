@@ -7,7 +7,7 @@ import { AccountService } from './account.service';
 
 import { Account } from '../models/account';
 import { Transaction } from '../models/transaction';
-import { Dinero } from 'dinero.js';
+import { Dinero, add, subtract } from 'dinero.js';
 import { TransactionType } from '../models/enums';
 import { BanknService } from './bankn.service';
 import { Bankn } from '../models/bankn';
@@ -222,5 +222,24 @@ export class TransactionService {
       transaction.description,
       account
     );
+  }
+
+  public groupByEntity(transactions: Transaction[]): Map<string, Dinero<number>> {
+    // TODO handle different currencies
+    return transactions.reduce((results, transaction) => {
+      const entityName = transaction.entity?.name || 'Unknown'; //i18n
+      if (!results.has(entityName)) {
+        results.set(entityName, this.accountService.toDinero(0,transaction.account));
+      }
+      switch (transaction.type) {
+        case TransactionType.CREDIT:  
+          results.set(entityName, add(results.get(entityName)!,transaction.amount));
+          break;
+        case TransactionType.DEBIT:
+          results.set(entityName, subtract(results.get(entityName)!,transaction.amount));
+          break;
+      }
+      return results;
+    }, new Map<string, Dinero<number>>());
   }
 }

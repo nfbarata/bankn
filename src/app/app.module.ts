@@ -47,6 +47,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { getAnalytics } from 'firebase/analytics';
 // charts
 //import { GoogleChartsModule } from 'angular-google-charts';
+import {Chart} from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 //TODO pass to object
 const LANG = (function (defaultValue: String) {
@@ -133,5 +135,7 @@ export class AppModule {
     // Initialize Firebase
     //const app = initializeApp(firebaseConfig);
     //const analytics = getAnalytics(app);
+
+    Chart.register(ChartDataLabels);
   }
 }
