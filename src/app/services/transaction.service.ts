@@ -242,4 +242,23 @@ export class TransactionService {
       return results;
     }, new Map<string, Dinero<number>>());
   }
+
+  public groupByCategory(transactions: Transaction[]): Map<string, Dinero<number>> {
+    // TODO handle different currencies
+    return transactions.reduce((results, transaction) => {
+      const categoryName = transaction.category?.name || 'Unknown'; //i18n
+      if (!results.has(categoryName)) {
+        results.set(categoryName, this.accountService.toDinero(0,transaction.account));
+      }
+      switch (transaction.type) {
+        case TransactionType.CREDIT:  
+          results.set(categoryName, add(results.get(categoryName)!,transaction.amount));
+          break;
+        case TransactionType.DEBIT:
+          results.set(categoryName, subtract(results.get(categoryName)!,transaction.amount));
+          break;
+      }
+      return results;
+    }, new Map<string, Dinero<number>>());
+  }
 }
