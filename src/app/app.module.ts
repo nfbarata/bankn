@@ -49,6 +49,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { GoogleChartsModule } from 'angular-google-charts';
 import {Chart} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //TODO pass to object
 const LANG = (function (defaultValue: String) {
@@ -80,6 +81,7 @@ export const TRANSACTION_SERVICE = new InjectionToken('TransactionService');
     AppRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
+    NgbModule,
     //GoogleChartsModule,
   ],
   exports: [],
