@@ -26,7 +26,6 @@
             "outputPath": "dist/bankn",
             "index": "src/index.html",
             "main": "src/main.ts",
-            //"main": "src/test.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
@@ -37,8 +36,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js"
-              //"src/dependencies/dinero.min.js"
+              "node_modules/@popperjs/core/dist/umd/popper.min.js"
             ]
           },
           "configurations": {
@@ -91,7 +89,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/popper.js/dist/umd/popper.min.js"
+              "node_modules/@popperjs/core/dist/umd/popper.min.js"
             ],
             "assets": ["src/favicon.ico", "src/assets"]
           }
