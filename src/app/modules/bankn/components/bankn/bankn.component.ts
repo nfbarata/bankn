@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormControl, FormGroup } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsService } from "../../../../services/utils.service";
 import { BanknService } from "../../../../services/bankn.service";
@@ -12,10 +12,10 @@ import { BanknService } from "../../../../services/bankn.service";
 export class BanknComponent implements OnInit {
   
   countries: any;//used on UI
-  form = new FormGroup({
-    id: new FormControl(null),
-    name: new FormControl(),
-    referenceCountry: new FormControl()
+  form = new UntypedFormGroup({
+    id: new UntypedFormControl(null),
+    name: new UntypedFormControl(),
+    referenceCountry: new UntypedFormControl()
   });
 
   constructor(

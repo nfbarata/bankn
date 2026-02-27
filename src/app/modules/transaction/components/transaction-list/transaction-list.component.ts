@@ -14,8 +14,10 @@ import { TransactionType } from '../../../../models/enums';
   styleUrls: ['./transaction-list.component.css'],
 })
 export class TransactionListComponent implements OnInit {
+  
   hasRealTransactions: boolean = false;
   transactions: Transaction[] = [];
+  initialBalance: Dinero<number>|null = null;
   selectedAccounts: Account[] = [];
   accounts: Account[] = [];
 
@@ -26,11 +28,13 @@ export class TransactionListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    
     this.refreshAccounts();
-    this.eventsService.accountSelectionChange.subscribe(() =>
-      this.refreshData()
-    );
+    
+    this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
+    
     this.eventsService.accountsChange.subscribe(() => this.refreshAccounts());
+    
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
       if (accountId == null || accountId.trim().length == 0) {
@@ -50,8 +54,11 @@ export class TransactionListComponent implements OnInit {
   }
 
   refreshData() {
+    
     //clear
-    while (this.transactions.length > 0) this.transactions.pop();
+    while (this.transactions.length > 0) 
+    	this.transactions.pop();
+    
     this.hasRealTransactions = false;
 
     var newTransactions: Transaction[] = [];
@@ -66,7 +73,7 @@ export class TransactionListComponent implements OnInit {
       });
 
       //get initial value
-      var initialValue = this.accountService.getInitialValueMultiple(
+      let initialValue = this.accountService.getInitialValueMultiple(
         this.selectedAccounts
       );
 
@@ -77,6 +84,10 @@ export class TransactionListComponent implements OnInit {
       this.applyBalanceToTransactions(newTransactions, initialValue);
 
       this.transactions = newTransactions;
+      if(this.transactions.length>0)
+      	this.initialBalance = this.transactions[this.transactions.length-1].balanceBefore;
+      else
+      	this.initialBalance = null;
     }
   }
 

@@ -13,7 +13,6 @@ import screens save last options on account/bank
 
 popup generico, input card
 txn list com quick link import(popup comm escolha de conta)
-tests
 
 graficos
 
@@ -21,11 +20,15 @@ money format - simbolo pode ser antes por exemplo
 date format
 visual
 i18n
-transactions telem
 
 icones
   txn list edit 
 
+receipt# as customizable field
+
+save zip contents
+
+movimentos com diferentes moedas (escolher e fazer cambio)
 
 DATA OPERAÇÃO	DATA VALOR	TIPO	DESCRIÇÃO	DÉBITO	CRÉDITO	SALDO CONTROLO
 2020-03-04	2020-03-04	TPA	COMPRA CARTAO 9080000* FORTUNY FOOD LDA 2740-244 PORTO SA	6,95	-	1.484,71

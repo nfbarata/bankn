@@ -1,5 +1,15 @@
 # bankn
 
+Production: 
+https://nfbarata-bankn.web.app/
 https://nfbarata-bankn.firebaseapp.com
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/bankn)
+## Dev
+
+install node&angular
+ng serve
+ng test
+
+
+[Edit on StackBlitz ⚡️](https://stackblitz.com/~/github.com/nfbarata/bankn)
+[Edit on idx ⚡️](https://idx.google.com/bankn-6548892)

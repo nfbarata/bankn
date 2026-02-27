@@ -3,14 +3,7 @@
     <h2 i18n>Transactions</h2>
   </div>
   <div class="col-6 text-right">
-    <button
-      class="btn btn-primary "
-      type="submit"
-      [routerLink]="['/transactions/transaction']"
-      [disabled]="accounts.length==0"
-    >
-      New
-    </button>
+    <button class="btn btn-primary" type="submit" [routerLink]="['/transactions/transaction']" [disabled]="accounts.length==0">New</button>
   </div>
 </div>
 <br />
@@ -25,10 +18,7 @@
     <account-select-card></account-select-card>
   </div>
 </div>
-<div
-  *ngIf="accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions"
-  class="row"
->
+<div *ngIf="accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions" class="row">
   <div class="col-sm-5">
     <transaction-create-card></transaction-create-card>
   </div>
@@ -40,39 +30,29 @@
   </div>
 </div>
 
-<div *ngIf="hasRealTransactions" class="container">
-  <div *ngFor="let transaction of transactions; let i = index;">
-    <div
-      class="row bg-secondary text-white"
-      *ngIf="transaction.hide!=true && (i==0 || i>0 && transaction.date.getTime()!=transactions[i-1].date.getTime())"
-    >
-      <label class="col-2">
-        {{transaction.date | date:'shortDate'}}
-      </label>
-      <label class="col-10 text-right">
-        {{transaction.balanceAfter | dinero}}
-      </label>
-    </div>
-    <div
-      class="row overflow-hidden"
-      *ngIf="transaction.hide!=true"
-      style="height:30px"
-      [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]"
-    >
-      <label class="col-7">
-        {{ transaction.description }}
-      </label>
-      <label class="col-5 text-right">
-        {{transaction | transaction}}
-      </label>
-    </div>
-    <div class="row bg-secondary text-white" *ngIf="i==transactions.length-1">
-      <label class="col-7 text-right" i18n>
-        Initial value
-      </label>
-      <label class="col-5 text-right">
-        {{transaction.balanceBefore | dinero}}
-      </label>
-    </div>
-  </div>
+<div *ngIf="hasRealTransactions" class="table-responsive">
+<table class="table table-sm table-hover">
+	<tbody>
+		<ng-container *ngFor="let transaction of transactions; let i = index;">
+      <!-- header group -->
+      <tr class="table-active" *ngIf="transaction.hide!=true && (i==0 || i>0 && transaction.date.getTime()!=transactions[i-1].date.getTime())">
+        <th scope="col" width="20%">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="70%"></th>
+        <th class="text-end" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
+      </tr>
+      <!-- detail group -->
+      <tr *ngIf="transaction.hide!=true" [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
+        <td>{{ transaction.category | category }}&nbsp;</td>
+        <td>{{ transaction.description }}&nbsp;</td>
+        <td class="text-end" scope="row">{{transaction | transaction}}</td>
+      </tr>
+	 	</ng-container>
+	</tbody>
+  <tfoot class="table-group-divider">
+    <tr class="table-active">
+      <td class="" colspan="2">Initial value</td>
+      <td class="text-end" scope="row">{{ initialBalance | dinero}}</td>
+    </tr>
+  </tfoot>
+</table>
 </div>

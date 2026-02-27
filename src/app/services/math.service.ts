@@ -5,23 +5,21 @@ import * as currencies from '@dinero.js/currencies';
 import { UtilsService } from './utils.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MathService {
-
   constructor(
     private banknService: BanknService,
     private utilsService: UtilsService
-  ) { 
-  }
+  ) {}
 
   static getCurrencyOfCountry(countryCode: string): string {
     var country = null;
     var countries = UtilsService.getCountries();
     for (let i = 0; i < countries.length && country == null; i++) {
-      if (countries[i].alpha2 == countryCode) country = countries[i];
+      if (countries[i].alpha2 == countryCode) return countries[i].currencies[0];
     }
-    return country.currencies[0];
+    throw new Error(countryCode + ' not found in list of countries');
   }
 
   getReferenceCurrency(): string {
@@ -34,7 +32,7 @@ export class MathService {
     return MathService.toCurrency(currencyCode);
   }
 
-  static toCurrency(currencyCode: string): Currency<number> {
+  public static toCurrency(currencyCode: string): Currency<number> {
     return currencies[currencyCode as keyof typeof currencies];
   }
 

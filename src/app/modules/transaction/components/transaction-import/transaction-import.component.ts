@@ -7,7 +7,7 @@ import {
   Renderer2,
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -32,7 +32,7 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
   @ViewChild('parsedData', { static: false }) parsedData!: ElementRef;
   @ViewChild('submitHelpBlock', { static: false }) submitHelpBlock!: ElementRef;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   formData;
   accountId: string | null = null;
   output: any;
@@ -43,7 +43,7 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
     private banknService: BanknService,
     private accountService: AccountService,
     private transactionService: TransactionService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location

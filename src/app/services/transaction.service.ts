@@ -7,7 +7,7 @@ import { AccountService } from './account.service';
 
 import { Account } from '../models/account';
 import { Transaction } from '../models/transaction';
-import { Dinero } from 'dinero.js';
+import { Dinero, add, subtract } from 'dinero.js';
 import { TransactionType } from '../models/enums';
 import { BanknService } from './bankn.service';
 import { Bankn } from '../models/bankn';
@@ -17,6 +17,7 @@ import { MathService } from './math.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
+  
   //
   //Volatile - for use between screens
   //
@@ -46,15 +47,9 @@ export class TransactionService {
     clearDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
 
     //create Category if not exist
-    var category = null;
-    if (categoryName !== undefined && categoryName.trim().length != 0)
-      category = this.categoryService.upsertCategory(categoryName);
-
+    var category = this.categoryService.upsertCategory(categoryName, description);
     //create Entity if not exist
-    var entity = null;
-    if (entityName !== undefined && entityName.trim().length != 0) {
-      entity = this.entityService.upsertEntity(entityName, description, category);
-    }
+    var entity =  this.entityService.upsertEntity(entityName, description, category);
 
     var transaction = new Transaction(
       UUID.UUID(),
@@ -81,16 +76,11 @@ export class TransactionService {
     receiptReference: string,
     description: string
   ) {
-    //create Category if not exist
-    var category = null;
-    if (categoryName !== undefined && categoryName.trim().length != 0)
-      category = this.categoryService.upsertCategory(categoryName);
 
+    //create Category if not exist
+    var category = this.categoryService.upsertCategory(categoryName, description);
     //create Entity if not exist
-    var entity = null;
-    if (entityName !== undefined && entityName.trim().length != 0) {
-      entity = this.entityService.upsertEntity(entityName, description, category);
-    }
+    var entity = this.entityService.upsertEntity(entityName, description, category);
 
     transaction.amount = amount;
     transaction.date = date;
@@ -226,11 +216,49 @@ export class TransactionService {
       ),
       transaction.type,
       new Date(transaction.date),
-      BanknService.getEntity(bankn, transaction.entityName)!,
-      BanknService.getCategory(bankn, transaction.categoryName)!,
+      EntityService.getEntity(bankn, transaction.entityName)!,
+      CategoryService.getCategory(bankn, transaction.categoryName)!,
       transaction.receiptReference,
       transaction.description,
       account
     );
+  }
+
+  public groupByEntity(transactions: Transaction[]): Map<string, Dinero<number>> {
+    // TODO handle different currencies
+    return transactions.reduce((results, transaction) => {
+      const entityName = transaction.entity?.name || 'Unknown'; //i18n
+      if (!results.has(entityName)) {
+        results.set(entityName, this.accountService.toDinero(0,transaction.account));
+      }
+      switch (transaction.type) {
+        case TransactionType.CREDIT:  
+          results.set(entityName, add(results.get(entityName)!,transaction.amount));
+          break;
+        case TransactionType.DEBIT:
+          results.set(entityName, subtract(results.get(entityName)!,transaction.amount));
+          break;
+      }
+      return results;
+    }, new Map<string, Dinero<number>>());
+  }
+
+  public groupByCategory(transactions: Transaction[]): Map<string, Dinero<number>> {
+    // TODO handle different currencies
+    return transactions.reduce((results, transaction) => {
+      const categoryName = transaction.category?.name || 'Unknown'; //i18n
+      if (!results.has(categoryName)) {
+        results.set(categoryName, this.accountService.toDinero(0,transaction.account));
+      }
+      switch (transaction.type) {
+        case TransactionType.CREDIT:  
+          results.set(categoryName, add(results.get(categoryName)!,transaction.amount));
+          break;
+        case TransactionType.DEBIT:
+          results.set(categoryName, subtract(results.get(categoryName)!,transaction.amount));
+          break;
+      }
+      return results;
+    }, new Map<string, Dinero<number>>());
   }
 }

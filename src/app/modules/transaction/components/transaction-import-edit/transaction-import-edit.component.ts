@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
@@ -12,7 +12,7 @@ import { Transaction } from '../../../../models/transaction';
   styleUrls: ['./transaction-import-edit.component.css'],
 })
 export class TransactionImportEditComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   formData;
   account: Account | null = null;
   transactions: Transaction[] | null = null;
@@ -22,7 +22,7 @@ export class TransactionImportEditComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private transactionService: TransactionService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router
   ) {

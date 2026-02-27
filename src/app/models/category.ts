@@ -1,15 +1,23 @@
+import { UUID } from 'angular2-uuid';
+
 export class Category {
+  private _id: string; //uuid
   name: string;
-  descriptionPatterns: string[];
-  innerCategory: Category | null;
+  descriptionPatterns: string[] = [];
+  innerCategories: Category[] = [];
 
   constructor(
-    name: string,
-    descriptionPatterns: string[] = [],
-    innerCategory: Category | null = null
+    name: string
   ) {
+    this._id = UUID.UUID();
     this.name = name;
-    this.descriptionPatterns = descriptionPatterns;
-    this.innerCategory = innerCategory;
+  }
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public importId(id:string): void {
+    this._id = id;
   }
 }

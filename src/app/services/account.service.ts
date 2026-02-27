@@ -203,11 +203,11 @@ export class AccountService {
     return initialBalance;
   }
 
-  toDinero(amount: number, account: Account | null): Dinero<number> {
+  public toDinero(amount: number, account: Account | null): Dinero<number> {
     return this.mathService.toDinero(amount, this.getCurrency(account));
   }
 
-  getCurrency(account: Account | null = null): Currency<number> {
+  public getCurrency(account: Account | null = null): Currency<number> {
     return account != null
       ? account.referenceAmount.toJSON().currency
       : this.mathService.toCurrency();
@@ -266,4 +266,12 @@ export class AccountService {
     return account;
   }
 
+  public getSelectedAccountsCurrency(): Currency<number> {  
+    var accounts: Account[] = this.getSelectedAccounts();
+    if (accounts.length > 0) {
+      return this.getCurrency(accounts[0]);
+    } else {
+      return this.mathService.toCurrency();
+    }
+  }
 }

@@ -1,17 +1,24 @@
 import { Category } from './category';
+import { UUID } from 'angular2-uuid';
 
 export class Entity {
+  private _id: string; //uuid
   name: string;
-  descriptionPatterns: string[];
-  referenceCategory: Category | null;
+  descriptionPatterns: string[] = [];
+  referenceCategory: Category | null = null;
 
   constructor(
     name: string,
-    descriptionPatterns: string[] = [],
-    referenceCategory: Category | null = null
   ) {
+    this._id = UUID.UUID();
     this.name = name;
-    this.descriptionPatterns = descriptionPatterns;
-    this.referenceCategory = referenceCategory;
+  }
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public importId(id:string): void {
+    this._id = id;
   }
 }

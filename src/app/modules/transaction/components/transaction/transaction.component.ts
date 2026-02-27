@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -20,18 +20,18 @@ import { MathService } from '../../../../services/math.service';
 })
 export class TransactionComponent implements OnInit {
   transactionTypes = Object.values(TransactionType);
-  form = new FormGroup({
-    accountId: new FormControl(null),
-    id: new FormControl(null),
-    amount: new FormControl(),
-    day: new FormControl(),
-    month: new FormControl(),
-    year: new FormControl(),
-    type: new FormControl(),
-    entity: new FormControl(),
-    category: new FormControl(),
-    receiptReference: new FormControl(),
-    description: new FormControl(),
+  form = new UntypedFormGroup({
+    accountId: new UntypedFormControl(null),
+    id: new UntypedFormControl(null),
+    amount: new UntypedFormControl(),
+    day: new UntypedFormControl(),
+    month: new UntypedFormControl(),
+    year: new UntypedFormControl(),
+    type: new UntypedFormControl(),
+    entity: new UntypedFormControl(),
+    category: new UntypedFormControl(),
+    receiptReference: new UntypedFormControl(),
+    description: new UntypedFormControl(),
   });
   accounts: Account[] | null = null;
   entities: Entity[] | null = null;
@@ -44,7 +44,7 @@ export class TransactionComponent implements OnInit {
     private banknService: BanknService,
     private accountService: AccountService,
     private transactionService: TransactionService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,

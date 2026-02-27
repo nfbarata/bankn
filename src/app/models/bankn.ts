@@ -3,7 +3,7 @@ import { Category } from './category';
 import { Entity } from './entity';
 
 export class Bankn {
-  _id: string;
+  private _id: string;
   name: string;
   accounts: Account[];
   //for default account country

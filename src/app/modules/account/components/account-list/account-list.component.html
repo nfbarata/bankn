@@ -13,19 +13,22 @@
   </div>
 </div>
 <div class="table-responsive">
-<table *ngIf="accounts.length>0" class="table table-sm">
+<table *ngIf="accounts.length>0" class="table table-sm table-hover">
   <thead>
-    <tr>
-      <th scope="col" class="">Name</th>
-      <th scope="col" class="d-none d-sm-block">Description</th>
-      <th scope="col" class="text-right"></th>
+    <tr class="table-active">
+      <th scope="col" class="" width="0%">Name</th>
+      <th scope="col" class="">Description</th>
+      <th scope="col" class="text-right" width="0%">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let account of accounts">
-      <th scope="row"[routerLink]="['/accounts/account',account.id]">{{ account.name }}</th>
-      <td class="d-none d-sm-block" [routerLink]="['/accounts/account',account.id]">{{ account.description }}</td>
-      <td class="text-right"><button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" i18n>Edit</button>&nbsp;<button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" i18n>Txns</button></td>
+      <td scope="row"[routerLink]="['/accounts/account',account.id]">{{ account.name }}&nbsp;</td>
+      <td [routerLink]="['/accounts/account',account.id]">{{ account.description }}&nbsp;</td>
+      <td class="text-right">
+        <button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" i18n>Edit</button>&nbsp;
+        <button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" i18n>Txns</button>
+      </td>
     </tr>
   </tbody>
 </table>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,22 +20,22 @@ import { MathService } from '../../../../services/math.service';
   styleUrls: ['./account.component.css'],
 })
 export class AccountComponent implements OnInit {
-  form = new FormGroup({
-    id: new FormControl(null),
-    name: new FormControl(),
-    referenceAmount: new FormControl(),
-    referenceCountry: new FormControl(),
-    referenceDay: new FormControl(),
-    referenceMonth: new FormControl(),
-    referenceYear: new FormControl(),
-    description: new FormControl(),
+  form = new UntypedFormGroup({
+    id: new UntypedFormControl(null),
+    name: new UntypedFormControl(),
+    referenceAmount: new UntypedFormControl(),
+    referenceCountry: new UntypedFormControl(),
+    referenceDay: new UntypedFormControl(),
+    referenceMonth: new UntypedFormControl(),
+    referenceYear: new UntypedFormControl(),
+    description: new UntypedFormControl(),
   });
   countries: any; //used on UI
 
   constructor(
     private banknService: BanknService,
     private accountService: AccountService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,

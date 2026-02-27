@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 //@ts-ignore
 import { countries } from 'country-data-list';
+import comparison from 'string-comparison';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilsService {
-
+  static minRating = 0.6;
   private countries: any;
 
-  constructor() { 
+  constructor() {
     this.countries = UtilsService.getCountries();
   }
 
@@ -23,37 +24,12 @@ export class UtilsService {
     });
   }
 
-  static addNewPattern(descriptionPattern: string, descriptionPatterns: string[]) {
-    //TODO more inteligent
-    if (
-      !UtilsService.isDescriptionFromPatterns(descriptionPattern, descriptionPatterns)
-    )
-      descriptionPatterns.push(descriptionPattern);
-  }
-
-  static isDescriptionFromPatterns(
-    descriptionPattern: string,
-    descriptionPatterns: string[]
-  ): boolean {
-    for (let d = 0; d < descriptionPatterns.length; d++) {
-      if (
-        UtilsService.isDescriptionFromPattern(
-          descriptionPattern,
-          descriptionPatterns[d]
-        )
-      ) {
-        //TOOD optimize other descriptionPatterns?
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private static isDescriptionFromPattern(
+  static calculateSimilarityRating(
     description: string,
-    descriptionPattern: string
-  ): boolean {
-    //TODO more inteligent
-    return description == descriptionPattern;
+    descriptionPatterns: string[]
+  ): number {
+    if (descriptionPatterns.length == 0) return 0;
+    var results = comparison.levenshtein.sortMatch(description, descriptionPatterns);
+    return results[results.length-1].rating;
   }
 }

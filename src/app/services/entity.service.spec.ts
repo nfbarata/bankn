@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Bankn } from '../models/bankn';
 import { Category } from '../models/category';
+import { Entity } from '../models/entity';
 
 import { EntityService } from './entity.service';
 
@@ -53,5 +54,14 @@ describe('EntityService', () => {
     expect(newEntity.descriptionPatterns[1]).toBe("b");
     expect(newEntity.referenceCategory).toBeInstanceOf(Category);
     expect(newEntity.referenceCategory?.name).toBe("cat");
+  });
+
+  it('should process getEntity', () => {
+    var bankn = new Bankn("id","name","PT");
+    expect(EntityService.getEntity(bankn, "ent")).toBeNull();
+    
+    var entity = new Entity("ent");
+    bankn.entities.push(entity);
+    expect(EntityService.getEntity(bankn, "ent")).toBeTruthy();
   });
 });
