@@ -70,6 +70,21 @@ const LANG = (function (defaultValue: String) {
 export const ACCOUNT_SERVICE = new InjectionToken('AccountService');
 export const TRANSACTION_SERVICE = new InjectionToken('TransactionService');
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCqXtiIQbDsLh8B0CYife9S3xBXueQtoxo",
+  authDomain: "bankn-10300436-56914.firebaseapp.com",
+  projectId: "bankn-10300436-56914",
+  storageBucket: "bankn-10300436-56914.firebasestorage.app",
+  messagingSenderId: "116495198466",
+  appId: "1:116495198466:web:b9f263dc874c283bca7a1b",
+  measurementId: "G-GQS9NSEL2C"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 @NgModule({
   imports: [
     BrowserModule, //.withServerTransition({ appId: 'serverApp' })
@@ -100,6 +115,8 @@ export const TRANSACTION_SERVICE = new InjectionToken('TransactionService');
     { provide: LOCALE_ID, useValue: LANG },
     { provide: ACCOUNT_SERVICE, useExisting: AccountService },
     { provide: TRANSACTION_SERVICE, useExisting: TransactionService },
+    { provide: 'FirebaseApp', useValue: app },
+    { provide: 'FirebaseAnalytics', useValue: analytics },
     InitializedGuard,
   ],
 })
@@ -118,20 +135,5 @@ export class AppModule {
       faGithub,
       faMedium
     );
-
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyCqXtiIQbDsLh8B0CYife9S3xBXueQtoxo",
-      authDomain: "bankn-10300436-56914.firebaseapp.com",
-      projectId: "bankn-10300436-56914",
-      storageBucket: "bankn-10300436-56914.firebasestorage.app",
-      messagingSenderId: "116495198466",
-      appId: "1:116495198466:web:b9f263dc874c283bca7a1b",
-      measurementId: "G-GQS9NSEL2C"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
   }
 }
