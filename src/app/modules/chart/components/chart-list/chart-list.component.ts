@@ -11,7 +11,7 @@ import { TransactionService } from '../../../../services/transaction.service';
 import { MathService } from '../../../../services/math.service';
 import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
-import Chart, { ChartItem } from 'chart.js/auto'
+import Chart from 'chart.js/auto'
 import { DineroPipe } from 'src/app/modules/shared/pipes/dinero.pipe';
 import {
   UntypedFormBuilder,
@@ -144,7 +144,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
       this.chart.data.labels! = Array.from(transactionsBy.keys());
       this.chart.data.datasets.push({data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount)});
-      this.chart.options.plugins!.datalabels =  {
+      (this.chart.options.plugins as any).datalabels =  {
             formatter: (value: number, _context: any) => {
               return this.dineroPipe.transform(MathService.toDinero(
                 value,
