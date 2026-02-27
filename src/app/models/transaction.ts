@@ -7,6 +7,7 @@ import { Dinero } from 'dinero.js';
 import { MathService } from '../services/math.service';
 
 export class Transaction {
+
   private _id: string; //uuid
   public type: TransactionType;
   public date: Date;
@@ -16,6 +17,7 @@ export class Transaction {
   public category?: Category;
   public receiptReference?: string;
   public description?: string;
+  public transferAccount?: Account;
 
   //
   //Volatile:

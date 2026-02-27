@@ -3,14 +3,7 @@
     <h2 i18n>Transactions</h2>
   </div>
   <div class="col-6 text-right">
-    <button
-      class="btn btn-primary "
-      type="submit"
-      [routerLink]="['/transactions/transaction']"
-      [disabled]="accounts.length==0"
-    >
-      New
-    </button>
+    <button class="btn btn-primary" type="submit" [routerLink]="['/transactions/transaction']" [disabled]="accounts.length==0">New</button>
   </div>
 </div>
 <br />
@@ -25,10 +18,7 @@
     <account-select-card></account-select-card>
   </div>
 </div>
-<div
-  *ngIf="accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions"
-  class="row"
->
+<div *ngIf="accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions" class="row">
   <div class="col-sm-5">
     <transaction-create-card></transaction-create-card>
   </div>
