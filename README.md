@@ -10,7 +10,7 @@ ng build
 ng serve
 ng test
 
-npm run build
+ng build --configuration production
 firebase deploy
 
 [Edit on StackBlitz ⚡️](https://stackblitz.com/~/github.com/nfbarata/bankn)
