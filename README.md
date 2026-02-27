@@ -6,6 +6,7 @@ https://nfbarata-bankn.firebaseapp.com
 
 ## Dev
 
+install node&angular
 ng serve
 ng test
 

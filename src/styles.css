@@ -2,6 +2,8 @@
 /*@import "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css";*/
 /*@import "~bootstrap/dist/css/bootstrap.min.css";*/
 /*@import url("bootstrap.min.css"); */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~open-iconic/font/css/open-iconic-bootstrap.css';
 
 /*Angular Material*/
 html, body { height: 100%; }

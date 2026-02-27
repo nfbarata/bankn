@@ -14,14 +14,7 @@
     <account-select-card></account-select-card>
   </div>
 </div>
-<div
-  *ngIf="
-    accounts.length > 0 &&
-    selectedAccounts.length > 0 &&
-    transactions.length == 0
-  "
-  class="row"
->
+<div *ngIf="accounts.length > 0 && selectedAccounts.length > 0 && transactions.length == 0" class="row">
   <div class="col-sm-5">
     <transaction-create-card></transaction-create-card>
   </div>
@@ -29,4 +22,29 @@
   <div class="col-sm-5">
     <transactions-import-card></transactions-import-card>
   </div>
+</div>
+
+<div *ngIf="accounts.length > 0 && selectedAccounts.length > 0 && transactions.length > 0">
+  <form [formGroup]="form">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4 form-group">
+          <label i18n>Group by</label>
+        </div>
+      </div>
+      <div class="row"> 
+        <div class="col-sm-4 form-group">
+          <select title="groupBy" class="form-control" formControlName="groupBy" (change)="refreshChartData()">
+            <option value="entity" i18n>Entity</option>
+            <option value="category" i18n>Category</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-6 form-group">
+          <canvas #chart></canvas>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

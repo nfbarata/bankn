@@ -32,7 +32,7 @@ export class MathService {
     return MathService.toCurrency(currencyCode);
   }
 
-  static toCurrency(currencyCode: string): Currency<number> {
+  public static toCurrency(currencyCode: string): Currency<number> {
     return currencies[currencyCode as keyof typeof currencies];
   }
 

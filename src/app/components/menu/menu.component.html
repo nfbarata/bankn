@@ -36,8 +36,8 @@
         <li class="nav-item {{ hasBankn ? 'active' : '' }} ">
           <a class="nav-link" [routerLink]="['/transactions']" i18n="@@menu-transactions">Transactions</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" i18n="@@menu-charts">Charts</a>
+        <li class="nav-item {{ hasBankn ? 'active' : '' }} ">
+          <a class="nav-link" [routerLink]="['/charts']" i18n="@@menu-charts">Charts</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" i18n="@@menu-help">Help</a>
