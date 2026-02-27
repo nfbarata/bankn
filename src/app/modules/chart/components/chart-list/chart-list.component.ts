@@ -145,9 +145,9 @@ export class ChartListComponent implements OnInit, AfterViewInit {
       this.chart.data.labels! = Array.from(transactionsBy.keys());
       this.chart.data.datasets.push({data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount)});
       this.chart.options.plugins!.datalabels =  {
-            formatter: (value, context) => {
+            formatter: (value: number, _context: any) => {
               return this.dineroPipe.transform(MathService.toDinero(
-                parseFloat(value),
+                value,
                 usedCurrency
               ));
             }
