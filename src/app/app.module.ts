@@ -43,8 +43,8 @@ import { HomeComponent } from './components/home/home.component';
 //Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Import the functions you need from the SDKs you need
-//import { initializeApp } from 'firebase/app';
-//import { getAnalytics } from 'firebase/analytics';
+import { initializeApp } from 'firebase/app';
+import { getAnalytics } from 'firebase/analytics';
 // charts
 //import { GoogleChartsModule } from 'angular-google-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -120,20 +120,18 @@ export class AppModule {
     );
 
     // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
-      apiKey: 'AIzaSyBZHKQH0wcP_rjvqRX0lZNHOq-jh8eYqRQ',
-      authDomain: 'nfbarata-bankn.firebaseapp.com',
-      databaseURL: 'https://nfbarata-bankn.firebaseio.com',
-      projectId: 'nfbarata-bankn',
-      storageBucket: 'nfbarata-bankn.appspot.com',
-      messagingSenderId: '355178782356',
-      appId: '1:355178782356:web:1f470491d43237b8031e81',
-      measurementId: 'G-FSZ84CBVCC',
+      apiKey: "AIzaSyCqXtiIQbDsLh8B0CYife9S3xBXueQtoxo",
+      authDomain: "bankn-10300436-56914.firebaseapp.com",
+      projectId: "bankn-10300436-56914",
+      storageBucket: "bankn-10300436-56914.firebasestorage.app",
+      messagingSenderId: "116495198466",
+      appId: "1:116495198466:web:b9f263dc874c283bca7a1b",
+      measurementId: "G-GQS9NSEL2C"
     };
 
     // Initialize Firebase
-    //const app = initializeApp(firebaseConfig);
-    //const analytics = getAnalytics(app);
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
   }
 }
