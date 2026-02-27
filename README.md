@@ -10,5 +10,5 @@ ng serve
 ng test
 
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/bankn)
+[Edit on StackBlitz ⚡️](https://stackblitz.com/~/github.com/nfbarata/bankn)
 [Edit on idx ⚡️](https://idx.google.com/bankn-6548892)
