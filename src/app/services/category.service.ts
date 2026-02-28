@@ -13,9 +13,17 @@ export class CategoryService {
     private banknService: BanknService,
   ) { }
 
-  static getDirectChildCategory(parent: Category, name: string): Category | null{
+  static getFullCategoryName(category: Category): string {
+    if (category.topLevelCategory) {
+      return this.getFullCategoryName(category.topLevelCategory) + '.' + category.name; 
+    } else {
+      return category.name;
+    }   
+  }
+
+  static getDirectChildCategory(parent: Category, name: string): Category | null {
     for (let c = 0; c < parent.innerCategories.length; c++) {
-      if(parent.innerCategories[c].name == name)
+      if (parent.innerCategories[c].name == name)
         return parent.innerCategories[c];
     }
     return null;
@@ -26,18 +34,18 @@ export class CategoryService {
     description?: string
   ): Category | null {
 
-    if (categoryFullName == null || categoryFullName == undefined || categoryFullName.trim().length == 0) 
+    if (categoryFullName == null || categoryFullName == undefined || categoryFullName.trim().length == 0)
       return null;
-    
+
     var categoryNames = categoryFullName.split('.');
-  
+
     var firstCategoryName = categoryNames[0];
-    var firstCategory = CategoryService.getCategory(this.banknService.getBankn()!, firstCategoryName);
+    var firstCategory = CategoryService.searchCategory(this.banknService.getBankn()!, firstCategoryName);
     if (firstCategory == null) {
       firstCategory = new Category(firstCategoryName);
       this.banknService.addCategory(firstCategory);
     }
-    if(categoryNames.length==1){
+    if (categoryNames.length == 1) {
       //pattern only processed in the inner most category
       CategoryService.upsertDescriptionPatterns(firstCategory, description);
       return firstCategory;
@@ -49,7 +57,7 @@ export class CategoryService {
       );
     }
   }
-  
+
   private static upsertCategoryRecursive(
     parentCategory: Category,
     categoryFullName: string,
@@ -57,16 +65,16 @@ export class CategoryService {
   ): Category | null {
 
     var categoryNames = categoryFullName.split('.');
-    
+
     var firstCategoryName = categoryNames[0];
     var firstCategory = CategoryService.getDirectChildCategory(parentCategory, firstCategoryName);
     //Create if not exist
     if (firstCategory == null) {
-      firstCategory = new Category(firstCategoryName);
+      firstCategory = new Category(firstCategoryName, parentCategory);
       parentCategory.innerCategories.push(firstCategory);
     }
 
-    if(categoryNames.length==1 || categoryFullName.substring(firstCategoryName.length).trim().length == 0 ){
+    if (categoryNames.length == 1 || categoryFullName.substring(firstCategoryName.length).trim().length == 0) {
       //pattern only processed in the inner most category
       CategoryService.upsertDescriptionPatterns(firstCategory, description);
       return firstCategory;
@@ -80,16 +88,16 @@ export class CategoryService {
     }
   }
 
-  static upsertDescriptionPatterns(category: Category, description?: string){
-    if(description){
+  static upsertDescriptionPatterns(category: Category, description?: string) {
+    if (description) {
       category.descriptionPatterns.push(description);
     }
   }
 
   public static toJson(category: Category): any {
-    
+
     var innerCategories: any[] = [];
-    if(category.innerCategories)
+    if (category.innerCategories)
       category.innerCategories.forEach((ic) => {
         innerCategories.push(this.toJson(ic));
       });
@@ -103,54 +111,67 @@ export class CategoryService {
     return json;
   }
 
-  public static fromJson(json: any): Category {
-    var category = new Category(json.name);
-    if(json._id)
+  public static fromJson(json: any, topLevelCategory?: Category): Category {
+    var category = new Category(json.name, topLevelCategory);
+    if (json._id)
       category.importId(json._id);
     category.descriptionPatterns = json.descriptionPatterns;
-    if(json.innerCategories)
+    if (json.innerCategories)
       json.innerCategories.forEach((ic: any) => {
-        var innerCategory = CategoryService.fromJson(ic);
+        var innerCategory = CategoryService.fromJson(ic, category);
         category.innerCategories.push(innerCategory);
       });
     console.log('Parsed category', category);
     return category;
   }
 
-  getCategory(
-    id: string
-  ): Category | null {
-    //check top most categories
-    for (let c = 0; c < banknService.getBankn()!.categories.length; c++) {
-      if (banknService.getBankn()!.categories[c].id == id) {
-        return banknService.getBankn()!.categories[c];
+  public static getAllCategories(bankn: Bankn): Category[] {
+    var categories: Category[] = [];
+    bankn.categories.forEach((c) => {
+      categories.push(c);
+      categories.push(...this.getInnerCategories(c));
+    });
+    return categories;
+  }
+
+  private static getInnerCategories(category: Category): Category[] {
+    var innerCategories: Category[] = [];
+    if (category.innerCategories)
+      category.innerCategories.forEach((ic) => {
+        innerCategories.push(ic);
+        innerCategories.push(...this.getInnerCategories(ic));
+      });
+    return innerCategories;
+  }
+
+  public static getCategory(id: string, bankn: Bankn): Category | null {
+    for (let c = 0; c < bankn.categories.length; c++) {
+      if (bankn.categories[c].id == id) {
+        return bankn.categories[c];
       } else {
-        var category = this.getCategoryRecursive(id, bankn.categories[c]);
-        if (category != null) 
-          return category;
+        var childCategory = CategoryService.getCategoryRecursive(id, bankn.categories[c]);
+        if (childCategory != null)
+          return childCategory;
       }
     }
     return null;
   }
 
-  private static getCategoryRecursive(
-    id: string,
-    parentCategory: Category
-  ): Category | null {
-    //check inner categories
+  private static getCategoryRecursive(id: string, parentCategory: Category): Category | null {
     for (let c = 0; c < parentCategory.innerCategories.length; c++) {
-      if (parentCategory.innerCategories[c].name == categoryName) {
-        return parentCategory;
-      } else {
-        if (parentCategory.innerCategories[c].innerCategories != null)
-          return this.getCategoryRecursive(categoryName, parentCategory.innerCategories[c]);
+      if (parentCategory.innerCategories[c].id === id)
+        return parentCategory.innerCategories[c];
+      else {
+        var childCategory = CategoryService.getCategoryRecursive(id, parentCategory.innerCategories[c]);
+        if (childCategory != null)
+          return childCategory;
       }
     }
     return null;
   }
 
-  static searchCategory(
-    bankn:Bankn, 
+  public static searchCategory(
+    bankn: Bankn,
     categoryName: string
   ): Category | null {
     //check top most categories
@@ -159,7 +180,7 @@ export class CategoryService {
         return bankn.categories[c];
       } else {
         var category = this.searchCategoryRecursive(categoryName, bankn.categories[c]);
-        if (category != null) 
+        if (category != null)
           return category;
       }
     }
@@ -173,28 +194,29 @@ export class CategoryService {
     //check inner categories
     for (let c = 0; c < parentCategory.innerCategories.length; c++) {
       if (parentCategory.innerCategories[c].name == categoryName) {
-        return parentCategory;
+        return parentCategory.innerCategories[c];
       } else {
-        if (parentCategory.innerCategories[c].innerCategories != null)
-          return this.getCategoryRecursive(categoryName, parentCategory.innerCategories[c]);
+        var category = this.searchCategoryRecursive(categoryName, parentCategory.innerCategories[c]);
+        if (category != null)
+          return category;
       }
     }
     return null;
   }
 
-  static getCategoryFromDescription(
+  public static getCategoryFromDescription(
     bankn: Bankn,
     description: string
   ): Category | null {
-    
+
     var biggestRating = 0;
     var category = null;
 
     //check top most categories
     for (let c = 0; c < bankn.categories.length; c++) {
-      if(bankn.categories[c].descriptionPatterns.length>0){
+      if (bankn.categories[c].descriptionPatterns.length > 0) {
         var rating = UtilsService.calculateSimilarityRating(description, bankn.categories[c].descriptionPatterns);
-        if (rating > biggestRating){
+        if (rating > biggestRating) {
           category = bankn.categories[c];
           biggestRating = rating;
         }
@@ -203,16 +225,16 @@ export class CategoryService {
 
     //check top most innercategories
     for (let c = 0; c < bankn.categories.length; c++) {
-      if(bankn.categories[c].innerCategories.length >0){
+      if (bankn.categories[c].innerCategories.length > 0) {
         var result = CategoryService.getInnerBiggestRatingRecursive(description, bankn.categories[c]);
-        if (result.biggestRating > biggestRating){
+        if (result.biggestRating > biggestRating) {
           category = result.category;
           biggestRating = result.biggestRating;
         }
       }
     }
 
-    if(biggestRating > UtilsService.minRating)
+    if (biggestRating > UtilsService.minRating)
       return category;
     else
       return null;
@@ -221,16 +243,16 @@ export class CategoryService {
   private static getInnerBiggestRatingRecursive(
     description: string,
     parentCategory: Category
-  ): { biggestRating: number; category: Category|null } {
-    
+  ): { biggestRating: number; category: Category | null } {
+
     var biggestRating = 0;
     var category = null;
 
     //find innerCategories biggestRating and compare
     for (let c = 0; c < parentCategory.innerCategories.length; c++) {
-      if(parentCategory.innerCategories[c].descriptionPatterns.length>0){
+      if (parentCategory.innerCategories[c].descriptionPatterns.length > 0) {
         var rating = UtilsService.calculateSimilarityRating(description, parentCategory.innerCategories[c].descriptionPatterns);
-        if (rating > biggestRating){
+        if (rating > biggestRating) {
           category = parentCategory.innerCategories[c];
           biggestRating = rating;
         }
@@ -239,9 +261,9 @@ export class CategoryService {
 
     //find innerCategories.innerCategories biggestRating and compare
     for (let c = 0; c < parentCategory.innerCategories.length; c++) {
-      if(parentCategory.innerCategories[c].innerCategories.length>0){
+      if (parentCategory.innerCategories[c].innerCategories.length > 0) {
         var result = CategoryService.getInnerBiggestRatingRecursive(description, parentCategory.innerCategories[c]);
-        if (result.biggestRating > biggestRating){
+        if (result.biggestRating > biggestRating) {
           category = result.category;
           biggestRating = result.biggestRating;
         }

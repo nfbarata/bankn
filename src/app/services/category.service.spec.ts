@@ -70,23 +70,30 @@ describe('CategoryService', () => {
     //expect(newCategory.innerCategories[0].name).toBe(name);
   });
 
-  it('should process getCategory', () => {
+  it('should process searchCategory & getCategory & getAllCategories', () => {
     var bankn = new Bankn("id","name","PT");
-    expect(CategoryService.getCategory(bankn, "cat")).toBeNull();
+    expect(CategoryService.searchCategory(bankn, "cat")).toBeNull();
     
     var category = new Category("cat");
+    var category2 = new Category("cat2");
     bankn.categories.push(category);
-    expect(CategoryService.getCategory(bankn, "cat")).toBeTruthy();
+    bankn.categories.push(category2);
+    expect(CategoryService.searchCategory(bankn, "cat")).toBeTruthy();
+    expect(CategoryService.getCategory(category.id, bankn)?.id).toBe(category.id);
     
     var subCategory = new Category("subcat");
-    category.innerCategories.push(subCategory);
-    expect(CategoryService.getCategory(bankn, "cat")).toBeTruthy();
-    expect(CategoryService.getCategory(bankn, "subcat")).toBeTruthy();
+    category2.innerCategories.push(subCategory);
+    expect(CategoryService.searchCategory(bankn, "cat")).toBeTruthy();
+    expect(CategoryService.searchCategory(bankn, "subcat")).toBeTruthy();
+    expect(CategoryService.getCategory(subCategory.id, bankn)?.id).toBe(subCategory.id);
 
     var sub2Category = new Category("subcat2");
     subCategory.innerCategories.push(sub2Category);
-    expect(CategoryService.getCategory(bankn, "cat")).toBeTruthy();
-    expect(CategoryService.getCategory(bankn, "subcat")).toBeTruthy();
-    expect(CategoryService.getCategory(bankn, "subcat2")).toBeTruthy();
+    expect(CategoryService.searchCategory(bankn, "cat")).toBeTruthy();
+    expect(CategoryService.searchCategory(bankn, "subcat")).toBeTruthy();
+    expect(CategoryService.searchCategory(bankn, "subcat2")).toBeTruthy();
+    expect(CategoryService.getCategory(sub2Category.id, bankn)?.id).toBe(sub2Category.id);
+
+    expect(CategoryService.getAllCategories(bankn)?.length).toBe(4);
   });
 });

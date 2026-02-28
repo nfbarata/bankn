@@ -219,9 +219,10 @@ export class TransactionService {
 
     var category = undefined;
     if(json.category != null){
-      category = BanknService..categories.find((c) => c.id == json.category);
+      category = CategoryService.getCategory(json.category, bankn);
       if(!category){
         console.warn('Category not found for transaction', json);
+        category = undefined;
       }
     }
 
