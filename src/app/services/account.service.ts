@@ -223,7 +223,7 @@ export class AccountService {
       transactionsJson.push(TransactionService.toJson(transaction));
     });
     return {
-      id: account.id,
+      _id: account.id,
       name: account.name,
       description: account.description,
       referenceAmount: account.referenceAmount.toJSON().amount,
@@ -239,9 +239,8 @@ export class AccountService {
   }
 
   public static fromJson(json: any, bankn: Bankn): Account {
-    console.log(json);
     var account = new Account(
-      json.id,
+      json._id,
       json.name,
       json.description,
       MathService.fromInputValue(
@@ -263,6 +262,7 @@ export class AccountService {
           TransactionService.fromJson(transaction, account, bankn)
         );
       });
+    console.log('Parsed account', account);
     return account;
   }
 

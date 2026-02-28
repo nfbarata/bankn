@@ -31,6 +31,22 @@ const routes: Routes = [
       import('./modules/chart/chart.module').then((m) => m.ChartModule),
     canActivate: [InitializedGuard],
   },
+  {
+    path: 'categories',
+    loadChildren: () =>
+      import('./modules/category/category.module').then(
+        (m) => m.CategoryModule
+      ),
+    canActivate: [InitializedGuard],
+  },
+  {
+    path: 'entities',
+    loadChildren: () =>
+      import('./modules/entity/entity.module').then(
+        (m) => m.EntityModule
+      ),
+    canActivate: [InitializedGuard],
+  }
 ];
 
 @NgModule({

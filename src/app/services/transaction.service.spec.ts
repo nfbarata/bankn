@@ -61,12 +61,12 @@ describe('TransactionService', () => {
     bankn.accounts.push(account);
 
     var transaction = TransactionService.fromJson({
-      id: id,
+      _id: id,
       amount: amount,
       type: type,
       date: date,
-      entityName: entityName,
-      categoryName: categoryName,
+      entity: entity.id,
+      category: category.id,
       receiptReference: receiptReference,
       description: description,
     }, account, bankn);

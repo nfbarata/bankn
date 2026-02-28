@@ -41,6 +41,8 @@ export class BanknService {
     this.eventsService.emitBanknChange();
     this.eventsService.emitAccountsChange();
     this.eventsService.emitAccountSelectionChange();
+    this.eventsService.emitCategoriesChange();
+    this.eventsService.emitEntitiesChange();
   }
 
   static createBankn(name: string, referenceCountry: string): Bankn {
@@ -58,6 +60,8 @@ export class BanknService {
       this.eventsService.emitBanknChange();
       this.eventsService.emitAccountsChange();
       this.eventsService.emitAccountSelectionChange();
+      this.eventsService.emitCategoriesChange();
+      this.eventsService.emitEntitiesChange();
     });
   }
 
@@ -84,6 +88,19 @@ export class BanknService {
             this.bankn.accounts[0].transactions.pop();
           }
           this.bankn.accounts.pop();
+        }
+      }
+      if(this.bankn.categories != null) {
+        while (this.bankn.categories.length > 0) {
+          while (this.bankn.categories[0].innerCategories.length > 0) {
+            this.bankn.categories[0].innerCategories.pop();
+          }
+          this.bankn.categories.pop();
+        }
+      }
+      if(this.bankn.entities != null) {
+        while (this.bankn.entities.length > 0) {
+          this.bankn.entities.pop();
         }
       }
     }
@@ -124,6 +141,16 @@ export class BanknService {
     return this.bankn.accounts;
   }
 
+  getEntities(): Entity[] {
+    if (this.bankn == null) return [];
+    return this.bankn.entities;
+  }
+
+  getCategories(): Category[] {
+    if (this.bankn == null) return [];
+    return this.bankn.categories;
+  }
+
   getDefaultCountryCode(): string {
     return this.defaultCountryCode;
   }
@@ -140,19 +167,27 @@ export class BanknService {
     bankn.accounts.forEach((account) => {
       accountsJson.push(AccountService.toJson(account));
     });
+    var entitiesJson: any[] = [];
+    bankn.entities.forEach((entity) => {
+      entitiesJson.push(EntityService.toJson(entity));
+    });
+    var categoriesJson: any[] = [];
+    bankn.categories.forEach((category) => {
+      categoriesJson.push(CategoryService.toJson(category));
+    });
     return {
-      id: bankn.id,
+      _id: bankn.id,
       name: bankn.name,
       accounts: accountsJson,
       referenceCountry: bankn.referenceCountry,
-      entities: bankn.entities,
-      categories: bankn.categories,
+      entities: entitiesJson,
+      categories: categoriesJson,
     };
   }
 
   public static fromJson(json: any): Bankn {
     var bankn = new Bankn(
-      json.id,
+      json._id,
       json.name,
       json.referenceCountry,
     );
@@ -164,7 +199,7 @@ export class BanknService {
 
     if (json.entities)
       json.entities.forEach((entity: any) => {
-        bankn.entities.push(EntityService.fromJson(entity));
+        bankn.entities.push(EntityService.fromJson(entity, bankn.categories));
       });
 
     if (json.accounts)
@@ -174,4 +209,5 @@ export class BanknService {
 
     return bankn;
   }
+
 }

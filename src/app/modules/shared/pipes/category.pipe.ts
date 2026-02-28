@@ -5,7 +5,7 @@ import { Category } from '../../../models/category';
 	name: 'category',
 })
 export class CategoryPipe implements PipeTransform {
-	transform(value: string | Category | undefined, args?: any): String {
+	transform(value: string | Category | undefined | null, args?: any): String {
 		if (typeof value === 'string')
 			return value;
 		if (value == undefined)

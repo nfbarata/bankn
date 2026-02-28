@@ -20,14 +20,22 @@ export class MainComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //initialize with test data
-    //if ('bankn' in environment.bankn) {
-    //  this.banknService.setBankn(this.banknService.fromJson(environment.bankn));
-    //}
-
-    this.refreshData();
     this.eventsService.banknChange.subscribe(() => this.refreshData());
     this.eventsService.accountsChange.subscribe(() => this.refreshData());
+
+    // initialize with test data
+    if (!environment.production && environment.exampleFile != null) {
+      console.log("initializing with test data");
+      fetch(environment.exampleFile)
+        .then(response => response.json())
+        .then(data => {
+          this.banknService.setBankn(BanknService.fromJson(data));
+          this.refreshData();
+        })
+        .catch(error => console.error('Error loading example file:', error));
+    } else {
+      this.refreshData();
+    }
   }
 
   refreshData() {

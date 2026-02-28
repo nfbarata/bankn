@@ -32,22 +32,25 @@ describe('EntityService', () => {
   it('should process fromJson', () => {
     var name = "name";
     var descriptionPatterns: string[] = [];
+    var categories: Category[] = [];
+    var category = new Category("cat");
+    categories.push(category);
 
     //no optional vars
     var entity = EntityService.fromJson({
       name: name,
       descriptionPatterns: descriptionPatterns,
-    });
+    }, []);
     expect(entity.name).toBe(name);
     expect(entity.descriptionPatterns.length).toBe(0);
-    expect(entity.referenceCategory).toBeNull();
+    expect(entity.referenceCategory).toBeUndefined();
 
     //with optional vars
     var newEntity = EntityService.fromJson({
       name: name,
       descriptionPatterns: ["a","b"],
-      referenceCategory: {name:"cat"}
-    });
+      referenceCategory: category.id
+    },categories);
     expect(newEntity.name).toBe(name);
     expect(newEntity.descriptionPatterns.length).toBe(2);
     expect(newEntity.descriptionPatterns[0]).toBe("a");

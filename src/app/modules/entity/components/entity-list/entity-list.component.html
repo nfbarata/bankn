@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-6">
+    <h2 i18n>Entities</h2>
+  </div>
+  <div class="col-6 text-right">
+    <!--button class="btn btn-secondary" type="submit" [routerLink]="['/entities/entity']">New</button-->
+  </div>
+</div>
+<br>
+<div class="table-responsive">
+<table *ngIf="entities.length>0" class="table table-sm table-hover">
+  <thead>
+    <tr class="table-active">
+      <th scope="col" class="" width="0%">Name</th>
+      <th scope="col" class="">Category</th>
+      <th scope="col" class="">Description patterns</th>
+      <!--th scope="col" class="text-right" width="0%">&nbsp;</th-->
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let entity of entities">
+      <td scope="row">{{entity.name}}&nbsp;</td>
+      <td>{{ entity.referenceCategory | category }}&nbsp;</td>
+      <td>{{ entity.descriptionPatterns }}&nbsp;</td>
+      <!--td class="text-right">
+        <button class="btn btn-primary" [routerLink]="['/entities/entity',entity.id]" i18n>Edit</button>&nbsp;
+      </td-->
+    </tr>
+  </tbody>
+</table>
+</div>

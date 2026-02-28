@@ -1,0 +1,196 @@
+﻿{
+    "_id": "a6791de3-a096-3c78-424d-0a3c1e74606e",
+    "name": "bankn",
+    "accounts": [
+        {
+            "_id": "conta1",
+            "name": "Principal",
+            "description": "",
+            "referenceAmount": 0,
+            "referenceDate": "2000-01-01",
+            "referenceCountry": "PT",
+            "transactions": [
+                {
+                    "_id": "1",
+                    "amount": 5000,
+                    "type": "d",
+                    "date": "2026-01-01",
+                    "entity": "epal",
+                    "category": "agua",
+                    "receiptReference": "#1",
+                    "description": "xpto - ADC 2000"
+                },
+                {
+                    "_id": "2",
+                    "amount": 8000,
+                    "type": "d",
+                    "date": "2026-01-02",
+                    "entity": "edp",
+                    "category": "luz",
+                    "receiptReference": "#2",
+                    "description": "ADC 1000 - xpto"
+                }
+            ],
+            "selected": true,
+            "columnSeparator": "9",
+            "customColumnSeparator": null,
+            "rowSeparator": "9",
+            "customRowSeparator": null
+        },
+        {
+            "_id": "conta2",
+            "name": "Despesas",
+            "description": "",
+            "referenceAmount": 0,
+            "referenceDate": "2000-01-01",
+            "referenceCountry": "PT",
+            "transactions": [
+                {
+                    "_id": "3",
+                    "amount": 3000,
+                    "type": "d",
+                    "date": "2026-01-05",
+                    "entity": "zara",
+                    "category": "dela",
+                    "receiptReference": "#3",
+                    "description": "Zara - xpto"
+                },
+                {
+                    "_id": "4",
+                    "amount": 4000,
+                    "type": "d",
+                    "date": "2026-01-06",
+                    "entity": "zara",
+                    "category": "dela",
+                    "receiptReference": "#4",
+                    "description": "Zara - xpto"
+                }
+                ,
+                {
+                    "_id": "5",
+                    "amount": 5000,
+                    "type": "d",
+                    "date": "2026-01-07",
+                    "entity": "adidas",
+                    "category": "meu",
+                    "receiptReference": "#5",
+                    "description": "xpto - Adidas"
+                }
+            ],
+            "selected": true,
+            "columnSeparator": "9",
+            "customColumnSeparator": null,
+            "rowSeparator": "9",
+            "customRowSeparator": null
+        }
+    ],
+    "referenceCountry": "PT",
+    "entities": [
+        {
+            "descriptionPatterns": [
+                "ADC 1000"
+            ],
+            "referenceCategory": "luz",
+            "_id": "edp",
+            "name": "EDP"
+        },
+        {
+            "descriptionPatterns": [
+                "ADC 2000"
+            ],
+            "referenceCategory": "agua",
+            "_id": "epal",
+            "name": "EPAL"
+        },
+        {
+            "descriptionPatterns": [
+                "McDonalds"
+            ],
+            "referenceCategory": "restaurantes",
+            "_id": "mac",
+            "name": "McDonalds"
+        },
+        {
+            "descriptionPatterns": [
+                "Zara"
+            ],
+            "referenceCategory":"dela",
+            "_id": "zara",
+            "name": "Zara"
+        },
+        {
+            "descriptionPatterns": [
+                "Adidas"
+            ],
+            "referenceCategory": "meu",
+            "_id": "adidas",
+            "name": "Adidas"
+        }
+    ],
+    "categories": [
+        {
+            "descriptionPatterns": [],
+            "innerCategories": [
+                {
+                    "descriptionPatterns": [],
+                    "innerCategories": [
+                        {
+                            "descriptionPatterns": [],
+                            "innerCategories": [],
+                            "_id": "luz",
+                            "name": "Luz"
+                        },
+                        {
+                            "descriptionPatterns": [],
+                            "innerCategories": [],
+                            "_id": "agua",
+                            "name": "Água"
+                        }
+                    ],
+                    "_id": "contas",
+                    "name": "Contas"
+                },
+                {
+                    "descriptionPatterns": [],
+                    "innerCategories": [],
+                    "_id": "obras",
+                    "name": "Obras"
+                }
+            ],
+            "_id": "casa",
+            "name": "Casa"
+        },
+        {
+            "descriptionPatterns": [],
+            "innerCategories": [
+                {
+                    "descriptionPatterns": [],
+                    "innerCategories": [
+                        {
+                            "descriptionPatterns": [],
+                            "innerCategories": [],
+                            "_id": "dela",
+                            "name": "Dela"
+                        },
+                        {
+                            "descriptionPatterns": [],
+                            "innerCategories": [],
+                            "_id": "meu",
+                            "name": "Meu"
+                        }
+                    ],
+                    "_id": "roupa",
+                    "name": "Roupa"
+                },
+                {
+                    "descriptionPatterns": [],
+                    "innerCategories": [],
+                    "_id": "restaurantes",
+                    "name": "Restaurantes"
+                }
+            ],
+            "_id": "despesas",
+            "name": "Despesas"
+        }
+    ]
+}

@@ -88,13 +88,15 @@ export class CategoryService {
 
   public static toJson(category: Category): any {
     
-    var innerCategories = [];
-    for (let c = 0; c < category.innerCategories.length; c++)
-      innerCategories.push(CategoryService.toJson(category.innerCategories[c]));
+    var innerCategories: any[] = [];
+    if(category.innerCategories)
+      category.innerCategories.forEach((ic) => {
+        innerCategories.push(this.toJson(ic));
+      });
 
     var json = {
       name: category.name,
-      id: category.id,
+      _id: category.id,
       descriptionPatterns: category.descriptionPatterns,
       innerCategories: innerCategories
     };
@@ -103,25 +105,27 @@ export class CategoryService {
 
   public static fromJson(json: any): Category {
     var category = new Category(json.name);
-    if(json.id)
-      category.importId(json.id);
+    if(json._id)
+      category.importId(json._id);
     category.descriptionPatterns = json.descriptionPatterns;
-    if (json.innerCategories)
-      for(let c = 0; c < json.innerCategories.length; c++)
-        category.innerCategories.push(CategoryService.fromJson(json.innerCategory));
+    if(json.innerCategories)
+      json.innerCategories.forEach((ic: any) => {
+        var innerCategory = CategoryService.fromJson(ic);
+        category.innerCategories.push(innerCategory);
+      });
+    console.log('Parsed category', category);
     return category;
   }
 
-  static getCategory(
-    bankn:Bankn, 
-    categoryName: string
+  getCategory(
+    id: string
   ): Category | null {
     //check top most categories
-    for (let c = 0; c < bankn.categories.length; c++) {
-      if (bankn.categories[c].name == categoryName) {
-        return bankn.categories[c];
+    for (let c = 0; c < banknService.getBankn()!.categories.length; c++) {
+      if (banknService.getBankn()!.categories[c].id == id) {
+        return banknService.getBankn()!.categories[c];
       } else {
-        var category = this.getCategoryRecursive(categoryName, bankn.categories[c]);
+        var category = this.getCategoryRecursive(id, bankn.categories[c]);
         if (category != null) 
           return category;
       }
@@ -130,6 +134,39 @@ export class CategoryService {
   }
 
   private static getCategoryRecursive(
+    id: string,
+    parentCategory: Category
+  ): Category | null {
+    //check inner categories
+    for (let c = 0; c < parentCategory.innerCategories.length; c++) {
+      if (parentCategory.innerCategories[c].name == categoryName) {
+        return parentCategory;
+      } else {
+        if (parentCategory.innerCategories[c].innerCategories != null)
+          return this.getCategoryRecursive(categoryName, parentCategory.innerCategories[c]);
+      }
+    }
+    return null;
+  }
+
+  static searchCategory(
+    bankn:Bankn, 
+    categoryName: string
+  ): Category | null {
+    //check top most categories
+    for (let c = 0; c < bankn.categories.length; c++) {
+      if (bankn.categories[c].name == categoryName) {
+        return bankn.categories[c];
+      } else {
+        var category = this.searchCategoryRecursive(categoryName, bankn.categories[c]);
+        if (category != null) 
+          return category;
+      }
+    }
+    return null;
+  }
+
+  private static searchCategoryRecursive(
     categoryName: string,
     parentCategory: Category
   ): Category | null {

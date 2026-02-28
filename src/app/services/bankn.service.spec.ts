@@ -63,7 +63,7 @@ describe('BanknService', () => {
 
     //no optional fields
     var bankn = BanknService.fromJson({
-      id: id,
+      _id: id,
       name: name,
       referenceCountry: referenceCountry
     });
@@ -74,21 +74,25 @@ describe('BanknService', () => {
 
     //with optional fields
     bankn = BanknService.fromJson({
-      id: id,
+      _id: id,
       name: name,
       referenceCountry: referenceCountry,
       entities: [{
+        _id: "e1",
         name: "ent",
       }, {
+        _id: "e1",
         name: "ent2",
       }],
       categories: [{
+        _id: "c1",
         name: "cat",
       }, {
+        _id: "c2",
         name: "cat2",
       }],
       accounts: [{
-        id: "1",
+        _id: "a1",
         name: "ac1",
         description: "",
         referenceAmount: 1.00,
@@ -96,7 +100,7 @@ describe('BanknService', () => {
         referenceCountry: referenceCountry,
         selected: false,
       }, {
-        id: "2",
+        _id: "a2",
         name: "ac2",
         description: "",
         referenceAmount: 2.00,
@@ -109,8 +113,8 @@ describe('BanknService', () => {
     expect(bankn.name).toBe(name);
     expect(bankn.referenceCountry).toBe(referenceCountry);
     expect(bankn.accounts.length).toBe(2);
-    expect(bankn.accounts[0].id).toBe("1");
-    expect(bankn.accounts[1].id).toBe("2");
+    expect(bankn.accounts[0].id).toBe("a1");
+    expect(bankn.accounts[1].id).toBe("a2");
     expect(bankn.entities.length).toBe(2);
     expect(bankn.entities[0].name).toBe("ent");
     expect(bankn.categories.length).toBe(2);

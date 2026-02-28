@@ -42,4 +42,14 @@ export class EventsService {
     console.debug("transactionChange event");
     this.transactionChange.emit();
   }
+
+  public emitCategoriesChange():void{
+    console.debug("categoriesChange event");
+    this.categoriesChange.emit();
+  }
+
+  public emitEntitiesChange():void{
+    console.debug("entitiesChange event");
+    this.entitiesChange.emit(); 
+  }
 }

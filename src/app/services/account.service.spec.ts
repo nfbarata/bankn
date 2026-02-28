@@ -102,7 +102,7 @@ describe('AccountService', () => {
 
     //no transactions
     var account = AccountService.fromJson({
-      id: id,
+      _id: id,
       name: name,
       description: description,
       referenceAmount: referenceAmount,
@@ -120,14 +120,14 @@ describe('AccountService', () => {
 
     //with transactions
     account = AccountService.fromJson({
-      id: id,
+      _id: id,
       name: name,
       description: description,
       referenceAmount: referenceAmount,
       referenceDate: referenceDate,
       referenceCountry: referenceCountry,
       transactions: [{
-        id: "1",
+        _id: "1",
         amount: "0",
         date: "2022-01-01",
         entity: "",
@@ -135,7 +135,7 @@ describe('AccountService', () => {
         description: "",
         type: TransactionType.CREDIT,
       },{
-        id: "2",
+        _id: "2",
         amount: "0",
         date: "2022-01-01",
         entity: "",

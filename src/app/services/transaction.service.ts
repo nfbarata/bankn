@@ -192,36 +192,55 @@ export class TransactionService {
 
   public static toJson(transaction: Transaction): any {
     return {
-      id: transaction.id,
+      _id: transaction.id,
       amount: transaction.amount.toJSON().amount, //Dinero to value, compacted result
       type: transaction.type,
       date: transaction.date.toISOString().substring(0, 10),
-      entityName: transaction.entity?.name,
-      categoryName: transaction.category?.name,
+      entity: transaction.entity? transaction.entity.id : null,
+      category: transaction.category? transaction.category.id : null,
       receiptReference: transaction.receiptReference,
       description: transaction.description,
     };
   }
 
   public static fromJson(
-    transaction: any,
+    json: any,
     account: Account,
     bankn: Bankn
   ): Transaction {
-    return new Transaction(
-      transaction.id,
+
+    var entity = undefined;
+    if(json.entity != null){
+      entity = bankn.entities.find((e) => e.id == json.entity);
+      if(!entity){
+        console.warn('Entity not found for transaction', json);
+      }
+    }
+
+    var category = undefined;
+    if(json.category != null){
+      category = BanknService..categories.find((c) => c.id == json.category);
+      if(!category){
+        console.warn('Category not found for transaction', json);
+      }
+    }
+
+    var transaction = new Transaction(
+      json._id,
       MathService.toDinero(
-        parseFloat(transaction.amount),
+        parseFloat(json.amount),
         account.referenceAmount.toJSON().currency
       ),
-      transaction.type,
-      new Date(transaction.date),
-      EntityService.getEntity(bankn, transaction.entityName)!,
-      CategoryService.getCategory(bankn, transaction.categoryName)!,
-      transaction.receiptReference,
-      transaction.description,
+      json.type,
+      new Date(json.date),
+      entity,
+      category,
+      json.receiptReference,
+      json.description,
       account
     );
+    console.log('Parsed transaction', transaction);
+    return transaction;
   }
 
   public groupByEntity(transactions: Transaction[]): Map<string, Dinero<number>> {

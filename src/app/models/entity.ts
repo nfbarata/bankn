@@ -5,7 +5,7 @@ export class Entity {
   private _id: string; //uuid
   name: string;
   descriptionPatterns: string[] = [];
-  referenceCategory: Category | null = null;
+  referenceCategory?: Category;
 
   constructor(
     name: string,

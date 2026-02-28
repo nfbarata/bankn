@@ -80,20 +80,26 @@ export class EntityService {
   public static toJson(entity: Entity): any {
     return {
       name: entity.name,
-      id: entity.id,
+      _id: entity.id,
       descriptionPatterns: entity.descriptionPatterns,
-      referenceCategory:
-      entity.referenceCategory == null ? '' : CategoryService.toJson(entity.referenceCategory),
+      referenceCategory: entity.referenceCategory ? entity.referenceCategory.id : null,
     };
   }
 
-  public static fromJson(json: any): Entity {
+  public static fromJson(json: any, categories: Category[]): Entity {
     var entity = new Entity(json.name);
-    if(json.id)
-      entity.importId(json.id);
+    if(json._id)
+      entity.importId(json._id);
     entity.descriptionPatterns = json.descriptionPatterns;
-    if (json.referenceCategory)
-      entity.referenceCategory = CategoryService.fromJson(json.referenceCategory);
+    if (json.referenceCategory && json.referenceCategory != null){
+      var category = categories.find(cat => cat.id == json.referenceCategory);
+      if(!category){
+        console.warn('Category not found for entity ', json);
+      }else{
+        entity.referenceCategory = category;
+      }
+    }
+    console.log('Parsed entity', entity);
     return entity;
   }
 
