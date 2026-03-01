@@ -54,7 +54,7 @@
 				<span class="input-group-text" i18n>Category</span>
 				<input title="category" type="text" id="category" class="form-select" list="categoryList" formControlName="category"/>
 				<datalist id="categoryList">
-					<option *ngFor="let category of (categories==null?[]:categories)" [value]="category.name">{{category.name | category}}</option>
+					<option *ngFor="let category of (categories==null?[]:categories)" [value]="category | category">{{category | category}}</option>
 				</datalist>
 				<button class="btn btn-outline-secondary" type="button" i18n>Edit</button>
 			</div>

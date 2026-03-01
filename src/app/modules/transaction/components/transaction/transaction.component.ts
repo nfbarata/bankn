@@ -12,6 +12,7 @@ import { TransactionType } from '../../../../models/enums';
 import { Entity } from '../../../../models/entity';
 import { Category } from '../../../../models/category';
 import { MathService } from '../../../../services/math.service';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'transaction',
@@ -101,8 +102,8 @@ export class TransactionComponent implements OnInit {
                 month: this.transaction.date.getMonth() + 1,
                 year: this.transaction.date.getFullYear(),
                 type: this.transaction.type.toString(),
-                entity: this.transaction.entity == undefined ? '':this.transaction.entity.name,
-                category: this.transaction.category == undefined ? '':this.transaction.category.name,
+                entity: this.transaction.entity ? this.transaction.entity.name : '',
+                category: this.transaction.category ? CategoryService.getFullCategoryName(this.transaction.category) : '',
                 receiptReference: this.transaction.receiptReference,
                 description: this.transaction.description,
               });

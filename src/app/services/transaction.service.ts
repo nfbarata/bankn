@@ -39,7 +39,7 @@ export class TransactionService {
     date: Date,
     type: TransactionType,
     entityName?: string,
-    categoryName?: string,
+    categoryFullName?: string,
     receiptReference?: string,
     description?: string
   ) {
@@ -47,7 +47,7 @@ export class TransactionService {
     clearDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
 
     //create Category if not exist
-    var category = this.categoryService.upsertCategory(categoryName, description);
+    var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
     var entity = this.entityService.upsertEntity(entityName, description, category);
 
@@ -72,13 +72,13 @@ export class TransactionService {
     date: Date,
     type: TransactionType,
     entityName: string,
-    categoryName: string,
+    categoryFullName: string,
     receiptReference: string,
     description: string
   ) {
 
     //create Category if not exist
-    var category = this.categoryService.upsertCategory(categoryName, description);
+    var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
     var entity = this.entityService.upsertEntity(entityName, description, category);
 
