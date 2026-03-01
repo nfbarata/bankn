@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import {
   UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BanknService } from '../../../../services/bankn.service';
 import { AccountService } from '../../../../services/account.service';
-import { Account } from '../../../../models/account';
 import { UtilsService } from '../../../../services/utils.service';
 import { MathService } from '../../../../services/math.service';
 
@@ -20,16 +19,8 @@ import { MathService } from '../../../../services/math.service';
   styleUrls: ['./account.component.css'],
 })
 export class AccountComponent implements OnInit {
-  form = new UntypedFormGroup({
-    id: new UntypedFormControl(null),
-    name: new UntypedFormControl(),
-    referenceAmount: new UntypedFormControl(),
-    referenceCountry: new UntypedFormControl(),
-    referenceDay: new UntypedFormControl(),
-    referenceMonth: new UntypedFormControl(),
-    referenceYear: new UntypedFormControl(),
-    description: new UntypedFormControl(),
-  });
+
+  form: FormGroup;
   countries: any; //used on UI
 
   constructor(
@@ -40,7 +31,16 @@ export class AccountComponent implements OnInit {
     private router: Router,
     private location: Location,
     private utilsService: UtilsService,
-  ) {}
+  ) {
+    this.form = new FormGroup({
+      id: new FormControl(),
+      name: new FormControl('', [Validators.required]),
+      referenceAmount: new FormControl('', [Validators.required]),
+      referenceCountry: new FormControl('', [Validators.required]),
+      referenceDate: new FormControl('', [Validators.required]),
+      description: new FormControl(),
+    });
+  }
 
   ngOnInit() {
     this.countries = this.utilsService.getCountries();
@@ -53,9 +53,7 @@ export class AccountComponent implements OnInit {
           name: 'Main',
           referenceAmount: MathService.toInputValue(this.accountService.toDinero(0, null)),
           referenceCountry: this.banknService.getReferenceCountry(),
-          referenceDay: '1',
-          referenceMonth: '1',
-          referenceYear: '2000',
+          referenceDate: '2000-01-01',
           description: '',
         });
       } else {
@@ -64,11 +62,9 @@ export class AccountComponent implements OnInit {
           this.form.setValue({
             id: account.id,
             name: account.name,
-            referenceAmount: MathService.toInputValue(account.referenceAmount), 
+            referenceAmount: MathService.toInputValue(account.referenceAmount),
             referenceCountry: account.referenceCountry,
-            referenceDay: account.referenceDate.getDate(),
-            referenceMonth: account.referenceDate.getMonth() + 1,
-            referenceYear: account.referenceDate.getFullYear(),
+            referenceDate: [account.referenceDate.getFullYear(), ('0' + (account.referenceDate.getMonth() + 1)).slice(-2), ('0' + account.referenceDate.getDate()).slice(-2)].join('-'),
             description: account.description,
           });
         }
@@ -77,38 +73,33 @@ export class AccountComponent implements OnInit {
   }
 
   onSubmit() {
-    var amount = MathService.fromInputValue(
-      this.form.controls['referenceAmount'].value,
-      this.form.controls['referenceCountry'].value
-    );
-
-    var date = new Date(0); //clear hours/minutes/seconds
-    date.setFullYear(
-      this.form.controls['referenceYear'].value,
-      this.form.controls['referenceMonth'].value - 1,
-      this.form.controls['referenceDay'].value
-    );
-
-    if (this.form.controls['id'].value == null) {
-      this.accountService.createAccount(
-        this.form.controls['name'].value,
-        this.form.controls['description'].value,
-        date,
-        this.form.controls['referenceCountry'].value,
-        amount //.toObject(),
+    if (this.form.valid) {
+      var amount = MathService.fromInputValue(
+        this.form.value.referenceAmount,
+        this.form.value.referenceCountry
       );
-    } else {
-      this.accountService.updateAccount(
-        this.form.controls['id'].value,
-        this.form.controls['name'].value,
-        this.form.controls['description'].value,
-        amount, //.toObject(),
-        date,
-        this.form.controls['referenceCountry'].value
-      );
+
+      if (this.form.value.id == null) {
+        this.accountService.createAccount(
+          this.form.value.name,
+          this.form.value.description,
+          new Date(this.form.value.referenceDate),
+          this.form.value.referenceCountry,
+          amount //.toObject(),
+        );
+      } else {
+        this.accountService.updateAccount(
+          this.form.value.id,
+          this.form.value.name,
+          this.form.value.description,
+          amount, //.toObject(),
+          new Date(this.form.value.referenceDate),
+          this.form.value.referenceCountry
+        );
+      }
+      this.form.reset();
+      this.router.navigate(['']);
     }
-    this.form.reset();
-    this.router.navigate(['']);
   }
 
   onDelete(accountId: string) {
