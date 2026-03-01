@@ -1,9 +1,10 @@
-import { 
+import {
   ViewChild,
   ElementRef,
-  Component, 
+  Component,
   OnInit,
-  AfterViewInit } from '@angular/core';
+  AfterViewInit
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../../services/account.service';
 import { EventsService } from '../../../../services/events.service';
@@ -43,7 +44,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
     private mathService: MathService,
     private transactionService: TransactionService,
     private dineroPipe: DineroPipe,
-  ) {}
+  ) { }
 
   ngOnInit() {
 
@@ -54,8 +55,8 @@ export class ChartListComponent implements OnInit, AfterViewInit {
     this.refreshAccounts();
 
     this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
-
     this.eventsService.accountsChange.subscribe(() => this.refreshAccounts());
+    this.eventsService.transactionPeriodChange.subscribe(() => this.refreshData());
 
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
@@ -108,50 +109,50 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
   refreshData() {
     //clear
-    while (this.transactions.length > 0) 
+    while (this.transactions.length > 0)
       this.transactions.pop();
 
     this.selectedAccounts = this.accountService.getSelectedAccounts();
 
     this.selectedAccounts.forEach((account) => {
-      this.transactions = this.transactions.concat(account.transactions);
+      this.transactions = this.transactions.concat(this.accountService.getCurrentPeriodTransactions(account));
     });
 
-    if(this.chart!=null){
+    if (this.chart != null) {
       this.refreshChartData();
     }
   }
 
-  refreshChartData(){
+  refreshChartData() {
 
-    while(this.chart.data.labels!.length>0){
+    while (this.chart.data.labels!.length > 0) {
       this.chart.data.labels!.pop();
     }
-    while(this.chart.data.datasets.length>0) {
+    while (this.chart.data.datasets.length > 0) {
       this.chart.data.datasets.pop();
     };
 
     var transactionsBy;
-    if(this.form.controls['groupBy'].value == 'entity'){
+    if (this.form.controls['groupBy'].value == 'entity') {
       transactionsBy = this.transactionService.groupByEntity(this.transactions);
-    }else{
+    } else {
       transactionsBy = this.transactionService.groupByCategory(this.transactions);
     }
 
-    if(transactionsBy.size > 0) {
+    if (transactionsBy.size > 0) {
 
       var usedCurrency = transactionsBy.values().next().value!.toJSON().currency;
 
       this.chart.data.labels! = Array.from(transactionsBy.keys());
-      this.chart.data.datasets.push({data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount)});
-      (this.chart.options.plugins as any).datalabels =  {
-            formatter: (value: number, _context: any) => {
-              return this.dineroPipe.transform(MathService.toDinero(
-                value,
-                usedCurrency
-              ));
-            }
-          };
+      this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
+      (this.chart.options.plugins as any).datalabels = {
+        formatter: (value: number, _context: any) => {
+          return this.dineroPipe.transform(MathService.toDinero(
+            value,
+            usedCurrency
+          ));
+        }
+      };
     }
     this.chart.update();
   }

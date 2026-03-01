@@ -12,13 +12,18 @@ export class Bankn {
   entities: Entity[];
   categories: Category[];
 
+  transactionsStartDate?: Date;
+  transactionsEndDate?: Date;
+
   constructor(
     id: string,
     name: string,
     referenceCountry: string,
+    transactionsStartDate: Date = new Date(new Date().getFullYear(), 0, 1),
+    transactionsEndDate: Date = new Date(),
     accounts: Account[] = [],
     categories: Category[] = [],
-    entities: Entity[] = []
+    entities: Entity[] = [],
   ) {
     this._id = id;
     this.name = name;
@@ -30,6 +35,8 @@ export class Bankn {
     this.referenceCountry = referenceCountry;
     this.entities = entities;
     this.categories = categories;
+    this.transactionsStartDate = transactionsStartDate;
+    this.transactionsEndDate = transactionsEndDate;
   }
 
   public get id(): string {

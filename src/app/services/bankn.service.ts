@@ -182,6 +182,8 @@ export class BanknService {
       referenceCountry: bankn.referenceCountry,
       entities: entitiesJson,
       categories: categoriesJson,
+      transactionsStartDate: bankn.transactionsStartDate?.toISOString().substring(0, 10),
+      transactionsEndDate: bankn.transactionsEndDate?.toISOString().substring(0, 10)
     };
   }
 
@@ -190,15 +192,17 @@ export class BanknService {
       json._id,
       json.name,
       json.referenceCountry,
+      json.transactionsStartDate ? new Date(json.transactionsStartDate) : undefined,
+      json.transactionsEndDate ? new Date(json.transactionsEndDate) : undefined
     );
 
     if (json.categories)
-      for(var category of json.categories)
+      for (var category of json.categories)
         bankn.categories.push(CategoryService.fromJson(category));
 
     var allCategories = CategoryService.getAllCategories(bankn);
     if (json.entities)
-      for(var entity of json.entities)
+      for (var entity of json.entities)
         bankn.entities.push(EntityService.fromJson(entity, allCategories));
 
     if (json.accounts)
@@ -209,4 +213,11 @@ export class BanknService {
     return bankn;
   }
 
+  setTransactionPeriod(startDate?: Date, endDate?: Date) {
+    if (this.bankn!.transactionsStartDate == startDate && this.bankn!.transactionsEndDate == endDate)
+      return;
+    this.bankn!.transactionsStartDate = startDate;
+    this.bankn!.transactionsEndDate = endDate;
+    this.eventsService.transactionPeriodChange.emit();
+  }
 }

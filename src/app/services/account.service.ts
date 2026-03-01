@@ -151,6 +151,15 @@ export class AccountService {
     this.eventsService.accountTransactionsChange.emit();
   }
 
+  getCurrentPeriodTransactions(account: Account){
+    var bankn = this.banknService.getBankn()!;
+    return account.transactions.filter(transaction => {
+      const afterStartDate = !bankn.transactionsStartDate || transaction.date >= bankn.transactionsStartDate;
+      const beforeEndDate = !bankn.transactionsEndDate || transaction.date <= bankn.transactionsEndDate;
+      return afterStartDate && beforeEndDate;
+    });
+  }
+
   deleteTransactionId(account: Account, transactionId: string) {
     account.transactions = account.transactions.filter(function (transaction) {
       return transaction.id != transactionId;

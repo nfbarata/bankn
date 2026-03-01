@@ -32,8 +32,8 @@ export class TransactionListComponent implements OnInit {
     this.refreshAccounts();
     
     this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
-    
     this.eventsService.accountsChange.subscribe(() => this.refreshAccounts());
+    this.eventsService.transactionPeriodChange.subscribe(() => this.refreshData());
     
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
@@ -67,7 +67,7 @@ export class TransactionListComponent implements OnInit {
 
     if (this.selectedAccounts.length > 0) {
       this.selectedAccounts.forEach((account) => {
-        newTransactions = newTransactions.concat(account.transactions);
+        newTransactions = newTransactions.concat(this.accountService.getCurrentPeriodTransactions(account));
         if (!this.hasRealTransactions && account.transactions.length > 0)
           this.hasRealTransactions = true;
       });

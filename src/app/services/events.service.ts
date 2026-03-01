@@ -10,6 +10,7 @@ export class EventsService {
   @Output() transactionChange: EventEmitter<void> = new EventEmitter();
   @Output() categoriesChange: EventEmitter<void> = new EventEmitter();
   @Output() entitiesChange: EventEmitter<void> = new EventEmitter();
+  @Output() transactionPeriodChange: EventEmitter<void> = new EventEmitter();
   
   constructor() { }
 
@@ -51,5 +52,10 @@ export class EventsService {
   public emitEntitiesChange():void{
     console.debug("entitiesChange event");
     this.entitiesChange.emit(); 
+  }
+
+  public emitTransactionPeriodChange():void{
+    console.debug("transactionPeriodChange event");
+    this.transactionPeriodChange.emit();
   }
 }

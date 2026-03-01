@@ -1,5 +1,4 @@
 general:
-  filter by dates
   pipe category link and last node view
 
 txns:
