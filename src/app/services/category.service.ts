@@ -34,62 +34,46 @@ export class CategoryService {
     description?: string
   ): Category | null {
 
-    if (categoryFullName == null || categoryFullName == undefined || categoryFullName.trim().length == 0)
+    if (!categoryFullName || categoryFullName.trim().length === 0) {
       return null;
-
-    var categoryNames = categoryFullName.split('.');
-
-    var firstCategoryName = categoryNames[0];
-    var firstCategory = CategoryService.searchCategory(this.banknService.getBankn()!, firstCategoryName);
-    if (firstCategory == null) {
-      firstCategory = new Category(firstCategoryName);
-      this.banknService.addCategory(firstCategory);
-    }
-    if (categoryNames.length == 1) {
-      //pattern only processed in the inner most category
-      CategoryService.upsertDescriptionPatterns(firstCategory, description);
-      return firstCategory;
-    } else {
-      return CategoryService.upsertCategoryRecursive(
-        firstCategory,
-        categoryFullName.substring(firstCategoryName.length),
-        description
-      );
-    }
-  }
-
-  private static upsertCategoryRecursive(
-    parentCategory: Category,
-    categoryFullName: string,
-    description?: string
-  ): Category | null {
-
-    var categoryNames = categoryFullName.split('.');
-
-    var firstCategoryName = categoryNames[0];
-    var firstCategory = CategoryService.getDirectChildCategory(parentCategory, firstCategoryName);
-    //Create if not exist
-    if (firstCategory == null) {
-      firstCategory = new Category(firstCategoryName, parentCategory);
-      parentCategory.innerCategories.push(firstCategory);
     }
 
-    if (categoryNames.length == 1 || categoryFullName.substring(firstCategoryName.length).trim().length == 0) {
-      //pattern only processed in the inner most category
-      CategoryService.upsertDescriptionPatterns(firstCategory, description);
-      return firstCategory;
-    } else {
-      //recursive category creation
-      return this.upsertCategoryRecursive(
-        firstCategory,
-        categoryFullName.substring(firstCategoryName.length),
-        description
-      )
+    const categoryNames = categoryFullName.split('.').filter(name => name.trim().length > 0);
+    if (categoryNames.length === 0) {
+        return null;
     }
+
+    let currentCategory: Category | null = null;
+    let parentCategory: Category | undefined = undefined;
+
+    for (let i = 0; i < categoryNames.length; i++) {
+        const categoryName = categoryNames[i];
+        if (i === 0) {
+            currentCategory = CategoryService.searchCategory(this.banknService.getBankn()!, categoryName);
+            if (!currentCategory) {
+                currentCategory = new Category(categoryName);
+                this.banknService.addCategory(currentCategory);
+            }
+        } else {
+            let childCategory = CategoryService.getDirectChildCategory(parentCategory!, categoryName);
+            if (!childCategory) {
+                childCategory = new Category(categoryName, parentCategory);
+                parentCategory!.innerCategories.push(childCategory);
+            }
+            currentCategory = childCategory;
+        }
+        parentCategory = currentCategory as Category;
+    }
+
+    if (currentCategory) {
+        CategoryService.upsertDescriptionPatterns(currentCategory, description);
+    }
+
+    return currentCategory;
   }
 
   static upsertDescriptionPatterns(category: Category, description?: string) {
-    if (description) {
+    if (description && category.descriptionPatterns.indexOf(description) === -1) {
       category.descriptionPatterns.push(description);
     }
   }
