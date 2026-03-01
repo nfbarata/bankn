@@ -41,14 +41,14 @@ export class EntityService {
   }
 
   static upsertDescriptionPatterns(entity: Entity, description?: string){
-    if(description){
+    if(description && entity.descriptionPatterns.indexOf(description) === -1){
       entity.descriptionPatterns.push(description);
     }
   }
 
   static getEntity(bankn:Bankn, entityName: string): Entity | null {
     for (let e = 0; e < bankn.entities.length; e++) {
-      if (bankn.entities[e].name == entityName) 
+      if (bankn.entities[e].name.toLowerCase() == entityName.toLowerCase()) 
         return bankn.entities[e];
     }
     return null;
