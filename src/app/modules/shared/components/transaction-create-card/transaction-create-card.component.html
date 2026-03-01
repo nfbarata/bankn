@@ -7,7 +7,7 @@
     <p class="card-text" i18n>Create a new transactions to selected account</p>
     <!--form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"-->
       <div class="form-group">
-        <select title="account" class="form-control" (change)="accountChangeHandler($event)"><!--formControlName="account">-->
+        <select title="account" class="form-control" (change)="onAccountChangeHandler($event)"><!--formControlName="account">-->
           <option *ngFor="let account of accounts" [selected]="selectedAccount!=null && account.id==selectedAccount.id" value="{{account.id}}">{{account.name}}</option>
         </select>
       </div>

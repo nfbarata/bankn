@@ -14,27 +14,28 @@ import { TransactionType } from '../../../../models/enums';
   styleUrls: ['./transaction-list.component.css'],
 })
 export class TransactionListComponent implements OnInit {
-  
+
   hasRealTransactions: boolean = false;
   transactions: Transaction[] = [];
-  initialBalance: Dinero<number>|null = null;
+  initialBalance: Dinero<number> | null = null;
   selectedAccounts: Account[] = [];
   accounts: Account[] = [];
+  newTransactionSelectedAccount: String | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private eventsService: EventsService,
     private accountService: AccountService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    
+
     this.refreshAccounts();
-    
+
     this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
     this.eventsService.accountsChange.subscribe(() => this.refreshAccounts());
     this.eventsService.transactionPeriodChange.subscribe(() => this.refreshData());
-    
+
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
       if (accountId == null || accountId.trim().length == 0) {
@@ -54,11 +55,11 @@ export class TransactionListComponent implements OnInit {
   }
 
   refreshData() {
-    
+
     //clear
-    while (this.transactions.length > 0) 
-    	this.transactions.pop();
-    
+    while (this.transactions.length > 0)
+      this.transactions.pop();
+
     this.hasRealTransactions = false;
 
     var newTransactions: Transaction[] = [];
@@ -84,15 +85,18 @@ export class TransactionListComponent implements OnInit {
       this.applyBalanceToTransactions(newTransactions, initialValue);
 
       this.transactions = newTransactions;
-      if(this.transactions.length>0)
-      	this.initialBalance = this.transactions[this.transactions.length-1].balanceBefore;
+      if (this.transactions.length > 0)
+        this.initialBalance = this.transactions[this.transactions.length - 1].balanceBefore;
       else
-      	this.initialBalance = null;
+        this.initialBalance = null;
     }
   }
 
   refreshAccounts() {
     this.accounts = this.accountService.getAccounts();
+    if (this.accounts.length > 0) {
+      this.newTransactionSelectedAccount = this.accounts[0].id;
+    }
     this.refreshData();
   }
 
@@ -108,7 +112,7 @@ export class TransactionListComponent implements OnInit {
       transactions[i].balanceBefore = accumulatedBalance;
       switch (transactions[i].type) {
         case TransactionType.CREDIT:
-          accumulatedBalance = add(accumulatedBalance,transactions[i].amount);
+          accumulatedBalance = add(accumulatedBalance, transactions[i].amount);
           break;
         case TransactionType.DEBIT:
           accumulatedBalance = subtract(accumulatedBalance, transactions[i].amount);
@@ -116,5 +120,9 @@ export class TransactionListComponent implements OnInit {
       }
       transactions[i].balanceAfter = accumulatedBalance;
     }
+  }
+
+  onNewTransactionAccountChangeHandler(event: any) {
+    this.newTransactionSelectedAccount = event.target.value;
   }
 }

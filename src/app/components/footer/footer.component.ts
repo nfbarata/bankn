@@ -4,6 +4,7 @@ import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
 import { UtilsService } from '../../services/utils.service';
+import { Account } from '../../models/account';
 
 @Component({
   selector: 'app-footer',
@@ -11,8 +12,12 @@ import { UtilsService } from '../../services/utils.service';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
+
   hasBankn: Boolean = false;
   hasAccounts: Boolean = false;
+  accounts: Account[] = [];
+  newTransactionSelectedAccount: String | null = null;
+
   form = new UntypedFormGroup({
     startDate: new UntypedFormControl(),
     endDate: new UntypedFormControl()
@@ -33,7 +38,6 @@ export class FooterComponent implements OnInit {
 
   refreshData() {
     this.hasBankn = this.banknService.initialized();
-    this.hasAccounts = this.accountService.getAccounts().length > 0;
     if (this.hasBankn) {
       if (this.banknService.getBankn()!.transactionsStartDate)
         this.form.value.startDate = this.banknService.getBankn()!.transactionsStartDate;
@@ -44,12 +48,22 @@ export class FooterComponent implements OnInit {
       else
         this.form.value.endDate = "";
     }
+
+    this.accounts = this.accountService.getAccounts();
+    this.hasAccounts = this.accountService.getAccounts().length > 0;
+    if (this.hasAccounts) {
+      this.newTransactionSelectedAccount = this.accounts[0].id;
+    }
   }
 
   onDateChange() {
     this.banknService.setTransactionPeriod(
-      this.form.value.startDate ? UtilsService.removeTime(new Date(this.form.value.startDate)): undefined, 
+      this.form.value.startDate ? UtilsService.removeTime(new Date(this.form.value.startDate)) : undefined,
       this.form.value.endDate ? UtilsService.removeTime(new Date(this.form.value.endDate)) : undefined
     );
+  }
+
+  onNewTransactionAccountChangeHandler(event: any) {
+    this.newTransactionSelectedAccount = event.target.value;
   }
 }

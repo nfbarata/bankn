@@ -42,7 +42,7 @@ export class TransactionCreateCardComponent implements OnInit {
     }
   }
 
-  accountChangeHandler (event: any) {
+  onAccountChangeHandler (event: any) {
     this.newSelectedAccount = event.target.value;
   }
 }

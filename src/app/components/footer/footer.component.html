@@ -4,20 +4,29 @@
 
         <div></div>
 
-        <form [formGroup]="form" class="form-inline">
-            <input type="date" class="form-control form-control-sm" formControlName="startDate" (change)="onDateChange()">
+        <form *ngIf="hasAccounts" [formGroup]="form" class="form-inline">
+            <input type="date" class="form-control form-control-sm" formControlName="startDate"
+                (change)="onDateChange()">
             <span class="mx-2">-</span>
             <input type="date" class="form-control form-control-sm" formControlName="endDate" (change)="onDateChange()">
         </form>
-    
+
         <div class="text-right pr-2">
-            <button *ngIf="hasAccounts" class="btn btn-secondary mr-2" type="submit"
-                [routerLink]="['/transactions/transaction']" title="New Transaction" i18n>
-                <span class="oi oi-plus"></span>
-            </button>
-            <button class="btn btn-primary" type="submit" [routerLink]="['/transactions']" title="List Transactions" i18n>
+            <button *ngIf="hasAccounts" class="btn btn-primary mr-2" type="submit" [routerLink]="['/transactions']"
+                title="List Transactions" i18n>
                 <span class="oi oi-list-rich"></span>
             </button>
+            <div *ngIf="hasAccounts" class="btn-group">
+                <button class="btn btn-secondary" type="submit"
+                    [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!=null?newTransactionSelectedAccount:'')]" title="New Transaction" i18n>
+                    <span class="oi oi-plus"></span>
+                </button>
+                <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
+                    <option *ngFor="let account of accounts"
+                        [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount"
+                        value="{{account.id}}">{{account.name}}</option>
+                </select>
+            </div>
         </div>
 
     </div>

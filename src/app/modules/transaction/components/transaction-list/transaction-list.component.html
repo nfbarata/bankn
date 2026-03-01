@@ -1,12 +1,17 @@
-<div class="row">
-  <div class="col-6">
+<div class="row d-flex align-items-center">
+  <div class="col-auto mr-auto">
     <h2 i18n>Transactions</h2>
   </div>
-  <div class="col-6 text-right">
-    <button class="btn btn-primary" type="submit" [routerLink]="['/transactions/transaction']"
-      [disabled]="accounts.length==0" title="New Transaction" i18n>
-      <span class="oi oi-plus"></span>
-    </button>
+  <div *ngIf="hasRealTransactions" class="col-auto">
+    <div class="btn-group">
+      <button class="btn btn-primary" type="submit" [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!=null?newTransactionSelectedAccount:'')]"
+        [disabled]="accounts.length==0" title="New Transaction" i18n>
+        <span class="oi oi-plus"></span>
+      </button>
+      <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
+        <option *ngFor="let account of accounts" [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount" value="{{account.id}}">{{account.name}}</option>
+      </select>
+    </div>
   </div>
 </div>
 <br />
