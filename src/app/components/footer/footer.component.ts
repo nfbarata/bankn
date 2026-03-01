@@ -3,6 +3,7 @@ import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
   selector: 'app-footer',
@@ -47,8 +48,8 @@ export class FooterComponent implements OnInit {
 
   onDateChange() {
     this.banknService.setTransactionPeriod(
-      this.form.value.startDate ? new Date(this.form.value.startDate): undefined, 
-      this.form.value.endDate ? new Date(this.form.value.endDate) : undefined
+      this.form.value.startDate ? UtilsService.removeTime(new Date(this.form.value.startDate)): undefined, 
+      this.form.value.endDate ? UtilsService.removeTime(new Date(this.form.value.endDate)) : undefined
     );
   }
 }

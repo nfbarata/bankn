@@ -77,7 +77,7 @@ export class AccountComponent implements OnInit {
         this.accountService.createAccount(
           this.form.value.name,
           this.form.value.description,
-          new Date(this.form.value.referenceDate),
+          UtilsService.removeTime(new Date(this.form.value.referenceDate)),
           this.form.value.referenceCountry,
           amount //.toObject(),
         );
@@ -87,7 +87,7 @@ export class AccountComponent implements OnInit {
           this.form.value.name,
           this.form.value.description,
           amount, //.toObject(),
-          new Date(this.form.value.referenceDate),
+          UtilsService.removeTime(new Date(this.form.value.referenceDate)),
           this.form.value.referenceCountry
         );
       }

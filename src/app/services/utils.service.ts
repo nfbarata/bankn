@@ -43,4 +43,8 @@ export class UtilsService {
     }
     return date.toISOString();
   }
+
+  static removeTime(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
 }

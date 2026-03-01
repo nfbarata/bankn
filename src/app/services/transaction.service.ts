@@ -14,6 +14,7 @@ import { Bankn } from '../models/bankn';
 import { CategoryService } from './category.service';
 import { EntityService } from './entity.service';
 import { MathService } from './math.service';
+import { UtilsService } from './utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
@@ -43,9 +44,6 @@ export class TransactionService {
     receiptReference?: string,
     description?: string
   ) {
-    var clearDate = new Date(0); //clear hours/minutes/seconds
-    clearDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
-
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
@@ -55,7 +53,7 @@ export class TransactionService {
       UUID.UUID(),
       amount,
       type,
-      clearDate,
+      UtilsService.removeTime(date),
       entity == null ? undefined : entity,
       category == null ? undefined : category,
       receiptReference,

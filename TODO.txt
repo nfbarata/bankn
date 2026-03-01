@@ -38,9 +38,6 @@ date format
 visual
 i18n
 
-icones
-  txn list edit 
-
 receipt# as customizable field
 
 save zip contents
