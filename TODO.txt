@@ -14,6 +14,11 @@ categories:
           #Água
         #Despesas
 
+charts:
+  different charts
+  value labels
+  labels bottom
+
 tests:
   test toJson
 

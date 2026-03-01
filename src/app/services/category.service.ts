@@ -15,10 +15,10 @@ export class CategoryService {
 
   static getFullCategoryName(category: Category): string {
     if (category.topLevelCategory) {
-      return this.getFullCategoryName(category.topLevelCategory) + '.' + category.name; 
+      return this.getFullCategoryName(category.topLevelCategory) + '.' + category.name;
     } else {
       return category.name;
-    }   
+    }
   }
 
   static getDirectChildCategory(parent: Category, name: string): Category | null {
@@ -117,10 +117,10 @@ export class CategoryService {
       category.importId(json._id);
     category.descriptionPatterns = json.descriptionPatterns;
     if (json.innerCategories)
-      json.innerCategories.forEach((ic: any) => {
+      for (var ic of json.innerCategories) {
         var innerCategory = CategoryService.fromJson(ic, category);
         category.innerCategories.push(innerCategory);
-      });
+      };
     console.log('Parsed category', category);
     return category;
   }

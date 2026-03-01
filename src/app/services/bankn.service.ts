@@ -16,7 +16,7 @@ import { CategoryService } from './category.service';
 
 @Injectable({ providedIn: 'root' })
 export class BanknService {
-  
+
   private bankn: Bankn | null = null;
   private defaultCountryCode: string = 'null';
 
@@ -90,7 +90,7 @@ export class BanknService {
           this.bankn.accounts.pop();
         }
       }
-      if(this.bankn.categories != null) {
+      if (this.bankn.categories != null) {
         while (this.bankn.categories.length > 0) {
           while (this.bankn.categories[0].innerCategories.length > 0) {
             this.bankn.categories[0].innerCategories.pop();
@@ -98,7 +98,7 @@ export class BanknService {
           this.bankn.categories.pop();
         }
       }
-      if(this.bankn.entities != null) {
+      if (this.bankn.entities != null) {
         while (this.bankn.entities.length > 0) {
           this.bankn.entities.pop();
         }
@@ -193,14 +193,13 @@ export class BanknService {
     );
 
     if (json.categories)
-      json.categories.forEach((category: any) => {
+      for(var category of json.categories)
         bankn.categories.push(CategoryService.fromJson(category));
-      });
 
+    var allCategories = CategoryService.getAllCategories(bankn);
     if (json.entities)
-      json.entities.forEach((entity: any) => {
-        bankn.entities.push(EntityService.fromJson(entity, bankn.categories));
-      });
+      for(var entity of json.entities)
+        bankn.entities.push(EntityService.fromJson(entity, allCategories));
 
     if (json.accounts)
       json.accounts.forEach((account: any) => {

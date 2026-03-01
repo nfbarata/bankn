@@ -17,7 +17,7 @@ import { MathService } from './math.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  
+
   //
   //Volatile - for use between screens
   //
@@ -31,7 +31,7 @@ export class TransactionService {
     private accountService: AccountService,
     private categoryService: CategoryService,
     private entityService: EntityService
-  ) {}
+  ) { }
 
   createTransaction(
     account: Account,
@@ -49,7 +49,7 @@ export class TransactionService {
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryName, description);
     //create Entity if not exist
-    var entity =  this.entityService.upsertEntity(entityName, description, category);
+    var entity = this.entityService.upsertEntity(entityName, description, category);
 
     var transaction = new Transaction(
       UUID.UUID(),
@@ -196,8 +196,8 @@ export class TransactionService {
       amount: transaction.amount.toJSON().amount, //Dinero to value, compacted result
       type: transaction.type,
       date: transaction.date.toISOString().substring(0, 10),
-      entity: transaction.entity? transaction.entity.id : null,
-      category: transaction.category? transaction.category.id : null,
+      entity: transaction.entity ? transaction.entity.id : null,
+      category: transaction.category ? transaction.category.id : null,
       receiptReference: transaction.receiptReference,
       description: transaction.description,
     };
@@ -210,17 +210,17 @@ export class TransactionService {
   ): Transaction {
 
     var entity = undefined;
-    if(json.entity != null){
+    if (json.entity != null) {
       entity = bankn.entities.find((e) => e.id == json.entity);
-      if(!entity){
+      if (!entity) {
         console.warn('Entity not found for transaction', json);
       }
     }
 
     var category = undefined;
-    if(json.category != null){
+    if (json.category != null) {
       category = CategoryService.getCategory(json.category, bankn);
-      if(!category){
+      if (!category) {
         console.warn('Category not found for transaction', json);
         category = undefined;
       }
@@ -249,14 +249,14 @@ export class TransactionService {
     return transactions.reduce((results, transaction) => {
       const entityName = transaction.entity?.name || 'Unknown'; //i18n
       if (!results.has(entityName)) {
-        results.set(entityName, this.accountService.toDinero(0,transaction.account));
+        results.set(entityName, this.accountService.toDinero(0, transaction.account));
       }
       switch (transaction.type) {
-        case TransactionType.CREDIT:  
-          results.set(entityName, add(results.get(entityName)!,transaction.amount));
+        case TransactionType.CREDIT:
+          results.set(entityName, add(results.get(entityName)!, transaction.amount));
           break;
         case TransactionType.DEBIT:
-          results.set(entityName, subtract(results.get(entityName)!,transaction.amount));
+          results.set(entityName, subtract(results.get(entityName)!, transaction.amount));
           break;
       }
       return results;
@@ -266,16 +266,16 @@ export class TransactionService {
   public groupByCategory(transactions: Transaction[]): Map<string, Dinero<number>> {
     // TODO handle different currencies
     return transactions.reduce((results, transaction) => {
-      const categoryName = transaction.category?.name || 'Unknown'; //i18n
+      const categoryName = transaction.category ? CategoryService.getFullCategoryName(transaction.category) : 'Unknown'; //i18n
       if (!results.has(categoryName)) {
-        results.set(categoryName, this.accountService.toDinero(0,transaction.account));
+        results.set(categoryName, this.accountService.toDinero(0, transaction.account));
       }
       switch (transaction.type) {
-        case TransactionType.CREDIT:  
-          results.set(categoryName, add(results.get(categoryName)!,transaction.amount));
+        case TransactionType.CREDIT:
+          results.set(categoryName, add(results.get(categoryName)!, transaction.amount));
           break;
         case TransactionType.DEBIT:
-          results.set(categoryName, subtract(results.get(categoryName)!,transaction.amount));
+          results.set(categoryName, subtract(results.get(categoryName)!, transaction.amount));
           break;
       }
       return results;
