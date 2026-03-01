@@ -126,7 +126,7 @@ export class TransactionComponent implements OnInit {
   }
 
   refreshCategories() {
-    this.categories = this.banknService.getBankn()!.categories;
+    this.categories = CategoryService.getAllCategories(this.banknService.getBankn()!);
   }
 
   onSubmit() {

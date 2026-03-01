@@ -40,7 +40,7 @@
 		<div class="col-sm-6 form-group">
 			<div class="input-group">
 				<span class="input-group-text" i18n>Entity</span>		
-				<input title="entity" type="text" id="entity" class="form-select" list="entityList" formControlName="entity"/>
+				<input title="entity" type="text" id="entity" class="form-control" list="entityList" formControlName="entity"/>
 				<datalist id="entityList">
 					<option *ngFor="let entity of (entities==null?[]:entities)" [value]="entity.name">{{entity.name}}</option>
 				</datalist>
@@ -50,7 +50,7 @@
 		<div class="col-sm-6 form-group">
 			<div class="input-group">
 				<span class="input-group-text" i18n>Category</span>
-				<input title="category" type="text" id="category" class="form-select" list="categoryList" formControlName="category"/>
+				<input title="category" type="text" id="category" class="form-control" list="categoryList" formControlName="category"/>
 				<datalist id="categoryList">
 					<option *ngFor="let category of (categories==null?[]:categories)" [value]="category | category">{{category | category}}</option>
 				</datalist>
