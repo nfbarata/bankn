@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import {
-  UntypedFormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BanknService } from '../../../../services/bankn.service';
@@ -26,7 +21,6 @@ export class AccountComponent implements OnInit {
   constructor(
     private banknService: BanknService,
     private accountService: AccountService,
-    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
@@ -64,7 +58,7 @@ export class AccountComponent implements OnInit {
             name: account.name,
             referenceAmount: MathService.toInputValue(account.referenceAmount),
             referenceCountry: account.referenceCountry,
-            referenceDate: [account.referenceDate.getFullYear(), ('0' + (account.referenceDate.getMonth() + 1)).slice(-2), ('0' + account.referenceDate.getDate()).slice(-2)].join('-'),
+            referenceDate: UtilsService.formatDate(account.referenceDate, "YYYY-MM-DD"),
             description: account.description,
           });
         }

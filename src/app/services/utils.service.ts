@@ -32,4 +32,15 @@ export class UtilsService {
     var results = comparison.levenshtein.sortMatch(description, descriptionPatterns);
     return results[results.length-1].rating;
   }
+
+  static formatDate(date: Date, format: string): string {
+    if (format === 'YYYY-MM-DD') {
+      return [
+        date.getFullYear(),
+        ('0' + (date.getMonth() + 1)).slice(-2),
+        ('0' + date.getDate()).slice(-2)
+      ].join('-');
+    }
+    return date.toISOString();
+  }
 }

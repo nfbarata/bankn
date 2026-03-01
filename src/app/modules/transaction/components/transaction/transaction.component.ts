@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -13,6 +13,7 @@ import { Entity } from '../../../../models/entity';
 import { Category } from '../../../../models/category';
 import { MathService } from '../../../../services/math.service';
 import { CategoryService } from 'src/app/services/category.service';
+import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
   selector: 'transaction',
@@ -21,19 +22,8 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class TransactionComponent implements OnInit {
   transactionTypes = Object.values(TransactionType);
-  form = new UntypedFormGroup({
-    accountId: new UntypedFormControl(null),
-    id: new UntypedFormControl(null),
-    amount: new UntypedFormControl(),
-    day: new UntypedFormControl(),
-    month: new UntypedFormControl(),
-    year: new UntypedFormControl(),
-    type: new UntypedFormControl(),
-    entity: new UntypedFormControl(),
-    category: new UntypedFormControl(),
-    receiptReference: new UntypedFormControl(),
-    description: new UntypedFormControl(),
-  });
+  form: FormGroup;
+
   accounts: Account[] | null = null;
   entities: Entity[] | null = null;
   categories: Category[] | null = null;
@@ -45,12 +35,23 @@ export class TransactionComponent implements OnInit {
     private banknService: BanknService,
     private accountService: AccountService,
     private transactionService: TransactionService,
-    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private location: Location,
     private mathService: MathService
-  ) {}
+  ) {
+    this.form = new FormGroup({
+      accountId: new FormControl(),
+      id: new FormControl(),
+      amount: new FormControl('', [Validators.required]),
+      date: new FormControl('', [Validators.required]),
+      type: new FormControl('', [Validators.required]),
+      entity: new FormControl(),
+      category: new FormControl(),
+      receiptReference: new FormControl(),
+      description: new FormControl()
+    });
+  }
 
   ngOnInit() {
     this.refreshAccounts();
@@ -79,9 +80,7 @@ export class TransactionComponent implements OnInit {
               accountId: account.id,
               id: null,
               amount: MathService.toInputValue(this.accountService.toDinero(0, account)),
-              day: now.getDate(),
-              month: now.getMonth() + 1,
-              year: now.getFullYear(),
+              date: UtilsService.formatDate(now, "YYYY-MM-DD"),
               type: TransactionType.DEBIT.toString(),
               entity: '',
               category: '',
@@ -98,9 +97,7 @@ export class TransactionComponent implements OnInit {
                 accountId: account.id,
                 id: transactionId,
                 amount: MathService.toInputValue(this.transaction.amount),
-                day: this.transaction.date.getDate(),
-                month: this.transaction.date.getMonth() + 1,
-                year: this.transaction.date.getFullYear(),
+                date: UtilsService.formatDate(this.transaction.date, "YYYY-MM-DD"),
                 type: this.transaction.type.toString(),
                 entity: this.transaction.entity ? this.transaction.entity.name : '',
                 category: this.transaction.category ? CategoryService.getFullCategoryName(this.transaction.category) : '',
@@ -133,55 +130,50 @@ export class TransactionComponent implements OnInit {
   }
 
   onSubmit() {
-    var account = this.accountService.getAccount(
-      this.form.controls['accountId'].value
-    );
-
-    if (account != null) {
-      var amount = this.accountService.fromInputValue(
-        this.form.controls['amount'].value,
-        account
+    if (this.form.valid) {
+      var account = this.accountService.getAccount(
+        this.form.value.accountId
       );
 
-      var date = new Date(0); //clear hours/minutes/seconds
-      date.setFullYear(
-        this.form.controls['year'].value,
-        this.form.controls['month'].value - 1,
-        this.form.controls['day'].value
-      );
-
-      if (this.form.controls['id'].value == null) {
-        //create
-        this.transactionService.createTransaction(
-          account,
-          amount,
-          date,
-          this.form.controls['type'].value,
-          this.form.controls['entity'].value,
-          this.form.controls['category'].value,
-          this.form.controls['receiptReference'].value,
-          this.form.controls['description'].value
+      if (account != null) {
+        var amount = this.accountService.fromInputValue(
+          this.form.value.amount,
+          account
         );
-      } else {
-        //update
-        if (this.transaction != null) {
-          this.transactionService.updateTransaction(
+
+        if (this.form.controls['id'].value == null) {
+          //create
+          this.transactionService.createTransaction(
             account,
-            this.transaction,
             amount,
-            date,
-            this.form.controls['type'].value,
-            this.form.controls['entity'].value,
-            this.form.controls['category'].value,
-            this.form.controls['receiptReference'].value,
-            this.form.controls['description'].value
+            new Date(this.form.value.date),
+            this.form.value.type,
+            this.form.value.entity,
+            this.form.value.category,
+            this.form.value.receiptReference,
+            this.form.value.description
           );
+        } else {
+          //update
+          if (this.transaction != null) {
+            this.transactionService.updateTransaction(
+              account,
+              this.transaction,
+              amount,
+              new Date(this.form.value.date),
+              this.form.value.type,
+              this.form.value.entity,
+              this.form.value.category,
+              this.form.value.receiptReference,
+              this.form.value.description
+            );
+          }
         }
+        this.form.reset();
+        this.router.navigate(['/transactions']);
+      } else {
+        alert('Error, try again.'); //I18N
       }
-      this.form.reset();
-      this.router.navigate(['/transactions']);
-    } else {
-      alert('Error, try again.'); //I18N
     }
   }
 
