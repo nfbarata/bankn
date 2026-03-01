@@ -7,16 +7,14 @@ import { Transaction } from '../models/transaction';
 import { AccountService } from './account.service';
 import { BanknService } from './bankn.service';
 import { EventsService } from './events.service';
-import { TransactionService } from './transaction.service';
 import { MathService } from './math.service';
 import { Bankn } from '../models/bankn';
 
 describe('AccountService', () => {
 
   let service: AccountService;
-  let banknServiceMock: jasmine.SpyObj<BanknService>;
-  let transactionServiceMock: jasmine.SpyObj<TransactionService>;
-  let mathServiceMock: jasmine.SpyObj<MathService>;
+  let banknServiceMock: any;
+  let mathServiceMock: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,22 +23,20 @@ describe('AccountService', () => {
       providers: [
       ]
     }).compileComponents();
-    banknServiceMock = jasmine.createSpyObj("bancknService",["addAccount", "getAccounts"]);
-    banknServiceMock.getAccounts = jasmine.createSpy().and.callFake(function(){
-      return [];
-    });
-    mathServiceMock = jasmine.createSpyObj("mathService",["toCurrency", "toDinero"]);
-    mathServiceMock.toCurrency = jasmine.createSpy().and.callFake(function(){
-      return EUR;
-    });
-    mathServiceMock.toDinero = jasmine.createSpy().and.callFake(function(value){
-      return dinero({
-        amount: value,
-        currency: EUR,
-        //scale: 2
-      });
-    });
-    transactionServiceMock = jasmine.createSpyObj("transactionService",["sortTransactions"]);
+    banknServiceMock = {
+        addAccount: jest.fn(),
+        getAccounts: jest.fn().mockReturnValue([])
+    };
+
+    mathServiceMock = {
+        toCurrency: jest.fn().mockReturnValue(EUR),
+        toDinero: jest.fn(value => {
+            return dinero({
+                amount: value,
+                currency: EUR,
+            });
+        })
+    };
     var eventsService = TestBed.inject(EventsService);
     service = new AccountService(banknServiceMock, eventsService, mathServiceMock);
   });
@@ -116,7 +112,7 @@ describe('AccountService', () => {
     expect(account.referenceDate).toEqual(new Date(referenceDate));
     expect(account.referenceCountry).toBe(referenceCountry);
     expect(account.transactions.length).toBe(0);
-    expect(account.selected).toBeFalse();
+    expect(account.selected).toBeFalsy();
 
     //with transactions
     account = AccountService.fromJson({
@@ -154,6 +150,6 @@ describe('AccountService', () => {
     expect(account.transactions.length).toBe(2);
     expect(account.transactions[0].id).toBe("1");
     expect(account.transactions[1].id).toBe("2");
-    expect(account.selected).toBeTrue();
+    expect(account.selected).toBeTruthy();
   });
 });

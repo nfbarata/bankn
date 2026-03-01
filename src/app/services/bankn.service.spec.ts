@@ -27,14 +27,14 @@ describe('BanknService', () => {
   });
   
   it('initialized works', () => {
-    expect(service.initialized()).toBeFalse();
+    expect(service.initialized()).toBeFalsy();
     let bankn = BanknService.createBankn("test","PT");
     service.setBankn(bankn);
-    expect(service.initialized()).toBeTrue();
+    expect(service.initialized()).toBeTruthy();
   });
 
   it('addAccount, getAccounts and deleteAccountId works', () => {
-    expect(service.initialized()).toBeFalse();
+    expect(service.initialized()).toBeFalsy();
     let bankn = BanknService.createBankn("test","PT");
     service.setBankn(bankn);
     expect(service.getAccounts().length).toBe(0);
@@ -49,7 +49,7 @@ describe('BanknService', () => {
 
 
   it('addNewPattern works', () => {
-    expect(service.initialized()).toBeFalse();
+    expect(service.initialized()).toBeFalsy();
     let bankn = BanknService.createBankn("test","PT");
     service.setBankn(bankn);
     var ent = new Entity("name");
