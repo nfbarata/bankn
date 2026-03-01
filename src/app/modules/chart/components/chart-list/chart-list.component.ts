@@ -12,7 +12,7 @@ import { TransactionService } from '../../../../services/transaction.service';
 import { MathService } from '../../../../services/math.service';
 import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
-import Chart from 'chart.js/auto'
+import Chart from 'chart.js/auto';
 import { DineroPipe } from 'src/app/modules/shared/pipes/dinero.pipe';
 import {
   UntypedFormBuilder,
@@ -90,6 +90,9 @@ export class ChartListComponent implements OnInit, AfterViewInit {
           plugins: {
             tooltip: {
               enabled: false
+            },
+            datalabels: {
+              display: true,
             },
             /*title: {
               display: true,
