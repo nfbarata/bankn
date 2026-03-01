@@ -32,6 +32,7 @@ export class FooterComponent implements OnInit {
   ngOnInit() {
     this.eventsService.banknChange.subscribe(() => this.refreshData());
     this.eventsService.accountsChange.subscribe(() => this.refreshData());
+    this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
 
     this.refreshData();
   }
@@ -50,9 +51,11 @@ export class FooterComponent implements OnInit {
     }
 
     this.accounts = this.accountService.getAccounts();
-    this.hasAccounts = this.accountService.getAccounts().length > 0;
-    if (this.hasAccounts) {
-      this.newTransactionSelectedAccount = this.accounts[0].id;
+    this.hasAccounts = this.accounts.length > 0;
+
+    var selectedAccounts = this.accountService.getSelectedAccounts();
+    if (selectedAccounts.length > 0) {
+      this.newTransactionSelectedAccount = selectedAccounts[0].id;
     }
   }
 

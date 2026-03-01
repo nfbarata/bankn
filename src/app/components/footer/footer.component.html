@@ -4,7 +4,7 @@
 
         <div></div>
 
-        <form *ngIf="hasAccounts" [formGroup]="form" class="form-inline">
+        <form [formGroup]="form" class="form-inline">
             <input type="date" class="form-control form-control-sm" formControlName="startDate"
                 (change)="onDateChange()">
             <span class="mx-2">-</span>

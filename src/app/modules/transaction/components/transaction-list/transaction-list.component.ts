@@ -67,6 +67,9 @@ export class TransactionListComponent implements OnInit {
     this.selectedAccounts = this.accountService.getSelectedAccounts();
 
     if (this.selectedAccounts.length > 0) {
+
+      this.newTransactionSelectedAccount = this.selectedAccounts[0].id;
+
       this.selectedAccounts.forEach((account) => {
         newTransactions = newTransactions.concat(this.accountService.getCurrentPeriodTransactions(account));
         if (!this.hasRealTransactions && account.transactions.length > 0)
@@ -94,9 +97,6 @@ export class TransactionListComponent implements OnInit {
 
   refreshAccounts() {
     this.accounts = this.accountService.getAccounts();
-    if (this.accounts.length > 0) {
-      this.newTransactionSelectedAccount = this.accounts[0].id;
-    }
     this.refreshData();
   }
 

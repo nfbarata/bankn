@@ -9,7 +9,7 @@
         <span class="oi oi-plus"></span>
       </button>
       <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
-        <option *ngFor="let account of accounts" [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount" value="{{account.id}}">{{account.name}}</option>
+        <option *ngFor="let account of selectedAccounts" [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount" value="{{account.id}}">{{account.name}}</option>
       </select>
     </div>
   </div>
