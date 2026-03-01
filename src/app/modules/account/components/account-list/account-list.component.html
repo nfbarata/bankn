@@ -3,7 +3,9 @@
     <h2 i18n>Accounts</h2>
   </div>
   <div class="col-6 text-right">
-    <button class="btn btn-secondary" type="submit" [routerLink]="['/accounts/account']">New</button>
+    <button class="btn btn-secondary" type="submit" [routerLink]="['/accounts/account']">
+      <span class="oi oi-plus"></span>
+    </button>
   </div>
 </div>
 <br>
@@ -26,8 +28,12 @@
       <td scope="row"[routerLink]="['/accounts/account',account.id]">{{ account.name }}&nbsp;</td>
       <td [routerLink]="['/accounts/account',account.id]">{{ account.description }}&nbsp;</td>
       <td class="text-right">
-        <button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" i18n>Edit</button>&nbsp;
-        <button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" i18n>Txns</button>
+        <button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" title="Edit" i18n>
+          <span class="oi oi-pencil"></span>
+        </button>&nbsp;
+        <button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" title="Transactions" i18n>
+          <span class="oi oi-list-rich"></span>
+        </button>
       </td>
     </tr>
   </tbody>
