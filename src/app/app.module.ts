@@ -38,6 +38,7 @@ import { InitializedGuard } from './guards/initialized.guard';
 //components
 import { MainComponent } from './components/main/main.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 //Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -100,6 +101,7 @@ const analytics = getAnalytics(app);
   declarations: [
     MainComponent,
     MenuComponent,
+    FooterComponent,
     HomeComponent,
   ],
   bootstrap: [MainComponent],

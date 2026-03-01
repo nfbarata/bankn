@@ -1,39 +1,39 @@
-<main-menu></main-menu>
-<br>
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+<div class="d-flex flex-column vh-100">
 
-<!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel" i18n>Select file</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <file-upload></file-upload>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onOpen()">Open</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" i18n>Cancel</button>
+  <app-main-menu></app-main-menu>
+
+  <div class="flex-grow-1 overflow-auto bg-light" style="max-height: 100%;">
+    <br>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+    <br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" i18n>Select file</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <file-upload></file-upload>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onOpen()">Open</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" i18n>Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!--fa-icon [icon]="['fas', 'check-square']"></fa-icon-->
+  <!--fa-icon [icon]="['fas', 'check-square']"></fa-icon-->
   
-<!--div class="container fixed-bottom">
-  <div class="float-right">
-    <button *ngIf="hasAccounts" class="btn btn-primary " type="submit" [routerLink]="['/transactions/transaction']"><b>+</b></button>
-    &nbsp;
-    <button class="btn btn-secondary " type="submit" [routerLink]="['/transactions']"><b>=</b></button>
-  </div>
-  <div>&nbsp;</div>
-  <div>&nbsp;</div>  
-</div-->
+  <app-footer></app-footer>
 
+</div>

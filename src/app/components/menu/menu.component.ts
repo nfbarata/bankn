@@ -6,7 +6,7 @@ import { EventsService } from '../../services/events.service';
 import { Account } from "../../models/account";
 
 @Component({
-  selector: 'main-menu',
+  selector: 'app-main-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })

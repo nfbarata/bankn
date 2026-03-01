@@ -5,7 +5,10 @@ https://bankn-10300436-56914.web.app
 
 ## Dev
 
-install node&angular
+install node
+Set-ExecutionPolicy RemoteSigned
+npm install -g @angular/cli
+npm install
 ng build
 ng serve
 ng test
