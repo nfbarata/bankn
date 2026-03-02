@@ -5,9 +5,10 @@ import { UtilsService } from "../../../../services/utils.service";
 import { BanknService } from "../../../../services/bankn.service";
 
 @Component({
-  selector: "bankn",
-  templateUrl: "./bankn.component.html",
-  styleUrls: ["./bankn.component.css"]
+    selector: "bankn",
+    templateUrl: "./bankn.component.html",
+    styleUrls: ["./bankn.component.css"],
+    standalone: false
 })
 export class BanknComponent implements OnInit {
   

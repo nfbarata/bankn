@@ -22,9 +22,10 @@ import { CategoryService } from '../../../../services/category.service';
 import { EntityService } from '../../../../services/entity.service';
 
 @Component({
-  selector: 'app-transaction-import-filter',
-  templateUrl: './transaction-import-filter.component.html',
-  styleUrls: ['./transaction-import-filter.component.css'],
+    selector: 'app-transaction-import-filter',
+    templateUrl: './transaction-import-filter.component.html',
+    styleUrls: ['./transaction-import-filter.component.css'],
+    standalone: false
 })
 export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
   importColumnTypes = Object.values(ImportColumnType);

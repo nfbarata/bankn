@@ -9,9 +9,10 @@ import { UtilsService } from '../../../../services/utils.service';
 import { MathService } from '../../../../services/math.service';
 
 @Component({
-  selector: 'account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css'],
+    selector: 'account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.css'],
+    standalone: false
 })
 export class AccountComponent implements OnInit {
 

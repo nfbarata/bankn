@@ -5,9 +5,10 @@ import { EntityService } from 'src/app/services/entity.service';
 import { EventsService } from 'src/app/services/events.service';
 
 @Component({
-  selector: 'app-entity-list',
-  templateUrl: './entity-list.component.html',
-  styleUrls: ['./entity-list.component.css']
+    selector: 'app-entity-list',
+    templateUrl: './entity-list.component.html',
+    styleUrls: ['./entity-list.component.css'],
+    standalone: false
 })
 export class EntityListComponent implements OnInit {
 

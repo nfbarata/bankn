@@ -7,9 +7,10 @@ import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
 
 @Component({
-  selector: 'app-transaction-import-edit',
-  templateUrl: './transaction-import-edit.component.html',
-  styleUrls: ['./transaction-import-edit.component.css'],
+    selector: 'app-transaction-import-edit',
+    templateUrl: './transaction-import-edit.component.html',
+    styleUrls: ['./transaction-import-edit.component.css'],
+    standalone: false
 })
 export class TransactionImportEditComponent implements OnInit {
   form: UntypedFormGroup;

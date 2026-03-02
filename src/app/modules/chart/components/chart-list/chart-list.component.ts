@@ -22,9 +22,10 @@ import {
 } from '@angular/forms';
 
 @Component({
-  selector: 'app-chart-list',
-  templateUrl: './chart-list.component.html',
-  styleUrls: ['./chart-list.component.css']
+    selector: 'app-chart-list',
+    templateUrl: './chart-list.component.html',
+    styleUrls: ['./chart-list.component.css'],
+    standalone: false
 })
 export class ChartListComponent implements OnInit, AfterViewInit {
   transactions: Transaction[] = [];

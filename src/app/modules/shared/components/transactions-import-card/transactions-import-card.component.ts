@@ -4,9 +4,10 @@ import { EventsService } from '../../../../services/events.service';
 import { Account } from "../../../../models/account";
 
 @Component({
-  selector: 'transactions-import-card',
-  templateUrl: './transactions-import-card.component.html',
-  styleUrls: ['./transactions-import-card.component.css']
+    selector: 'transactions-import-card',
+    templateUrl: './transactions-import-card.component.html',
+    styleUrls: ['./transactions-import-card.component.css'],
+    standalone: false
 })
 export class TransactionsImportCardComponent implements OnInit {
   

@@ -4,9 +4,10 @@ import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
 
 @Component({
-  selector: 'account-list',
-  templateUrl: './account-list.component.html',
-  styleUrls: ['./account-list.component.css']
+    selector: 'account-list',
+    templateUrl: './account-list.component.html',
+    styleUrls: ['./account-list.component.css'],
+    standalone: false
 })
 export class AccountListComponent implements OnInit {
   accounts: Account[] = [];

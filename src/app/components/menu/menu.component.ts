@@ -5,9 +5,10 @@ import { EventsService } from '../../services/events.service';
 import { Account } from "../../models/account";
 
 @Component({
-  selector: 'app-main-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css'],
+    selector: 'app-main-menu',
+    templateUrl: './menu.component.html',
+    styleUrls: ['./menu.component.css'],
+    standalone: false
 })
 export class MenuComponent implements OnInit {
   

@@ -4,7 +4,8 @@ import coinify from 'coinify';
 import { Dinero, toDecimal } from 'dinero.js';
 
 @Pipe({
-  name: 'dinero',
+    name: 'dinero',
+    standalone: false
 })
 export class DineroPipe implements PipeTransform {
   transform(value: Dinero<number> | null, args?: any): String {

@@ -5,7 +5,8 @@ import { TransactionType } from '../../../models/enums';
 import { dinero, toDecimal, compare  } from 'dinero.js';
 
 @Pipe({
-  name: 'transaction',
+    name: 'transaction',
+    standalone: false
 })
 export class TransactionPipe implements PipeTransform {
   constructor(private dinero: DineroPipe) {}

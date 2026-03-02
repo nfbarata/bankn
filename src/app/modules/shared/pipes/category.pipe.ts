@@ -3,7 +3,8 @@ import { Category } from '../../../models/category';
 import { CategoryService } from 'src/app/services/category.service';
 
 @Pipe({
-	name: 'category',
+    name: 'category',
+    standalone: false
 })
 export class CategoryPipe implements PipeTransform {
 	transform(value: string | Category | undefined | null, args?: any): String {

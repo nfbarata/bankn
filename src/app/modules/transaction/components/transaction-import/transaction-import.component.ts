@@ -15,10 +15,10 @@ import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
 
 @Component({
-  selector: 'transaction-import',
-  templateUrl: './transaction-import.component.html',
-  styleUrls: ['./transaction-import.component.css'],
-  // encapsulation: ViewEncapsulation.None
+    selector: 'transaction-import',
+    templateUrl: './transaction-import.component.html',
+    styleUrls: ['./transaction-import.component.css'],
+    standalone: false
 })
 export class TransactionImportComponent implements OnInit, AfterViewInit {
   submitDisabled: boolean = true;

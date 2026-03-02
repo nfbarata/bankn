@@ -2,6 +2,7 @@
 import { NgModule, LOCALE_ID, InjectionToken } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 //import { APP_BASE_HREF } from '@angular/common';//from erro
 //external dependencies
 import {
@@ -41,7 +42,6 @@ import { MenuComponent } from './components/menu/menu.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 //Angular Material
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
@@ -49,7 +49,6 @@ import { getAnalytics } from 'firebase/analytics';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 //import { GoogleChartsModule } from 'angular-google-charts';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 //TODO pass to object
 const LANG = (function (defaultValue: String) {
@@ -96,8 +95,7 @@ Chart.register(ChartDataLabels);
     FontAwesomeModule,
     AppRoutingModule,
     SharedModule,
-    BrowserAnimationsModule,
-    NgbModule,
+    RouterModule,
     //GoogleChartsModule,
   ],
   exports: [],

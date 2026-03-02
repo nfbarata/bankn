@@ -16,9 +16,10 @@ import { CategoryService } from 'src/app/services/category.service';
 import { UtilsService } from '../../../../services/utils.service';
 
 @Component({
-  selector: 'transaction',
-  templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.css'],
+    selector: 'transaction',
+    templateUrl: './transaction.component.html',
+    styleUrls: ['./transaction.component.css'],
+    standalone: false
 })
 export class TransactionComponent implements OnInit {
   transactionTypes = Object.values(TransactionType);

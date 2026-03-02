@@ -4,9 +4,10 @@ import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
 
 @Component({
-  selector: 'account-select-card',
-  templateUrl: './account-select-card.component.html',
-  styleUrls: ['./account-select-card.component.css']
+    selector: 'account-select-card',
+    templateUrl: './account-select-card.component.html',
+    styleUrls: ['./account-select-card.component.css'],
+    standalone: false
 })
 export class AccountSelectCardComponent implements OnInit {
 
