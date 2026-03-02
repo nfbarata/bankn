@@ -23,8 +23,7 @@ export class MainComponent implements OnInit {
     this.eventsService.banknChange.subscribe(() => this.refreshData());
     this.eventsService.accountsChange.subscribe(() => this.refreshData());
 
-    // initialize with test data
-    if (!environment.production && environment.exampleFile != null) {
+    if (!environment.production && environment.exampleFile) {
       console.log("initializing with test data");
       fetch(environment.exampleFile)
         .then(response => response.json())
