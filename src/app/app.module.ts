@@ -1,8 +1,8 @@
 //angular dependecies
-import { NgModule, LOCALE_ID, InjectionToken } from '@angular/core';
+import { NgModule, LOCALE_ID, InjectionToken, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 //import { APP_BASE_HREF } from '@angular/common';//from erro
 //external dependencies
 import {
@@ -49,6 +49,8 @@ import { getAnalytics } from 'firebase/analytics';
 import Chart from 'chart.js/auto';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 //import { GoogleChartsModule } from 'angular-google-charts';
+import { filter, first, switchMap } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 //TODO pass to object
 const LANG = (function (defaultValue: String) {
@@ -124,7 +126,10 @@ Chart.register(ChartDataLabels);
 export class AppModule {
   constructor(
     //private injector:Injector,
-    private library: FaIconLibrary
+    private library: FaIconLibrary,
+    appRef: ApplicationRef,
+    private banknService: BanknService,
+    router: Router
   ) {
     //AppInjector=this.injector;
     library.addIcons(
@@ -136,5 +141,26 @@ export class AppModule {
       faGithub,
       faMedium
     );
+
+    router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      first(),
+      switchMap(() => appRef.isStable.pipe(filter(x => x), first()))
+    ).subscribe(() => {
+      setTimeout(() => this.onAppReady()); // ensure post-render
+    });
   }
+
+  onAppReady() {
+    if (!environment.production && environment.exampleFile) {
+      console.log("initializing with test data");
+      fetch(environment.exampleFile)
+        .then(response => response.json())
+        .then(data => {
+          this.banknService.setBankn(BanknService.fromJson(data));
+        })
+        .catch(error => console.error('Error loading example file:', error));
+    }
+  }
+
 }

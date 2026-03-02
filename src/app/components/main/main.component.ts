@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-main',
@@ -21,20 +20,9 @@ export class MainComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.eventsService.banknChange.subscribe(() => this.refreshData());
-    this.eventsService.accountsChange.subscribe(() => this.refreshData());
-
-    if (!environment.production && environment.exampleFile) {
-      console.log("initializing with test data");
-      fetch(environment.exampleFile)
-        .then(response => response.json())
-        .then(data => {
-          this.banknService.setBankn(BanknService.fromJson(data));
-        })
-        .catch(error => console.error('Error loading example file:', error));
-    } else {
-      this.refreshData();
-    }
+    this.eventsService.banknChange.subscribe(this.refreshData());
+    this.eventsService.accountsChange.subscribe(this.refreshData());
+    this.refreshData();
   }
 
   refreshData() {

@@ -22,9 +22,7 @@ export class CategoryListComponent implements OnInit {
 
   ngOnInit() {
     this.refreshCategories();
-    this.eventsService.categoriesChange.subscribe(()=>{
-      this.refreshCategories();
-    });
+    this.eventsService.categoriesChange.subscribe(this.refreshCategories());
   }
   
   refreshCategories(){

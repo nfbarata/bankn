@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Output, EventEmitter } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Injectable({providedIn: 'root'})
 export class EventsService {
-  @Output() banknChange:  EventEmitter<void> = new EventEmitter();
-  @Output() accountsChange: EventEmitter<void> = new EventEmitter();
-  @Output() accountSelectionChange: EventEmitter<void> = new EventEmitter();
-  @Output() accountTransactionsChange: EventEmitter<void> = new EventEmitter();
-  @Output() transactionChange: EventEmitter<void> = new EventEmitter();
-  @Output() categoriesChange: EventEmitter<void> = new EventEmitter();
-  @Output() entitiesChange: EventEmitter<void> = new EventEmitter();
-  @Output() transactionPeriodChange: EventEmitter<void> = new EventEmitter();
+  banknChange:  EventEmitter<void> = new EventEmitter();
+  accountsChange: EventEmitter<void> = new EventEmitter();
+  accountSelectionChange: EventEmitter<void> = new EventEmitter();
+  accountTransactionsChange: EventEmitter<void> = new EventEmitter();
+  transactionChange: EventEmitter<void> = new EventEmitter();
+  categoriesChange: EventEmitter<void> = new EventEmitter();
+  entitiesChange: EventEmitter<void> = new EventEmitter();
+  transactionPeriodChange: EventEmitter<void> = new EventEmitter();
   
   constructor() { }
 
   public subscribeBanknChange(callback:Function):void{
     console.debug("banknChange subscribed");
-    this.banknChange.subscribe(()=>callback);
+    this.banknChange.subscribe(callback());
   }
 
   public emitBanknChange():void{

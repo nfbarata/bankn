@@ -33,9 +33,9 @@ export class TransactionListComponent implements OnInit {
 
     this.refreshAccounts();
 
-    this.eventsService.accountSelectionChange.subscribe(() => this.refreshData());
-    this.eventsService.accountsChange.subscribe(() => this.refreshAccounts());
-    this.eventsService.transactionPeriodChange.subscribe(() => this.refreshData());
+    this.eventsService.accountSelectionChange.subscribe(this.refreshData());
+    this.eventsService.accountsChange.subscribe(this.refreshAccounts());
+    this.eventsService.transactionPeriodChange.subscribe(this.refreshData());
 
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');

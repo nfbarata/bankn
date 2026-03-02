@@ -19,9 +19,7 @@ export class AccountListComponent implements OnInit {
 
   ngOnInit() {
     this.refreshAccounts();
-    this.eventsService.accountsChange.subscribe(()=>{
-      this.refreshAccounts();
-    });
+    this.eventsService.accountsChange.subscribe(this.refreshAccounts());
   }
 
   refreshAccounts(){

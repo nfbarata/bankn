@@ -22,9 +22,7 @@ export class EntityListComponent implements OnInit {
 
   ngOnInit() {
     this.refreshEntities();
-    this.eventsService.entitiesChange.subscribe(()=>{
-      this.refreshEntities();
-    });
+    this.eventsService.entitiesChange.subscribe(this.refreshEntities());
   }
   
   refreshEntities(){
