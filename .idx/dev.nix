@@ -1,7 +1,8 @@
 {pkgs}: {
-  channel = "stable-24.05";
+  channel = "unstable";
   packages = [
-    pkgs.nodejs_20
+    pkgs.nodejs_24       # Instala o runtime do Node.js 24
+    pkgs.firebase-tools  # Garante que a CLI do Firebase está presente
   ];
   idx.extensions = [
     "angular.ng-template"
