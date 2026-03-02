@@ -30,7 +30,6 @@ export class MainComponent implements OnInit {
         .then(response => response.json())
         .then(data => {
           this.banknService.setBankn(BanknService.fromJson(data));
-          this.refreshData();
         })
         .catch(error => console.error('Error loading example file:', error));
     } else {
