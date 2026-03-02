@@ -5,9 +5,9 @@
         <div></div>
 
         <form [formGroup]="form" class="form-inline">
-            <input type="date" class="form-control form-control-sm" formControlName="startDate" (change)="onDateChange()">
+            <input type="date" class="form-control form-control-sm" formControlName="startDate" (change)="onDateChange()" title="start date" i18n>
             <span class="mx-2">-</span>
-            <input type="date" class="form-control form-control-sm" formControlName="endDate" (change)="onDateChange()">
+            <input type="date" class="form-control form-control-sm" formControlName="endDate" (change)="onDateChange()" title="end date" i18n>
         </form>
 
         <div class="text-right pr-2">
