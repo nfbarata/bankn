@@ -99,7 +99,7 @@ export class EntityService {
         entity.referenceCategory = category;
       }
     }
-    console.log('Parsed entity', entity);
+    // console.log('Parsed entity', entity);
     return entity;
   }
 

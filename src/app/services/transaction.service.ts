@@ -238,7 +238,7 @@ export class TransactionService {
       json.description,
       account
     );
-    console.log('Parsed transaction', transaction);
+    // console.log('Parsed transaction', transaction);
     return transaction;
   }
 

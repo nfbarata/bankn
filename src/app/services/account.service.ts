@@ -271,7 +271,7 @@ export class AccountService {
           TransactionService.fromJson(transaction, account, bankn)
         );
       });
-    console.log('Parsed account', account);
+    // console.log('Parsed account', account);
     return account;
   }
 

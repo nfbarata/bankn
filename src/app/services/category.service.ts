@@ -105,7 +105,7 @@ export class CategoryService {
         var innerCategory = CategoryService.fromJson(ic, category);
         category.innerCategories.push(innerCategory);
       };
-    console.log('Parsed category', category);
+    // console.log('Parsed category', category);
     return category;
   }
 
