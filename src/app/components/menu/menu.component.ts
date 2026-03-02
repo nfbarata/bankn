@@ -23,8 +23,8 @@ export class MenuComponent implements OnInit {
 
   ngOnInit() {
     this.refreshData();
-    this.eventsService.subscribeBanknChange(this.refreshData);
-    this.eventsService.accountsChange.subscribe(this.refreshData());
+    this.eventsService.subscribeBanknChange(() => this.refreshData());
+    this.eventsService.subscribeAccountsChange(() => this.refreshData());
   }
 
   refreshData(){

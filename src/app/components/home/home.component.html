@@ -1,6 +1,7 @@
 <h2 i18n>Welcome to bankn</h2>
 <br>
-<div *ngIf="!hasBankn" class="row">
+@if (!hasBankn) {
+<div class="row">
 	<div class="col-sm-5">
 		<bankn-create-card [hidden]="hasBankn"></bankn-create-card>
 	</div>
@@ -11,7 +12,9 @@
 		<file-open-card [hidden]="hasBankn"></file-open-card>
 	</div>
 </div>
-<div *ngIf="hasBankn&&hasAccounts" class="row">
+}
+@if (hasBankn&&hasAccounts) {
+<div class="row">
 	<div class="col-sm-5">
 		<transaction-create-card [hidden]="!(hasBankn&&hasAccounts)"></transaction-create-card>
 	</div>
@@ -22,8 +25,11 @@
 		<transactions-import-card [hidden]="!(hasBankn&&hasAccounts)"></transactions-import-card>
 	</div>
 </div>
-<div *ngIf="hasBankn&&!hasAccounts" class="row">
+}
+@if (hasBankn&&!hasAccounts) {
+<div class="row">
 	<div class="col-sm-5">
 		<account-create-card></account-create-card>
 	</div>
 </div>
+}

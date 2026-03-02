@@ -3,16 +3,16 @@
     <h5 class="card-title" i18n>No accounts selected</h5>
     <p class="card-text" i18n>Select accounts to see its transactions:</p>
     <form>
-    <div *ngFor="let item of items">
-      
-      <div class="custom-control custom-checkbox my-1 mr-sm-2">
-        <input class="custom-control-input" type="checkbox" id="{{item.id}}" [checked]="item.selected" (change)="onCheck(item, $event)">
-        <label class="custom-control-label" for="{{item.id}}">{{ item.name }}</label>
-      </div>
-
-    </div>
+      @for (item of items; track item) {
+        <div>
+          <div class="custom-control custom-checkbox my-1 mr-sm-2">
+            <input class="custom-control-input" type="checkbox" id="{{item.id}}" [checked]="item.selected" (change)="onCheck(item, $event)">
+            <label class="custom-control-label" for="{{item.id}}">{{ item.name }}</label>
+          </div>
+        </div>
+      }
     </form>
     <br>
-    <a class="btn btn-primary text-white" (click)="onAccountsSelected()" i81n>Ok</a>
+      <a class="btn btn-primary text-white" (click)="onAccountsSelected()" i81n>Ok</a>
+    </div>
   </div>
-</div>

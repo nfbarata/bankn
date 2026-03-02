@@ -1,44 +1,52 @@
 <h2>Filter transactions</h2>
 <br>
-<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
     <div class="row">
       <div class="col-12">
         <div class="table-responsive-xl">
-        <table class="table table-sm table-bordered small font-weight-lighter text-truncate">
-          <tbody id="parsedData">
-            <tr>
-              <th class="align-middle">
-                Import?
-              </th>
-              <!-- column type options -->
-              <th *ngFor="let columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; let h = index;">
-                <select title="columnType" class="form-select" id="action{{h}}">
-                  <option *ngFor="let type of importColumnTypes" class="w-auto" value="{{type}}">{{type | importColumnType}}</option>
-                </select>
-              </th>
-            </tr>
-            <tr *ngFor="let transaction of transactions; let t = index;">
-              <td>
-                <div class="custom-control custom-checkbox text-center">
-                  <input title="ignore" type="checkbox" checked class="custom-control-input" id="dontIgnore{{t}}">
-                  <label for="dontIgnore{{t}}" class="custom-control-label"></label>
-                </div>
-              </td>
-              <td *ngFor="let column of transaction">
-                {{column}}
-              </td>
-            </tr>      
-          </tbody>
-        </table>
+          <table class="table table-sm table-bordered small font-weight-lighter text-truncate">
+            <tbody id="parsedData">
+              <tr>
+                <th class="align-middle">
+                  Import?
+                </th>
+                <!-- column type options -->
+                @for (columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; track columnHeader; let h = $index) {
+                  <th>
+                    <select title="columnType" class="form-select" id="action{{h}}">
+                      @for (type of importColumnTypes; track type) {
+                        <option class="w-auto" value="{{type}}">{{type | importColumnType}}</option>
+                      }
+                    </select>
+                  </th>
+                }
+              </tr>
+              @for (transaction of transactions; track transaction; let t = $index) {
+                <tr>
+                  <td>
+                    <div class="custom-control custom-checkbox text-center">
+                      <input title="ignore" type="checkbox" checked class="custom-control-input" id="dontIgnore{{t}}">
+                      <label for="dontIgnore{{t}}" class="custom-control-label"></label>
+                    </div>
+                  </td>
+                  @for (column of transaction; track column) {
+                    <td>
+                      {{column}}
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
     <br>
-    <div class="row">
-      <div class="col-12">
-        <button class="btn btn-primary" type="submit" i18n [disabled]="submitDisabled">Filter</button>
-        <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted">Classify each relevant column</small>
+      <div class="row">
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit" i18n [disabled]="submitDisabled">Filter</button>
+          <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted">Classify each relevant column</small>
+        </div>
       </div>
-    </div>
-</form>
-<br>
+    </form>
+    <br>

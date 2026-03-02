@@ -87,7 +87,7 @@ export class TransactionService {
     transaction.category = category == null ? undefined : category;
     transaction.receiptReference = receiptReference;
     transaction.description = description;
-    this.eventsService.transactionChange.emit();
+    this.eventsService.emitTransactionChange();
   }
 
   fromJson(

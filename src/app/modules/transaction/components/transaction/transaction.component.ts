@@ -58,9 +58,9 @@ export class TransactionComponent implements OnInit {
     this.refreshAccounts();
     this.refreshCategories();
     this.refreshEntities();
-    this.eventsService.accountsChange.subscribe(this.refreshAccounts());
-    this.eventsService.entitiesChange.subscribe(this.refreshEntities());
-    this.eventsService.categoriesChange.subscribe(this.refreshCategories());
+    this.eventsService.subscribeAccountsChange(() => this.refreshAccounts());
+    this.eventsService.subscribeEntitiesChange(() => this.refreshEntities());
+    this.eventsService.subscribeCategoriesChange(() => this.refreshCategories());
 
     this.route.paramMap.subscribe((params) => {
       if (this.accounts != null) {

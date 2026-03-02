@@ -23,8 +23,8 @@ export class TransactionsImportCardComponent implements OnInit {
   ngOnInit() {
     this.refreshData();
     this.refreshSelectionData()
-    this.eventsService.accountsChange.subscribe(this.refreshData());
-    this.eventsService.accountSelectionChange.subscribe(this.refreshSelectionData());
+    this.eventsService.subscribeAccountsChange(() => this.refreshData());
+    this.eventsService.subscribeAccountSelectionChange(() => this.refreshSelectionData());
   }
 
   refreshData(){

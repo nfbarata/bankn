@@ -55,9 +55,9 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
     this.refreshAccounts();
 
-    this.eventsService.accountSelectionChange.subscribe(this.refreshData());
-    this.eventsService.accountsChange.subscribe(this.refreshAccounts());
-    this.eventsService.transactionPeriodChange.subscribe(this.refreshData());
+    this.eventsService.subscribeAccountSelectionChange(() => this.refreshData());
+    this.eventsService.subscribeAccountsChange(() => this.refreshAccounts());
+    this.eventsService.subscribeTransactionPeriodChange(() => this.refreshData());
 
     this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');

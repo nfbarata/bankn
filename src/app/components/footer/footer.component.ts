@@ -28,12 +28,13 @@ export class FooterComponent implements OnInit {
     private banknService: BanknService,
     private eventsService: EventsService,
     private accountService: AccountService
-  ) { }
+  ) { 
+  }
 
   ngOnInit() {
-    this.eventsService.subscribeBanknChange(this.refreshData);
-    this.eventsService.accountsChange.subscribe(this.refreshData());
-    this.eventsService.accountSelectionChange.subscribe(this.refreshData());
+    this.eventsService.subscribeBanknChange(() => this.refreshData());
+    this.eventsService.subscribeAccountsChange(() => this.refreshData());
+    this.eventsService.subscribeAccountSelectionChange(() => this.refreshData());
 
     this.refreshData();
   }

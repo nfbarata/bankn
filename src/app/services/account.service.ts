@@ -57,7 +57,7 @@ export class AccountService {
       account.referenceAmount = referenceAmount;
       account.referenceDate = referenceDate;
       account.referenceCountry = referenceCountry;
-      this.eventsService.accountsChange.emit();
+      this.eventsService.emitAccountsChange();
     }
   }
 
@@ -128,7 +128,7 @@ export class AccountService {
   selectAccount(account: Account) {
     if (!account.selected) {
       account.selected = true;
-      this.eventsService.accountSelectionChange.emit();
+      this.eventsService.emitAccountSelectionChange();
     }
   }
 
@@ -140,7 +140,7 @@ export class AccountService {
   unselectAccount(account: Account) {
     if (account.selected) {
       account.selected = false;
-      this.eventsService.accountSelectionChange.emit();
+      this.eventsService.emitAccountSelectionChange();
     }
   }
 
@@ -148,7 +148,7 @@ export class AccountService {
     transaction.account = account;
     account.transactions.push(transaction);
     TransactionService.sortTransactions(account.transactions);
-    this.eventsService.accountTransactionsChange.emit();
+    this.eventsService.emitAccountTransactionsChange();
   }
 
   getCurrentPeriodTransactions(account: Account){
@@ -164,8 +164,8 @@ export class AccountService {
     account.transactions = account.transactions.filter(function (transaction) {
       return transaction.id != transactionId;
     });
-    this.eventsService.transactionChange.emit();
-    this.eventsService.accountTransactionsChange.emit();
+    this.eventsService.emitTransactionChange();
+    this.eventsService.emitAccountTransactionsChange();
   }
 
   static getInitialValue(account: Account): Dinero<number> {

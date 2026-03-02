@@ -20,8 +20,8 @@ export class MainComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.eventsService.banknChange.subscribe(this.refreshData());
-    this.eventsService.accountsChange.subscribe(this.refreshData());
+    this.eventsService.subscribeBanknChange(() => this.refreshData());
+    this.eventsService.subscribeAccountsChange(() => this.refreshData());
     this.refreshData();
   }
 
