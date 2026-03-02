@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { BanknService } from '../services/bankn.service';
 
 @Injectable()
-export class InitializedGuard implements CanActivate {
+export class InitializedGuard  {
 
   constructor(
     private router: Router,
