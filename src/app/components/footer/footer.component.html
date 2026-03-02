@@ -5,8 +5,7 @@
         <div></div>
 
         <form [formGroup]="form" class="form-inline">
-            <input type="date" class="form-control form-control-sm" formControlName="startDate"
-                (change)="onDateChange()">
+            <input type="date" class="form-control form-control-sm" formControlName="startDate" (change)="onDateChange()">
             <span class="mx-2">-</span>
             <input type="date" class="form-control form-control-sm" formControlName="endDate" (change)="onDateChange()">
         </form>
@@ -21,7 +20,7 @@
                     [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!=null?newTransactionSelectedAccount:'')]" title="New Transaction" i18n>
                     <span class="oi oi-plus"></span>
                 </button>
-                <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
+                <select title="account" class="form-control d-none d-md-inline" (change)="onNewTransactionAccountChangeHandler($event)">
                     <option *ngFor="let account of accounts"
                         [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount"
                         value="{{account.id}}">{{account.name}}</option>
