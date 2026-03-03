@@ -137,8 +137,11 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
       this.renderer.appendChild(this.parsedData.nativeElement, htmlRow);
       row.forEach((column) => {
         var htmlCell = this.renderer.createElement('td');
+        var divCell = this.renderer.createElement('div');
         this.renderer.appendChild(htmlRow, htmlCell);
-        this.renderer.setProperty(htmlCell, 'innerHTML', column);
+        this.renderer.appendChild(htmlCell, divCell);
+        this.renderer.setProperty(divCell, 'innerHTML', column);
+        this.renderer.addClass(divCell, 'content-wrapper');
       });
     });
   }

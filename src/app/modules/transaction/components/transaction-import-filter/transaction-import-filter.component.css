@@ -1,0 +1,23 @@
+.custom-centered-checkbox {
+    /* Reset Bootstrap styles */
+    float: none;
+    margin: 0;
+
+    /* Center the checkbox */
+    vertical-align: middle;
+
+    /* Optional: Adjust size if needed */
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.content-wrapper {
+    white-space: nowrap;
+    /* Mantém o texto numa linha para testar largura */
+    overflow: hidden;
+    /* Esconde o excesso */
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: 10rem;
+    min-width: 4.5rem;
+}

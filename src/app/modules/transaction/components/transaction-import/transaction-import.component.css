@@ -1,0 +1,9 @@
+.content-wrapper {
+    white-space: nowrap;
+    /* Mantém o texto numa linha para testar largura */
+    overflow: hidden;
+    /* Esconde o excesso */
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: 10rem;
+}

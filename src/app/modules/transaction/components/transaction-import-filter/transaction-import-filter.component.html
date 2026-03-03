@@ -1,52 +1,58 @@
 <h2>Filter transactions</h2>
 <br>
-  <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
-    <div class="row">
-      <div class="col-12">
-        <div class="table-responsive-xl">
-          <table class="table table-sm table-bordered small font-weight-lighter text-truncate">
-            <tbody id="parsedData">
-              <tr>
-                <th class="align-middle">
-                  Import?
-                </th>
-                <!-- column type options -->
-                @for (columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; track columnHeader; let h = $index) {
-                  <th>
-                    <select title="columnType" class="form-select" id="action{{h}}">
-                      @for (type of importColumnTypes; track type) {
-                        <option class="w-auto" value="{{type}}">{{type | importColumnType}}</option>
-                      }
-                    </select>
-                  </th>
-                }
-              </tr>
-              @for (transaction of transactions; track transaction; let t = $index) {
-                <tr>
-                  <td>
-                    <div class="form-check text-center">
-                      <input title="ignore" type="checkbox" checked class="form-check-input" id="dontIgnore{{t}}">
-                      <label for="dontIgnore{{t}}" class="form-check-label"></label>
-                    </div>
-                  </td>
-                  @for (column of transaction; track column) {
-                    <td>
-                      {{column}}
-                    </td>
-                  }
-                </tr>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="table-responsive-xl">
+        <table class="table table-sm table-bordered small font-weight-lighter text-truncate" style="width:0%;">
+          <thead id="parsedData">
+            <tr>
+              <th class="align-middle text-center" scope="col">
+                Import?
+              </th>
+              <!-- column type options -->
+              @for (columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; track
+              columnHeader; let h = $index) {
+              <th scope="col">
+                <div style="max-width: 4.5rem;">
+                  <select title="columnType" class="form-control d-inline" id="action{{h}}">
+                    @for (type of importColumnTypes; track type) {
+                    <option value="{{type}}">{{type | importColumnType}}</option>
+                    }
+                  </select>
+                </div>
+              </th>
               }
-            </tbody>
-          </table>
-        </div>
+            </tr>
+          </thead>
+          <tbody id="parsedData">
+            @for (transaction of transactions; track transaction; let t = $index) {
+            <tr>
+              <td class="text-center align-middle">
+                <input title="ignore" type="checkbox" checked class="custom-centered-checkbox" id="dontIgnore{{t}}"
+                  aria-label="dontIgnore{{t}}">
+              </td>
+              @for (column of transaction; track column) {
+              <td>
+                <div class="content-wrapper" title="{{column}}">
+                  {{column}}
+                </div>
+              </td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
       </div>
     </div>
-    <br>
-      <div class="row">
-        <div class="col-12">
-          <button class="btn btn-primary" type="submit" i18n [disabled]="submitDisabled">Filter</button>
-          <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted">Classify each relevant column</small>
-        </div>
-      </div>
-    </form>
-    <br>
+  </div>
+  <br>
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary d-inline p-2" type="submit" i18n [disabled]="submitDisabled">Filter</button>
+      <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted d-inline p-2">Classify each relevant
+        column</small>
+    </div>
+  </div>
+</form>
+<br>
