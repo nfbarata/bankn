@@ -137,6 +137,9 @@ export class ChartListComponent implements OnInit, AfterViewInit {
       }
       this.refreshChartData();
     } else {
+      if(this.chart){
+        this.chart.destroy();
+      }
       this.chart = undefined;
     }
   }
@@ -158,17 +161,17 @@ export class ChartListComponent implements OnInit, AfterViewInit {
         transactionsBy = this.transactionService.groupByCategory(this.transactions);
       }
 
-      if (this.chart.options?.plugins?.datalabels) {
-        this.chart.options.plugins.datalabels.display = transactionsBy.size > 0;
-      }
-
       if (transactionsBy.size > 0) {
-
-        var usedCurrency = transactionsBy.values().next().value!.toJSON().currency;
 
         this.chart.data.labels! = Array.from(transactionsBy.keys());
         this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
+        if (this.chart.options?.plugins?.datalabels)
+          this.chart.options.plugins.datalabels.display = true;
+      }else{
+        if (this.chart.options?.plugins?.datalabels)
+          this.chart.options.plugins.datalabels.display = false;
       }
+
       this.chart.update();
     } else {
       console.error('Chart not initialized');
