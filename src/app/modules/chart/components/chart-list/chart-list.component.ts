@@ -22,18 +22,18 @@ import {
 } from '@angular/forms';
 
 @Component({
-    selector: 'app-chart-list',
-    templateUrl: './chart-list.component.html',
-    styleUrls: ['./chart-list.component.css'],
-    standalone: false
+  selector: 'app-chart-list',
+  templateUrl: './chart-list.component.html',
+  styleUrls: ['./chart-list.component.css'],
+  standalone: false
 })
 export class ChartListComponent implements OnInit, AfterViewInit {
   transactions: Transaction[] = [];
   selectedAccounts: Account[] = [];
   accounts: Account[] = [];
-  chart!: Chart<'doughnut', number[], string>;
+  chart?: Chart<'doughnut', number[], string>;
 
-  @ViewChild('chart', { static: false }) chartReference!: ElementRef;
+  @ViewChild('chart', { static: false }) chartReference?: ElementRef;
   form = new UntypedFormGroup({
     groupBy: new UntypedFormControl(),
   });
@@ -78,32 +78,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.chart = new Chart(
-      this.chartReference.nativeElement,
-      {
-        type: 'doughnut',
-        data: {
-          labels: [],
-          datasets: []
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            tooltip: {
-              enabled: false
-            },
-            datalabels: {
-              display: true,
-            },
-            /*title: {
-              display: true,
-              text: 'Transactions' // i18n
-            }*/
-          }
-        }
-      }
-    );
-    this.refreshChartData();
+    this.refreshData();
   }
 
   refreshAccounts() {
@@ -122,42 +97,75 @@ export class ChartListComponent implements OnInit, AfterViewInit {
       this.transactions = this.transactions.concat(this.accountService.getCurrentPeriodTransactions(account));
     });
 
-    if (this.chart != null) {
+    if (this.chartReference) {
+      if (!this.chart) {
+        this.chart = new Chart(
+          this.chartReference.nativeElement,
+          {
+            type: 'doughnut',
+            data: {
+              labels: [],
+              datasets: []
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  enabled: false
+                },
+                datalabels: {
+                  display: true,
+                },
+                /*title: {
+                  display: true,
+                  text: 'Transactions' // i18n
+                }*/
+              }
+            }
+          }
+        );
+      }
       this.refreshChartData();
+    } else {
+      this.chart = undefined;
     }
   }
 
   refreshChartData() {
+    if (this.chart) {
 
-    while (this.chart.data.labels!.length > 0) {
-      this.chart.data.labels!.pop();
-    }
-    while (this.chart.data.datasets.length > 0) {
-      this.chart.data.datasets.pop();
-    };
-
-    var transactionsBy;
-    if (this.form.controls['groupBy'].value == 'entity') {
-      transactionsBy = this.transactionService.groupByEntity(this.transactions);
-    } else {
-      transactionsBy = this.transactionService.groupByCategory(this.transactions);
-    }
-
-    if (transactionsBy.size > 0) {
-
-      var usedCurrency = transactionsBy.values().next().value!.toJSON().currency;
-
-      this.chart.data.labels! = Array.from(transactionsBy.keys());
-      this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
-      (this.chart.options.plugins as any).datalabels = {
-        formatter: (value: number, _context: any) => {
-          return this.dineroPipe.transform(MathService.toDinero(
-            value,
-            usedCurrency
-          ));
-        }
+      while (this.chart.data.labels!.length > 0) {
+        this.chart.data.labels!.pop();
+      }
+      while (this.chart.data.datasets.length > 0) {
+        this.chart.data.datasets.pop();
       };
+
+      var transactionsBy;
+      if (this.form.controls['groupBy'].value == 'entity') {
+        transactionsBy = this.transactionService.groupByEntity(this.transactions);
+      } else {
+        transactionsBy = this.transactionService.groupByCategory(this.transactions);
+      }
+
+      if (transactionsBy.size > 0) {
+
+        var usedCurrency = transactionsBy.values().next().value!.toJSON().currency;
+
+        this.chart.data.labels! = Array.from(transactionsBy.keys());
+        this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
+        (this.chart.options.plugins as any).datalabels = {
+          formatter: (value: number, _context: any) => {
+            return this.dineroPipe.transform(MathService.toDinero(
+              value,
+              usedCurrency
+            ));
+          }
+        };
+      }
+      this.chart.update();
+    } else {
+      console.error('Chart not initialized');
     }
-    this.chart.update();
   }
 }
