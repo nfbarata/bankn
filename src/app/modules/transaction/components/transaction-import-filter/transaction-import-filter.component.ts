@@ -257,19 +257,18 @@ export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
       this.renderer.appendChild(htmlRow, htmlCheckBoxCell);
       
       var htmlCheckboxDiv = this.renderer.createElement('div');
-      this.renderer.addClass(htmlCheckboxDiv, "custom-control");
-      this.renderer.addClass(htmlCheckboxDiv, "custom-checkbox");
+      this.renderer.addClass(htmlCheckboxDiv, "form-check");
       this.renderer.addClass(htmlCheckboxDiv, "text-center");
 
       var htmlCheckbox = this.renderer.createElement('input');
       this.renderer.setProperty(htmlCheckbox, 'id',"checkbox"+index);
       this.renderer.setProperty(htmlCheckbox, 'type',"checkbox");
       this.renderer.setProperty(htmlCheckbox, 'checked',"true");
-      this.renderer.addClass(htmlCheckbox, "custom-control-input");
+      this.renderer.addClass(htmlCheckbox, "form-check-input");
       
       var htmlCheckboxLabel = this.renderer.createElement('label');
       this.renderer.setAttribute(htmlCheckboxLabel, 'for',"checkbox"+index);
-      this.renderer.addClass(htmlCheckboxLabel, "custom-control-label");
+      this.renderer.addClass(htmlCheckboxLabel, "form-check-label");
       
       this.renderer.appendChild(htmlCheckboxDiv, htmlCheckbox);
       this.renderer.appendChild(htmlCheckboxDiv, htmlCheckboxLabel);

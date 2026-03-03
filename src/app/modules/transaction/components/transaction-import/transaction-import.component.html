@@ -5,7 +5,7 @@
 headers, categora entidade (data mont e descricao obrig)
  dar opção de upload de csv-->
  
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-12 form-group" mwlTextInputHighlightContainer>
         <label for="importData" i18n>
           External transactions:
@@ -15,7 +15,7 @@ headers, categora entidade (data mont e descricao obrig)
         <small id="importDataHelpBlock" class="form-text text-muted" i18n>Copy paste data from your homebanking</small>
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-6 form-group">
         <select #columnSeparator title="columnSeparator" class="form-control" formControlName="columnSeparator" (change)="onInputChange()">
           <option value="9">tab</option>
@@ -32,7 +32,7 @@ headers, categora entidade (data mont e descricao obrig)
         </select>
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-6 form-group">
         <input #customColumnSeparator title="customColumnSeparator" class="form-control" formControlName="customColumnSeparator" [hidden]="columnSeparator.value!=''" (keyup)="onInputChange()" (paste)="onInputChange()">
         <small id="customColumnSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()">Column separator</small>
@@ -42,7 +42,7 @@ headers, categora entidade (data mont e descricao obrig)
         <small id="lineSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()">Row separator</small>
       </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
       <div class="col-12">
         <button class="btn btn-primary" type="submit" i18n [disabled]="submitDisabled">Import</button>
         <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted">Enter some text to import</small>
@@ -51,7 +51,7 @@ headers, categora entidade (data mont e descricao obrig)
 </form>
 <br>
 
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-12">
       <div class="table-responsive-xl">
       <table class="table table-sm table-bordered small font-weight-lighter text-truncate">

@@ -1,67 +1,67 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" style="padding-left:1rem">
   <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" [routerLink]="['/']">bankn</a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink1" role="button" data-toggle="dropdown"
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" i18n>File</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/bankn']" i18n>New</a>
-            <a class="dropdown-item" data-toggle="modal" data-target="#uploadModal" i18n>Open...</a>
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/bankn']" i18n>New</a>
+            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#uploadModal" i18n>Open...</a>
             @if (hasBankn) {
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" (click)="onSaveAs()" i18n>Save as...</a>
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/bankn/current']" i18n>Edit</a>
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/bankn/current']" i18n>Edit</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/categories']" i18n>Categories</a>
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/entities']" i18n>Entities</a>
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/categories']" i18n>Categories</a>
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/entities']" i18n>Entities</a>
             }
           </div>
         </li>
-        <li class="nav-item {{ hasBankn ? 'active' : '' }} dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button" data-toggle="dropdown"
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle {{ hasBankn ? 'active' : '' }}" href="#" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="true" i18n="@@menu-accounts">Accounts</a>
           @if (hasBankn) {
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
             <!-- hack to prevent inside clicks to close -->
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown"
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
               [routerLink]="['/accounts/account']" i18n="@@menu-manage">New</a>
             <div class="dropdown-divider"></div>
             <form>
               @for (account of accounts; track account) {
               <div class="dropdown-item" (click)="onAccountClick(account)">
-                <div class="custom-control custom-checkbox my-1 mr-sm-2">
-                  <input title="account" type="checkbox" class="custom-control-input" id="{{ account.id }}"
+                <div class="form-check my-1 me-sm-2">
+                  <input title="account" type="checkbox" class="form-check-input" id="{{ account.id }}"
                     [checked]="account.selected" />
-                  <label class="custom-control-label" for="customControlInline">{{ account.name }}</label>
+                  <label class="form-check-label" for="{{ account.id }}">{{ account.name }}</label>
                 </div>
               </div>
               }
             </form>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" data-toggle="collapse" data-target="#navbarNavDropdown"
+            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
               [routerLink]="['/accounts']" i18n="@@menu-manage">Manage</a>
           </div>
           }
         </li>
-        <li class="nav-item {{ accounts.length!=0 ? 'active' : '' }} ">
-          <a class="nav-link" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/transactions']"
+        <li class="nav-item">
+          <a class="nav-link {{ accounts.length!=0 ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/transactions']"
             i18n="@@menu-transactions">Transactions</a>
         </li>
-        <li class="nav-item {{ accounts.length!=0 ? 'active' : '' }} ">
-          <a class="nav-link" data-toggle="collapse" data-target="#navbarNavDropdown" [routerLink]="['/charts']"
+        <li class="nav-item">
+          <a class="nav-link {{ accounts.length!=0 ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/charts']"
             i18n="@@menu-charts">Charts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-toggle="collapse" data-target="#navbarNavDropdown" i18n="@@menu-help">Help</a>
+          <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" i18n="@@menu-help">Help</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-toggle="drop down"
+          <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">Languages</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3">
             <a class="dropdown-item">English</a>
@@ -70,7 +70,7 @@
         </li>
       </ul>
       <!--form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" disabled>
+      <input class="form-control me-sm-2" type="search" placeholder="Search" aria-label="Search" disabled>
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit" i18n="@@menu-search" disabled>Search</button>
     </form-->
     </div>

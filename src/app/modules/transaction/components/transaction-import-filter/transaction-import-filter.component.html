@@ -24,9 +24,9 @@
               @for (transaction of transactions; track transaction; let t = $index) {
                 <tr>
                   <td>
-                    <div class="custom-control custom-checkbox text-center">
-                      <input title="ignore" type="checkbox" checked class="custom-control-input" id="dontIgnore{{t}}">
-                      <label for="dontIgnore{{t}}" class="custom-control-label"></label>
+                    <div class="form-check text-center">
+                      <input title="ignore" type="checkbox" checked class="form-check-input" id="dontIgnore{{t}}">
+                      <label for="dontIgnore{{t}}" class="form-check-label"></label>
                     </div>
                   </td>
                   @for (column of transaction; track column) {
