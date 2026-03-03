@@ -38,7 +38,7 @@
                 <div class="form-check my-1 me-sm-2">
                   <input title="account" type="checkbox" class="form-check-input" id="{{ account.id }}"
                     [checked]="account.selected" />
-                  <label class="form-check-label" for="{{ account.id }}">{{ account.name }}</label>
+                  <label class="form-check-label" for="{{ account.id }}" (click)="$event.stopPropagation()">{{ account.name }}</label>
                 </div>
               </div>
               }
