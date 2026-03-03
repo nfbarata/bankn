@@ -46,11 +46,12 @@ const routes: Routes = [
         (m) => m.EntityModule
       ),
     canActivate: [InitializedGuard],
-  }
+  },
+  { path: '**', redirectTo: '' }, // or show a “not found” page
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
