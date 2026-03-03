@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -18,7 +18,8 @@ export class MenuComponent implements OnInit {
   constructor(
     private banknService: BanknService,
     private accountService: AccountService,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {
@@ -32,6 +33,7 @@ export class MenuComponent implements OnInit {
     if(this.hasBankn){
       this.accounts = this.accountService.getAccounts(); 
     }
+    this.cdr.detectChanges();
   }
 
   onAccountClick(account:Account){

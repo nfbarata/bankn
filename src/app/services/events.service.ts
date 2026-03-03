@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
-  private banknChange: EventEmitter<void> = new EventEmitter();
-  private accountsChange: EventEmitter<void> = new EventEmitter();
-  private accountSelectionChange: EventEmitter<void> = new EventEmitter();
-  private accountTransactionsChange: EventEmitter<void> = new EventEmitter();
-  private transactionChange: EventEmitter<void> = new EventEmitter();
-  private categoriesChange: EventEmitter<void> = new EventEmitter();
-  private entitiesChange: EventEmitter<void> = new EventEmitter();
-  private transactionPeriodChange: EventEmitter<void> = new EventEmitter();
+  private banknChange: Subject<void> = new Subject<void>();
+  private accountsChange: Subject<void> = new Subject<void>();
+  private accountSelectionChange: Subject<void> = new Subject<void>();
+  private accountTransactionsChange: Subject<void> = new Subject<void>();
+  private transactionChange: Subject<void> = new Subject<void>();
+  private categoriesChange: Subject<void> = new Subject<void>();
+  private entitiesChange: Subject<void> = new Subject<void>();
+  private transactionPeriodChange: Subject<void> = new Subject<void>();
 
   constructor() { }
 
@@ -21,7 +21,7 @@ export class EventsService {
 
   public emitBanknChange(): void {
     console.debug("banknChange event");
-    this.banknChange.emit();
+    this.banknChange.next();
   }
 
   public subscribeAccountsChange(callback: () => void): void {
@@ -31,7 +31,7 @@ export class EventsService {
 
   public emitAccountsChange(): void {
     console.debug("accountsChange event");
-    this.accountsChange.emit();
+    this.accountsChange.next();
   }
 
   public subscribeAccountSelectionChange(callback: () => void): void {
@@ -41,7 +41,7 @@ export class EventsService {
 
   public emitAccountSelectionChange(): void {
     console.debug("accountSelectionChange event");
-    this.accountSelectionChange.emit();
+    this.accountSelectionChange.next();
   }
 
   public subscribeAccountTransactionsChange(callback: () => void): void {
@@ -51,7 +51,7 @@ export class EventsService {
 
   public emitAccountTransactionsChange(): void {
     console.debug("accountTransactionsChange event");
-    this.accountTransactionsChange.emit();
+    this.accountTransactionsChange.next();
   }
 
   public subscribeTransactionChange(callback: () => void): void {
@@ -61,7 +61,7 @@ export class EventsService {
 
   public emitTransactionChange(): void {
     console.debug("transactionChange event");
-    this.transactionChange.emit();
+    this.transactionChange.next();
   }
 
   public subscribeCategoriesChange(callback: () => void): void {
@@ -71,7 +71,7 @@ export class EventsService {
 
   public emitCategoriesChange(): void {
     console.debug("categoriesChange event");
-    this.categoriesChange.emit();
+    this.categoriesChange.next();
   }
 
   public subscribeEntitiesChange(callback: () => void): void {
@@ -81,7 +81,7 @@ export class EventsService {
 
   public emitEntitiesChange(): void {
     console.debug("entitiesChange event");
-    this.entitiesChange.emit();
+    this.entitiesChange.next();
   }
 
   public subscribeTransactionPeriodChange(callback: () => void): void {
@@ -91,6 +91,6 @@ export class EventsService {
 
   public emitTransactionPeriodChange(): void {
     console.debug("transactionPeriodChange event");
-    this.transactionPeriodChange.emit();
+    this.transactionPeriodChange.next();
   }
 }

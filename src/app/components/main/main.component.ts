@@ -4,10 +4,10 @@ import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
 
 @Component({
-    selector: 'app-main',
-    templateUrl: './main.component.html',
-    styleUrls: ['./main.component.css'],
-    standalone: false
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.css'],
+  standalone: false
 })
 export class MainComponent implements OnInit {
   hasBankn: Boolean = false;
@@ -16,8 +16,8 @@ export class MainComponent implements OnInit {
   constructor(
     private banknService: BanknService,
     private eventsService: EventsService,
-    private accountService: AccountService
-  ) {}
+    private accountService: AccountService,
+  ) { }
 
   ngOnInit() {
     this.eventsService.subscribeBanknChange(() => this.refreshData());

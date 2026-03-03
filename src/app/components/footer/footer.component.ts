@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -27,7 +27,8 @@ export class FooterComponent implements OnInit {
   constructor(
     private banknService: BanknService,
     private eventsService: EventsService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private cdr: ChangeDetectorRef,
   ) { 
   }
 
@@ -50,6 +51,7 @@ export class FooterComponent implements OnInit {
         this.form.value.endDate = this.banknService.getBankn()?.transactionsEndDate;
       else
         this.form.value.endDate = "";
+      this.cdr.detectChanges()
     }
 
     this.accounts = this.accountService.getAccounts();

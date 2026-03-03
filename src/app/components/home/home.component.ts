@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BanknService} from '../../services/bankn.service';
 import { AccountService} from '../../services/account.service';
 import { EventsService} from '../../services/events.service';
@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
     private eventsService:EventsService,
     private banknService:BanknService,
     private accountService:AccountService,
+    private cdr: ChangeDetectorRef,
   ) { 
     
   }
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
   refreshData(){
     this.hasBankn = this.banknService.initialized();
     this.hasAccounts = this.accountService.getAccounts().length>0;
+    this.cdr.detectChanges();
   }
 
   OneDrivedriveSuccess(files: any){

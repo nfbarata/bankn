@@ -25,10 +25,10 @@ export class BanknService {
     private eventsService: EventsService,
     private fileService: FileService
   ) {
-    if (locale != null && locale.split('-').length > 0) {
-      this.defaultCountryCode = locale.split('-')[0].toUpperCase();
+    if (locale != null && locale.split('-').length > 1) {
+      this.defaultCountryCode = locale.split('-')[1].toUpperCase();
     }
-    console.log('default countryCode: ' + this.defaultCountryCode);
+    console.log('default countryCode: ' + this.defaultCountryCode + ' - ' + locale);
   }
 
   initialized(): boolean {

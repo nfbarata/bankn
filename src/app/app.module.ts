@@ -162,5 +162,4 @@ export class AppModule {
         .catch(error => console.error('Error loading example file:', error));
     }
   }
-
 }
