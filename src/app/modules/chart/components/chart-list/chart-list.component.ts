@@ -158,6 +158,10 @@ export class ChartListComponent implements OnInit, AfterViewInit {
         transactionsBy = this.transactionService.groupByCategory(this.transactions);
       }
 
+      if (this.chart.options?.plugins?.datalabels) {
+        this.chart.options.plugins.datalabels.display = transactionsBy.size > 0;
+      }
+
       if (transactionsBy.size > 0) {
 
         var usedCurrency = transactionsBy.values().next().value!.toJSON().currency;
