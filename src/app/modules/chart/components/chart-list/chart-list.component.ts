@@ -124,6 +124,16 @@ export class ChartListComponent implements OnInit, AfterViewInit {
             }
           }
         );
+        if (this.transactions.length > 0) {
+          var usedCurrency = this.transactions[0].amount.toJSON().currency;
+
+          (this.chart.options.plugins!.datalabels as any).formatter = (value: number, _context: any) => {
+            return this.dineroPipe.transform(MathService.toDinero(
+              value,
+              usedCurrency
+            ));
+          }
+        }
       }
       this.refreshChartData();
     } else {
@@ -154,14 +164,6 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
         this.chart.data.labels! = Array.from(transactionsBy.keys());
         this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
-        (this.chart.options.plugins as any).datalabels = {
-          formatter: (value: number, _context: any) => {
-            return this.dineroPipe.transform(MathService.toDinero(
-              value,
-              usedCurrency
-            ));
-          }
-        };
       }
       this.chart.update();
     } else {
