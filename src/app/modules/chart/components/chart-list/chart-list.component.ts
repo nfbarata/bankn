@@ -164,8 +164,8 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
       if (transactionsBy.size > 0) {
         this.chart.data.labels! = Array.from(transactionsBy.keys());
-        this.chart.options!.plugins!.datalabels!.display = true;
         this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
+        this.chart.options!.plugins!.datalabels!.display = true;
       }
 
       this.chart.update();
