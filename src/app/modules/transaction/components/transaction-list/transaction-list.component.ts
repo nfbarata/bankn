@@ -78,9 +78,7 @@ export class TransactionListComponent implements OnInit {
       });
 
       //get initial value
-      let initialValue = this.accountService.getInitialValueMultiple(
-        this.selectedAccounts
-      );
+      let initialValue = this.accountService.getInitialValueMultipleForCurrentPeriod(this.selectedAccounts);
 
       //sort (from multiple accounts)
       TransactionService.sortTransactions(newTransactions);
@@ -92,7 +90,7 @@ export class TransactionListComponent implements OnInit {
       if (this.transactions.length > 0)
         this.initialBalance = this.transactions[this.transactions.length - 1].balanceBefore;
       else
-        this.initialBalance = null;
+        this.initialBalance = initialValue;
     }
   }
 

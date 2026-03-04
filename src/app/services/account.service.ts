@@ -19,7 +19,7 @@ export class AccountService {
     private banknService: BanknService,
     private eventsService: EventsService,
     private mathService: MathService
-  ) {}
+  ) { }
 
   createAccount(
     name: string,
@@ -151,7 +151,7 @@ export class AccountService {
     this.eventsService.emitAccountTransactionsChange();
   }
 
-  getCurrentPeriodTransactions(account: Account){
+  getCurrentPeriodTransactions(account: Account) {
     var bankn = this.banknService.getBankn()!;
     return account.transactions.filter(transaction => {
       const afterStartDate = !bankn.transactionsStartDate || transaction.date >= bankn.transactionsStartDate;
@@ -172,21 +172,46 @@ export class AccountService {
     var initialBalance = account.referenceAmount;
 
     //calculate initial balance
-    for (let i = account.transactions.length - 1; i >= 0; i--) {
-      if (
-        account.referenceDate.getTime() > account.transactions[i].date.getTime()
-      ) {
-        switch (account.transactions[i].type) {
+    for (var transaction of account.transactions) {
+      if (transaction.date.getTime() < account.referenceDate.getTime()) {
+        switch (transaction.type) {
           case TransactionType.CREDIT:
             initialBalance = subtract(
               initialBalance,
-              account.transactions[i].amount
+              transaction.amount
             );
             break;
           case TransactionType.DEBIT:
             initialBalance = add(
               initialBalance,
-              account.transactions[i].amount
+              transaction.amount
+            );
+            break;
+        }
+      } else {
+        //no need to continue
+        break;
+      }
+    }
+    return initialBalance;
+  }
+
+  static getInitialValueForCurrentPeriod(account: Account, startTime: Date): Dinero<number> {
+    var initialBalance = AccountService.getInitialValue(account);
+    //calculate initial balance
+    for (var transaction of account.transactions) {
+      if (transaction.date.getTime() < startTime.getTime()) {
+        switch (transaction.type) {
+          case TransactionType.DEBIT:
+            initialBalance = subtract(
+              initialBalance,
+              transaction.amount
+            );
+            break;
+          case TransactionType.CREDIT:
+            initialBalance = add(
+              initialBalance,
+              transaction.amount
             );
             break;
         }
@@ -207,6 +232,22 @@ export class AccountService {
       initialBalance = add(
         initialBalance,
         AccountService.getInitialValue(account)
+      );
+    });
+    return initialBalance;
+  }
+
+  getInitialValueMultipleForCurrentPeriod(accounts: Account[]): Dinero<number> {
+    var initialBalance = this.toDinero(
+      0,
+      accounts[0] //TODO dif currencies
+    );
+    accounts.forEach((account) => {
+      initialBalance = add(
+        initialBalance,
+        this.banknService.getBankn()!.transactionsStartDate ?
+          AccountService.getInitialValueForCurrentPeriod(account, this.banknService.getBankn()!.transactionsStartDate!) :
+          AccountService.getInitialValue(account)
       );
     });
     return initialBalance;
@@ -275,7 +316,7 @@ export class AccountService {
     return account;
   }
 
-  public getSelectedAccountsCurrency(): Currency<number> {  
+  public getSelectedAccountsCurrency(): Currency<number> {
     var accounts: Account[] = this.getSelectedAccounts();
     if (accounts.length > 0) {
       return this.getCurrency(accounts[0]);

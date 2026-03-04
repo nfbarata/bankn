@@ -4,6 +4,9 @@ general:
 txns:
   add menu with import
   select with button, select multiple
+  filter by category/entity/description
+  fix filter by date initial value should take consideration all transactions
+  transfer to account
 
 entities:
   create menu&screens
@@ -16,12 +19,14 @@ categories:
 
 charts:
   different charts
-  value labels
+  info with count
   labels bottom
+  link to transactions with filtered by selected one
 
 footer:
   dates allways mid
   button next to dates to default values
+  add currency selector to left
 
 tests:
   test toJson
@@ -49,7 +54,8 @@ save zip contents
 movimentos com diferentes moedas (escolher e fazer cambio)
 
 definir limites mensais de acordo com tipos
-transfer to account
+
+upgrade dinero
 
 DATA OPERAÇÃO	DATA VALOR	TIPO	DESCRIÇÃO	DÉBITO	CRÉDITO	SALDO CONTROLO
 2020-03-04	2020-03-04	TPA	COMPRA CARTAO 9080000* FORTUNY FOOD LDA 2740-244 PORTO SA	6,95	-	1.484,71
