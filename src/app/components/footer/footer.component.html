@@ -5,10 +5,10 @@
     <div></div>
 
     <form [formGroup]="form" class="d-flex align-items-center">
-      <input type="date" class="form-control form-control-sm me-2" formControlName="startDate" (change)="onDateChange()"
+      <input type="date" class="form-control form-control-sm" formControlName="startDate" (change)="onDateChange()"
         title="start date" i18n>
-      <span class="mx-2">-</span>
-      <input type="date" class="form-control form-control-sm ms-2" formControlName="endDate" (change)="onDateChange()"
+      <span class="mx-1">-</span>
+      <input type="date" class="form-control form-control-sm" formControlName="endDate" (change)="onDateChange()"
         title="end date" i18n>
     </form>
 
@@ -20,7 +20,7 @@
         <span class="oi oi-list-rich"></span>
       </button>
       <div class="btn-group">
-        <button class="btn btn-secondary" type="submit"
+        <button class="btn btn-secondary d-none d-sm-block" type="submit"
           [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!=null?newTransactionSelectedAccount:'')]"
           title="New Transaction" i18n>
           <span class="oi oi-plus"></span>
