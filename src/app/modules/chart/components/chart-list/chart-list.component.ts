@@ -12,7 +12,7 @@ import { TransactionService } from '../../../../services/transaction.service';
 import { MathService } from '../../../../services/math.service';
 import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
-import Chart from 'chart.js/auto';
+import Chart, { TooltipItem } from 'chart.js/auto';
 import { DineroPipe } from 'src/app/modules/shared/pipes/dinero.pipe';
 import {
   UntypedFormBuilder,
@@ -111,7 +111,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
               responsive: true,
               plugins: {
                 tooltip: {
-                  enabled: false
+                  enabled: true
                 },
                 datalabels: {
                   display: false,
@@ -126,13 +126,20 @@ export class ChartListComponent implements OnInit, AfterViewInit {
         );
         if (this.transactions.length > 0) {
           var usedCurrency = this.transactions[0].amount.toJSON().currency;
-
           (this.chart.options.plugins!.datalabels as any).formatter = (value: number, _context: any) => {
             return this.dineroPipe.transform(MathService.toDinero(
               value,
               usedCurrency
             ));
           }
+          this.chart.options.plugins!.tooltip!.callbacks = {
+            label: (tooltipItem: TooltipItem<'doughnut'>) => {
+              return this.dineroPipe.transform(MathService.toDinero(
+                tooltipItem.raw as number,
+                usedCurrency
+              )) as string;
+            }
+          };
         }
       }
       this.refreshChartData();
