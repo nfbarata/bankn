@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { UUID } from 'angular2-uuid';
 
@@ -18,6 +18,12 @@ import { UtilsService } from './utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+  private categoryService = inject(CategoryService);
+  private entityService = inject(EntityService);
+
 
   //
   //Volatile - for use between screens
@@ -25,14 +31,6 @@ export class TransactionService {
   importTransactions: any[] = [];
   filterTransactions: any[] = [];
   filterActions: any[] = [];
-
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private accountService: AccountService,
-    private categoryService: CategoryService,
-    private entityService: EntityService
-  ) { }
 
   createTransaction(
     account: Account,

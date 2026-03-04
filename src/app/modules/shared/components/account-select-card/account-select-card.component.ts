@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
@@ -10,13 +10,11 @@ import { Account } from "../../../../models/account";
     standalone: false
 })
 export class AccountSelectCardComponent implements OnInit {
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+
 
   items: any[] = [];
-
-  constructor(
-    private eventsService: EventsService,
-    private accountService: AccountService
-  ) { }
 
   ngOnInit() {
     this.refreshAccounts();

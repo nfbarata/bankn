@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { BanknService} from '../../services/bankn.service';
 import { AccountService} from '../../services/account.service';
 import { EventsService} from '../../services/events.service';
@@ -10,18 +10,14 @@ import { EventsService} from '../../services/events.service';
     standalone: false
 })
 export class HomeComponent implements OnInit {
+  private eventsService = inject(EventsService);
+  private banknService = inject(BanknService);
+  private accountService = inject(AccountService);
+  private cdr = inject(ChangeDetectorRef);
+
 
   hasBankn:Boolean = false;
   hasAccounts:Boolean = false;
-
-  constructor(
-    private eventsService:EventsService,
-    private banknService:BanknService,
-    private accountService:AccountService,
-    private cdr: ChangeDetectorRef,
-  ) { 
-    
-  }
 
   ngOnInit() {
     this.refreshData();

@@ -44,18 +44,18 @@ headers, categora entidade (data mont e descricao obrig)
   <div class="row mb-3">
     <div class="col-6 form-group">
       <input #customColumnSeparator title="customColumnSeparator" class="form-control"
-        formControlName="customColumnSeparator" [hidden]="columnSeparator.value!=''" (keyup)="onInputChange()"
+        formControlName="customColumnSeparator" [hidden]="columnSeparator.value!==''" (keyup)="onInputChange()"
         (paste)="onInputChange()">
       <small id="customColumnSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()"
-        [hidden]="columnSeparator.value!=''">
+        [hidden]="columnSeparator.value!==''">
         Custom column separator
       </small>
     </div>
     <div class="col-6 form-group">
       <input #customLineSeparator title="customLineSeparator" class="form-control" formControlName="customLineSeparator"
-        [hidden]="lineSeparator.value!=''" (keyup)="onInputChange()" (paste)="onInputChange()">
+        [hidden]="lineSeparator.value!==''" (keyup)="onInputChange()" (paste)="onInputChange()">
       <small id="lineSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()"
-        [hidden]="lineSeparator.value!=''">
+        [hidden]="lineSeparator.value!==''">
         Custom row separator
       </small>
     </div>

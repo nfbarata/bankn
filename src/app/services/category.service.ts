@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Bankn } from '../models/bankn';
 import { Category } from '../models/category';
 import { BanknService } from './bankn.service';
@@ -8,10 +8,8 @@ import { UtilsService } from './utils.service';
   providedIn: 'root'
 })
 export class CategoryService {
+  private banknService = inject(BanknService);
 
-  constructor(
-    private banknService: BanknService,
-  ) { }
 
   static getFullCategoryName(category: Category): string {
     if (category.topLevelCategory) {

@@ -1,5 +1,5 @@
 //angular dependecies
-import { NgModule, LOCALE_ID, InjectionToken, ApplicationRef } from '@angular/core';
+import { NgModule, LOCALE_ID, InjectionToken, ApplicationRef, inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -121,13 +121,14 @@ const analytics = getAnalytics(app);
   ],
 })
 export class AppModule {
-  constructor(
-    //private injector:Injector,
-    private library: FaIconLibrary,
-    appRef: ApplicationRef,
-    private banknService: BanknService,
-    router: Router
-  ) {
+  private library = inject(FaIconLibrary);
+  private banknService = inject(BanknService);
+
+  constructor() {
+    const library = this.library;
+    const appRef = inject(ApplicationRef);
+    const router = inject(Router);
+
     //AppInjector=this.injector;
     library.addIcons(
       faSquare,

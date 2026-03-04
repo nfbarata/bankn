@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Bankn } from '../models/bankn';
 import { Category } from '../models/category';
 import { Entity } from '../models/entity';
@@ -10,11 +10,9 @@ import { UtilsService } from './utils.service';
   providedIn: 'root'
 })
 export class EntityService {
+  private banknService = inject(BanknService);
+  private utilsService = inject(UtilsService);
 
-  constructor(
-    private banknService: BanknService,
-    private utilsService: UtilsService
-  ) { }
 
   upsertEntity(
     entityName?: string,

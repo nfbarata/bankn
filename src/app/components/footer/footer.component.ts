@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -13,6 +13,11 @@ import { Account } from '../../models/account';
     standalone: false
 })
 export class FooterComponent implements OnInit {
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+  private cdr = inject(ChangeDetectorRef);
+
 
   hasBankn: Boolean = false;
   hasAccounts: Boolean = false;
@@ -23,14 +28,6 @@ export class FooterComponent implements OnInit {
     startDate: new UntypedFormControl(),
     endDate: new UntypedFormControl()
   });
-
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private accountService: AccountService,
-    private cdr: ChangeDetectorRef,
-  ) { 
-  }
 
   ngOnInit() {
     this.eventsService.subscribeBanknChange(() => this.refreshData());

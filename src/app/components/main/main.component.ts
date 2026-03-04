@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
@@ -10,14 +10,12 @@ import { AccountService } from '../../services/account.service';
   standalone: false
 })
 export class MainComponent implements OnInit {
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+
   hasBankn: Boolean = false;
   hasAccounts: Boolean = false;
-
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private accountService: AccountService,
-  ) { }
 
   ngOnInit() {
     this.eventsService.subscribeBanknChange(() => this.refreshData());

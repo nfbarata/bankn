@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   Renderer2,
+  inject,
 } from '@angular/core';
 import { Location } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -15,12 +16,20 @@ import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
 
 @Component({
-    selector: 'transaction-import',
-    templateUrl: './transaction-import.component.html',
-    styleUrls: ['./transaction-import.component.css'],
-    standalone: false
+  selector: 'transaction-import',
+  templateUrl: './transaction-import.component.html',
+  styleUrls: ['./transaction-import.component.css'],
+  standalone: false
 })
 export class TransactionImportComponent implements OnInit, AfterViewInit {
+
+  private renderer = inject(Renderer2);
+  private transactionService = inject(TransactionService);
+  private formBuilder = inject(UntypedFormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+
   submitDisabled: boolean = true;
   @ViewChild('importData', { static: false }) importData!: ElementRef;
   @ViewChild('columnSeparator', { static: false }) columnSeparator!: ElementRef;
@@ -32,34 +41,23 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
   @ViewChild('parsedData', { static: false }) parsedData!: ElementRef;
   @ViewChild('submitHelpBlock', { static: false }) submitHelpBlock!: ElementRef;
 
+  formData = {
+    importData: null,
+    columnSeparator: '9',
+    lineSeparator: '10',
+    customColumnSeparator: '',
+    customLineSeparator: '',
+  };
   form: UntypedFormGroup;
-  formData;
   accountId: string | null = null;
   output: any;
 
   constructor(
-    private renderer: Renderer2,
-    private eventsService: EventsService,
-    private banknService: BanknService,
-    private accountService: AccountService,
-    private transactionService: TransactionService,
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
   ) {
-    //https://www.rapidtables.com/web/html/html-codes.html
-    this.formData = {
-      importData: null,
-      columnSeparator: '9',
-      lineSeparator: '10',
-      customColumnSeparator: '',
-      customLineSeparator: '',
-    };
     this.form = this.formBuilder.group(this.formData);
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   ngOnInit() {
     this.transactionService.importTransactions = [];

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BanknService } from './bankn.service';
 import { EventsService } from './events.service';
@@ -15,11 +15,10 @@ import { Bankn } from '../models/bankn';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private mathService: MathService
-  ) { }
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private mathService = inject(MathService);
+
 
   createAccount(
     name: string,

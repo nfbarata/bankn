@@ -40,14 +40,12 @@ export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
 
   constructor(
     private renderer: Renderer2,
-    private eventsService: EventsService,
     private banknService: BanknService,
     private accountService: AccountService,
     private transactionService: TransactionService,
     private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location,
     @Inject(DOCUMENT) document: any
   ) {
     this.document = document;

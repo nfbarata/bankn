@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FileService } from '../../../../services/file.service';
 
 @Component({
@@ -8,12 +8,8 @@ import { FileService } from '../../../../services/file.service';
     standalone: false
 })
 export class FileUploadComponent implements OnInit {
+  private fileService = inject(FileService);
 
-  //fileToUpload: File = null;
-  
-  constructor(
-     private fileService: FileService
-  ) { }
 
   ngOnInit() {
   }

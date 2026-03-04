@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DineroPipe } from './dinero.pipe';
 import { Transaction } from '../../../models/transaction';
 import { TransactionType } from '../../../models/enums';
@@ -9,7 +9,8 @@ import { dinero, toDecimal, compare  } from 'dinero.js';
     standalone: false
 })
 export class TransactionPipe implements PipeTransform {
-  constructor(private dinero: DineroPipe) {}
+  private dinero = inject(DineroPipe);
+
 
   transform(transaction: Transaction, args?: any): any {
     var amount = transaction.amount;

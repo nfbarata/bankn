@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BanknService } from './bankn.service';
 import { Dinero, dinero, Currency, toDecimal } from 'dinero.js';
 import * as currencies from '@dinero.js/currencies';
@@ -8,10 +8,9 @@ import { UtilsService } from './utils.service';
   providedIn: 'root',
 })
 export class MathService {
-  constructor(
-    private banknService: BanknService,
-    private utilsService: UtilsService
-  ) {}
+  private banknService = inject(BanknService);
+  private utilsService = inject(UtilsService);
+
 
   static getCurrencyOfCountry(countryCode: string): string {
     var country = null;

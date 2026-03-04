@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -11,16 +11,14 @@ import { Account } from "../../models/account";
     standalone: false
 })
 export class MenuComponent implements OnInit {
+  private banknService = inject(BanknService);
+  private accountService = inject(AccountService);
+  private eventsService = inject(EventsService);
+  private cdr = inject(ChangeDetectorRef);
+
   
   accounts:Account[] = [];
   hasBankn:Boolean = false;
-
-  constructor(
-    private banknService: BanknService,
-    private accountService: AccountService,
-    private eventsService: EventsService,
-    private cdr: ChangeDetectorRef,
-  ) { }
 
   ngOnInit() {
     this.refreshData();

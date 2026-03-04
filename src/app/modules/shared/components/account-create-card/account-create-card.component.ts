@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { AccountService } from '../../../../services/account.service';
 
 @Component({
@@ -8,7 +8,8 @@ import { AccountService } from '../../../../services/account.service';
     standalone: false
 })
 export class AccountCreateCardComponent implements OnInit {
-  constructor(private accountService: AccountService) {}
+  private accountService = inject(AccountService);
+
 
   ngOnInit() {}
 }

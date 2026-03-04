@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
@@ -16,18 +16,16 @@ import { TransactionType } from '../../../../models/enums';
 })
 export class TransactionListComponent implements OnInit {
 
+  private route = inject(ActivatedRoute);
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+
   hasRealTransactions: boolean = false;
   transactions: Transaction[] = [];
   initialBalance: Dinero<number> | null = null;
   selectedAccounts: Account[] = [];
   accounts: Account[] = [];
   newTransactionSelectedAccount: String | null = null;
-
-  constructor(
-    private route: ActivatedRoute,
-    private eventsService: EventsService,
-    private accountService: AccountService
-  ) { }
 
   ngOnInit() {
 
