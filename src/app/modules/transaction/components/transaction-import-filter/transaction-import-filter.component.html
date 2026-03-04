@@ -4,7 +4,7 @@
   <div class="row mb-3">
     <div class="col-12">
       <div class="table-responsive-xl">
-        <table class="table table-sm table-bordered small font-weight-lighter text-truncate" style="width:0%;">
+        <table class="table table-sm table-bordered small fw-light lh-1 text-truncate" style="width:0%;">
           <thead id="parsedData">
             <tr>
               <th class="align-middle text-center" scope="col">
@@ -14,8 +14,8 @@
               @for (columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; track
               columnHeader; let h = $index) {
               <th scope="col">
-                <div style="max-width: 4.5rem;">
-                  <select title="columnType" class="form-control d-inline" id="action{{h}}">
+                <div style="max-width: 3.6rem;">
+                  <select title="columnType" class="form-control form-control-sm d-inline" id="action{{h}}">
                     @for (type of importColumnTypes; track type) {
                     <option value="{{type}}">{{type | importColumnType}}</option>
                     }
@@ -33,8 +33,8 @@
                   aria-label="dontIgnore{{t}}">
               </td>
               @for (column of transaction; track column) {
-              <td>
-                <div class="content-wrapper" title="{{column}}">
+              <td class="align-middle">
+                <div class="content-wrapper fw-light lh-1" title="{{column}}">
                   {{column}}
                 </div>
               </td>

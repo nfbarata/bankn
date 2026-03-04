@@ -11,7 +11,7 @@ headers, categora entidade (data mont e descricao obrig)
         External transactions:
       </label>
       <br>
-      <textarea #importData class="form-control" formControlName="importData" id="importData" wrap="off" rows="6"
+      <textarea #importData class="form-control form-control-sm fw-light lh-1" formControlName="importData" id="importData" wrap="off" rows="6"
         (keyup)="onInputChange()" (paste)="onInputChange()"></textarea>
       <small id="importDataHelpBlock" class="form-text text-muted" i18n>Copy paste data from your homebanking</small>
     </div>
@@ -73,7 +73,7 @@ headers, categora entidade (data mont e descricao obrig)
 <div class="row mb-3">
   <div class="col-12">
     <div class="table-responsive-xl">
-      <table class="table table-sm table-bordered small font-weight-lighter text-truncate" style="width:0%">
+      <table class="table table-sm table-bordered small text-truncate" style="width:0%">
         <tbody #parsedData id="parsedData">
         </tbody>
       </table>

@@ -26,7 +26,7 @@
     "angular-bootstrap-datetimepicker": "^4.0.2",
     "angular2-uuid": "^1.1.1",
     "bootstrap": "^5.3.8",
-    "chart.js": "^4.0.0",
+    "chart.js": "^4.5.0",
     "chartjs-plugin-datalabels": "^2.2.0",
     "coinify": "^3.0.4",
     "core-js": "^3.48.0",
