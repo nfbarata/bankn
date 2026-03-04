@@ -114,7 +114,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
                   enabled: false
                 },
                 datalabels: {
-                  display: true,
+                  display: false,
                 },
                 /*title: {
                   display: true,
@@ -147,6 +147,7 @@ export class ChartListComponent implements OnInit, AfterViewInit {
   refreshChartData() {
     if (this.chart) {
 
+      this.chart.options!.plugins!.datalabels!.display = false;
       while (this.chart.data.labels!.length > 0) {
         this.chart.data.labels!.pop();
       }
@@ -162,14 +163,9 @@ export class ChartListComponent implements OnInit, AfterViewInit {
       }
 
       if (transactionsBy.size > 0) {
-
         this.chart.data.labels! = Array.from(transactionsBy.keys());
+        this.chart.options!.plugins!.datalabels!.display = true;
         this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
-        if (this.chart.options?.plugins?.datalabels)
-          this.chart.options.plugins.datalabels.display = true;
-      }else{
-        if (this.chart.options?.plugins?.datalabels)
-          this.chart.options.plugins.datalabels.display = false;
       }
 
       this.chart.update();
