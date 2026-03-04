@@ -155,13 +155,13 @@ export class ChartListComponent implements OnInit, AfterViewInit {
     if (this.chart) {
 
       this.chart.options!.plugins!.datalabels!.display = false;
-      while (this.chart.data.labels!.length > 0) {
-        this.chart.data.labels!.pop();
-      }
       while (this.chart.data.datasets.length > 0) {
         this.chart.data.datasets.pop();
       };
-
+      while (this.chart.data.labels!.length > 0) {
+        this.chart.data.labels!.pop();
+      }
+      
       var transactionsBy;
       if (this.form.controls['groupBy'].value == 'entity') {
         transactionsBy = this.transactionService.groupByEntity(this.transactions);
@@ -171,8 +171,8 @@ export class ChartListComponent implements OnInit, AfterViewInit {
 
       if (transactionsBy.size > 0) {
         this.chart.data.labels! = Array.from(transactionsBy.keys());
-        this.chart.options!.plugins!.datalabels!.display = true;
         this.chart.data.datasets.push({ data: Array.from(transactionsBy.values()).map((d) => d.toJSON().amount) });
+        //this.chart.options!.plugins!.datalabels!.display = true;
       }
 
       this.chart.update();
