@@ -20,7 +20,7 @@ export class EventsService {
   }
 
   public emitBanknChange(): void {
-    console.debug("banknChange event");
+    //console.debug("banknChange event");
     this.banknChange.next();
   }
 
@@ -30,7 +30,7 @@ export class EventsService {
   }
 
   public emitAccountsChange(): void {
-    console.debug("accountsChange event");
+    //console.debug("accountsChange event");
     this.accountsChange.next();
   }
 
@@ -40,7 +40,7 @@ export class EventsService {
   }
 
   public emitAccountSelectionChange(): void {
-    console.debug("accountSelectionChange event");
+    //console.debug("accountSelectionChange event");
     this.accountSelectionChange.next();
   }
 
@@ -50,7 +50,7 @@ export class EventsService {
   }
 
   public emitAccountTransactionsChange(): void {
-    console.debug("accountTransactionsChange event");
+    //console.debug("accountTransactionsChange event");
     this.accountTransactionsChange.next();
   }
 
@@ -60,7 +60,7 @@ export class EventsService {
   }
 
   public emitTransactionChange(): void {
-    console.debug("transactionChange event");
+    //console.debug("transactionChange event");
     this.transactionChange.next();
   }
 
@@ -70,7 +70,7 @@ export class EventsService {
   }
 
   public emitCategoriesChange(): void {
-    console.debug("categoriesChange event");
+    //console.debug("categoriesChange event");
     this.categoriesChange.next();
   }
 
@@ -80,7 +80,7 @@ export class EventsService {
   }
 
   public emitEntitiesChange(): void {
-    console.debug("entitiesChange event");
+    //console.debug("entitiesChange event");
     this.entitiesChange.next();
   }
 
@@ -90,7 +90,7 @@ export class EventsService {
   }
 
   public emitTransactionPeriodChange(): void {
-    console.debug("transactionPeriodChange event");
+    //console.debug("transactionPeriodChange event");
     this.transactionPeriodChange.next();
   }
 }

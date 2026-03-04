@@ -47,4 +47,16 @@ export class UtilsService {
   static removeTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
+
+  static addDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  static removeDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+  }
 }

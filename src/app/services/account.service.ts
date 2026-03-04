@@ -146,7 +146,7 @@ export class AccountService {
 
   addTransaction(account: Account, transaction: Transaction) {
     transaction.account = account;
-    account.transactions.push(transaction);
+    account.transactions.push(transaction); //TODO try to optimize and don't need to sort
     TransactionService.sortTransactions(account.transactions);
     this.eventsService.emitAccountTransactionsChange();
   }
@@ -169,79 +169,57 @@ export class AccountService {
   }
 
   static getInitialValue(account: Account): Dinero<number> {
-    var initialBalance = account.referenceAmount;
+    var initialValue = account.referenceAmount;
 
-    //calculate initial balance
-    for (var transaction of account.transactions) {
-      if (transaction.date.getTime() < account.referenceDate.getTime()) {
-        switch (transaction.type) {
+    for (let i = account.transactions.length - 1; i >= 0; i--) {
+      if (account.transactions[i].date.getTime() < account.referenceDate.getTime()) {
+        switch (account.transactions[i].type) {
           case TransactionType.CREDIT:
-            initialBalance = subtract(
-              initialBalance,
-              transaction.amount
-            );
+            initialValue = subtract(initialValue, account.transactions[i].amount);
             break;
           case TransactionType.DEBIT:
-            initialBalance = add(
-              initialBalance,
-              transaction.amount
-            );
+            initialValue = add(initialValue, account.transactions[i].amount);
             break;
         }
       } else {
-        //no need to continue
+        // optimization (transactions are ordered)
         break;
       }
     }
-    return initialBalance;
+    return initialValue;
   }
 
   static getInitialValueForCurrentPeriod(account: Account, startTime: Date): Dinero<number> {
-    var initialBalance = AccountService.getInitialValue(account);
-    //calculate initial balance
-    for (var transaction of account.transactions) {
-      if (transaction.date.getTime() < startTime.getTime()) {
-        switch (transaction.type) {
+    var initialValue = AccountService.getInitialValue(account);
+
+    for (let i = account.transactions.length - 1; i >= 0; i--) {
+      if (account.transactions[i].date.getTime() < startTime.getTime()) {
+        switch (account.transactions[i].type) {
           case TransactionType.DEBIT:
-            initialBalance = subtract(
-              initialBalance,
-              transaction.amount
-            );
+            initialValue = subtract(initialValue, account.transactions[i].amount);
             break;
           case TransactionType.CREDIT:
-            initialBalance = add(
-              initialBalance,
-              transaction.amount
-            );
+            initialValue = add(initialValue, account.transactions[i].amount);
             break;
         }
       } else {
-        //no need to continue
+        // optimization (transactions are ordered)
         break;
       }
     }
-    return initialBalance;
+    return initialValue;
   }
 
   getInitialValueMultiple(accounts: Account[]): Dinero<number> {
-    var initialBalance = this.toDinero(
-      0,
-      accounts[0] //TODO dif currencies
-    );
+    var initialBalance = this.toDinero(0, accounts[0]);//TODO dif currencies
     accounts.forEach((account) => {
-      initialBalance = add(
-        initialBalance,
-        AccountService.getInitialValue(account)
-      );
+      initialBalance = add(initialBalance, AccountService.getInitialValue(account));
     });
     return initialBalance;
   }
 
   getInitialValueMultipleForCurrentPeriod(accounts: Account[]): Dinero<number> {
-    var initialBalance = this.toDinero(
-      0,
-      accounts[0] //TODO dif currencies
-    );
+    var initialBalance = this.toDinero(0, accounts[0]);//TODO dif currencies
     accounts.forEach((account) => {
       initialBalance = add(
         initialBalance,
@@ -306,12 +284,14 @@ export class AccountService {
       json.rowSeparator,
       json.customRowSeparator
     );
-    if (json.transactions)
+    if (json.transactions){
       json.transactions.forEach((transaction: any) => {
         account.transactions.push(
           TransactionService.fromJson(transaction, account, bankn)
         );
       });
+      TransactionService.sortTransactions(account.transactions);
+    }
     // console.log('Parsed account', account);
     return account;
   }

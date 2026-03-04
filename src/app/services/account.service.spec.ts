@@ -9,6 +9,7 @@ import { BanknService } from './bankn.service';
 import { EventsService } from './events.service';
 import { MathService } from './math.service';
 import { Bankn } from '../models/bankn';
+import { UtilsService } from './utils.service';
 
 describe('AccountService', () => {
 
@@ -24,23 +25,23 @@ describe('AccountService', () => {
       ]
     }).compileComponents();
     banknServiceMock = {
-        addAccount: jest.fn(),
-        getAccounts: jest.fn().mockReturnValue([])
+      addAccount: jest.fn(),
+      getAccounts: jest.fn().mockReturnValue([])
     };
 
     mathServiceMock = {
-        toCurrency: jest.fn().mockReturnValue(EUR),
-        toDinero: jest.fn(value => {
-            return dinero({
-                amount: value,
-                currency: EUR,
-            });
-        })
+      toCurrency: jest.fn().mockReturnValue(EUR),
+      toDinero: jest.fn(value => {
+        return dinero({
+          amount: value,
+          currency: EUR,
+        });
+      })
     };
     var eventsService = TestBed.inject(EventsService);
     service = new AccountService(banknServiceMock, eventsService, mathServiceMock);
   });
-  
+
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
@@ -53,7 +54,7 @@ describe('AccountService', () => {
 
   it('addTransaction deleteTransactionId works', () => {
     var account = service.createAccount("teste", "teste", new Date(), "PT");
-    var transaction = new Transaction("teste",dinero({amount:0,currency:EUR}), TransactionType.DEBIT);
+    var transaction = new Transaction("teste", dinero({ amount: 0, currency: EUR }), TransactionType.DEBIT);
     service.addTransaction(account, transaction);
     expect(account.transactions.length).toBe(1);
     expect(transaction.account.id).toBe(account.id);
@@ -62,28 +63,48 @@ describe('AccountService', () => {
   });
 
   it('getInitialValue works', () => {
-    var account = service.createAccount("teste", "teste", new Date(), "PT");
-    var balance = AccountService.getInitialValue(account);
-    expect(toDecimal(balance)).toBe("0.00");
-    var transaction = new Transaction("teste", dinero({amount:1000,currency:EUR}), TransactionType.CREDIT, new Date(account.referenceDate.getDate()+1));
+    var account = service.createAccount("a1", "teste", new Date(), "PT", dinero({ amount: 3000, currency: EUR }));
+    expect(toDecimal(AccountService.getInitialValue(account))).toBe("30.00");
+
+    var transaction = new Transaction("t1", dinero({ amount: 1100, currency: EUR }), TransactionType.CREDIT, UtilsService.removeDays(account.referenceDate, 1));
     service.addTransaction(account, transaction);
-    balance = AccountService.getInitialValue(account);
-    expect(toDecimal(balance)).toBe("-10.00");
+    service.addTransaction(account, new Transaction("t2", dinero({ amount: 100, currency: EUR }), TransactionType.DEBIT, UtilsService.removeDays(account.referenceDate, 2)));
+    expect(toDecimal(AccountService.getInitialValue(account))).toBe("20.00");
+
+    service.addTransaction(account, new Transaction("t3", dinero({ amount: 500, currency: EUR }), TransactionType.DEBIT, UtilsService.removeDays(account.referenceDate, 10)));
+    service.addTransaction(account, new Transaction("t4", dinero({ amount: 700, currency: EUR }), TransactionType.CREDIT, UtilsService.addDays(account.referenceDate, 1)));
+    expect(toDecimal(AccountService.getInitialValue(account))).toBe("25.00");
+
     service.deleteTransactionId(account, transaction.id);
-    balance = AccountService.getInitialValue(account);
-    expect(toDecimal(balance)).toBe("0.00");
+    expect(toDecimal(AccountService.getInitialValue(account))).toBe("36.00");
   });
 
   it('getInitialValueMultiple works', () => {
     var accounts: Account[] = [];
-    var account = service.createAccount("teste", "teste", new Date(), "PT");
+    var account = service.createAccount("a1", "teste", new Date(), "PT", dinero({ amount: 3000, currency: EUR }));
     accounts.push(account);
+    var account2 = service.createAccount("a2", "teste", UtilsService.removeDays(account.referenceDate, 10), "PT", dinero({ amount: 10000, currency: EUR }));
+    accounts.push(account2);
+
     var balance = service.getInitialValueMultiple(accounts);
-    expect(toDecimal(balance)).toBe("0.00");
-    var transaction = new Transaction("teste", dinero({amount:1000,currency:EUR}), TransactionType.CREDIT, new Date(account.referenceDate.getDate()+1));
-    service.addTransaction(account, transaction);
+    expect(toDecimal(balance)).toBe("130.00");
+
+    service.addTransaction(account, new Transaction("t1", dinero({ amount: 1000, currency: EUR }), TransactionType.CREDIT, UtilsService.removeDays(account.referenceDate, 5)));
     balance = service.getInitialValueMultiple(accounts);
-    expect(toDecimal(balance)).toBe("-10.00");
+    expect(toDecimal(balance)).toBe("120.00");
+  });
+
+  it('getInitialValueForCurrentPeriod works', () => {
+
+    var account = service.createAccount("teste", "teste", new Date(), "PT", dinero({ amount: 10000, currency: EUR }));
+    service.addTransaction(account, new Transaction("teste", dinero({ amount: 1100, currency: EUR }), TransactionType.CREDIT, new Date(2000, 0, 1)));
+    service.addTransaction(account, new Transaction("teste", dinero({ amount: 100, currency: EUR }), TransactionType.DEBIT, new Date(2000, 0, 2)));
+    service.addTransaction(account, new Transaction("teste", dinero({ amount: 2200, currency: EUR }), TransactionType.CREDIT, UtilsService.addDays(account.referenceDate, 10)));
+    service.addTransaction(account, new Transaction("teste", dinero({ amount: 200, currency: EUR }), TransactionType.DEBIT, UtilsService.addDays(account.referenceDate, 11)));
+
+    expect(toDecimal(AccountService.getInitialValueForCurrentPeriod(account, account.referenceDate))).toBe("100.00");
+    expect(toDecimal(AccountService.getInitialValueForCurrentPeriod(account, new Date(1999, 0, 1)))).toBe("90.00");
+    expect(toDecimal(AccountService.getInitialValueForCurrentPeriod(account, UtilsService.addDays(account.referenceDate, 20)))).toBe("120.00");
   });
 
   it('should process fromJson', () => {
@@ -108,7 +129,7 @@ describe('AccountService', () => {
     expect(account.id).toBe(id);
     expect(account.name).toBe(name);
     expect(account.description).toBe(description);
-    expect(toDecimal(account.referenceAmount)).toEqual(referenceAmount);    
+    expect(toDecimal(account.referenceAmount)).toEqual(referenceAmount);
     expect(account.referenceDate).toEqual(new Date(referenceDate));
     expect(account.referenceCountry).toBe(referenceCountry);
     expect(account.transactions.length).toBe(0);
@@ -130,7 +151,7 @@ describe('AccountService', () => {
         category: "",
         description: "",
         type: TransactionType.CREDIT,
-      },{
+      }, {
         _id: "2",
         amount: "0",
         date: "2022-01-01",
@@ -144,7 +165,7 @@ describe('AccountService', () => {
     expect(account.id).toBe(id);
     expect(account.name).toBe(name);
     expect(account.description).toBe(description);
-    expect(toDecimal(account.referenceAmount)).toEqual(referenceAmount);    
+    expect(toDecimal(account.referenceAmount)).toEqual(referenceAmount);
     expect(account.referenceDate).toEqual(new Date(referenceDate));
     expect(account.referenceCountry).toBe(referenceCountry);
     expect(account.transactions.length).toBe(2);
