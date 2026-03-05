@@ -18,15 +18,11 @@ describe('AccountService', () => {
   let mathServiceMock: any;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [],
-      providers: [
-      ]
-    }).compileComponents();
     banknServiceMock = {
       addAccount: jest.fn(),
-      getAccounts: jest.fn().mockReturnValue([])
+      getAccounts: jest.fn().mockReturnValue([]),
+      getBankn: jest.fn().mockReturnValue({ transactionsStartDate: new Date() }),
+      deleteAccountId: jest.fn(),
     };
 
     mathServiceMock = {
@@ -38,8 +34,21 @@ describe('AccountService', () => {
         });
       })
     };
-    var eventsService = TestBed.inject(EventsService);
-    service = new AccountService(banknServiceMock, eventsService, mathServiceMock);
+
+    TestBed.configureTestingModule({
+        providers: [
+            AccountService,
+            { provide: BanknService, useValue: banknServiceMock },
+            { provide: EventsService, useValue: {
+                emitAccountsChange: jest.fn(),
+                emitAccountSelectionChange: jest.fn(),
+                emitTransactionChange: jest.fn(),
+                emitAccountTransactionsChange: jest.fn()
+            } },
+            { provide: MathService, useValue: mathServiceMock }
+        ]
+    });
+    service = TestBed.inject(AccountService);
   });
 
   it('should be created', () => {

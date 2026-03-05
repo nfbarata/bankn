@@ -16,11 +16,10 @@ import { CategoryService } from './category.service';
 
 @Injectable({ providedIn: 'root' })
 export class BanknService {
+
   locale = inject(LOCALE_ID);
   private eventsService = inject(EventsService);
   private fileService = inject(FileService);
-
-
   private bankn: Bankn | null = null;
   private defaultCountryCode: string = 'null';
 
@@ -30,7 +29,7 @@ export class BanknService {
     if (locale != null && locale.split('-').length > 1) {
       this.defaultCountryCode = locale.split('-')[1].toUpperCase();
     }
-    console.log('default countryCode: ' + this.defaultCountryCode + ' - ' + locale);
+    //console.log('default countryCode: ' + this.defaultCountryCode + ' - ' + locale);
   }
 
   initialized(): boolean {

@@ -19,7 +19,6 @@ export class AccountService {
   private eventsService = inject(EventsService);
   private mathService = inject(MathService);
 
-
   createAccount(
     name: string,
     description: string,
@@ -283,7 +282,7 @@ export class AccountService {
       json.rowSeparator,
       json.customRowSeparator
     );
-    if (json.transactions){
+    if (json.transactions) {
       json.transactions.forEach((transaction: any) => {
         account.transactions.push(
           TransactionService.fromJson(transaction, account, bankn)
