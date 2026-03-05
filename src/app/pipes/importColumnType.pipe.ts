@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import { ImportColumnType } from '../models/enums';
 
 @Pipe({ name: 'importColumnType' })

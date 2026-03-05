@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { Injectable, Pipe, PipeTransform, inject } from '@angular/core';
 import { Transaction } from '../models/transaction';
 import { TransactionType } from '../models/enums';
 import { dinero, toDecimal, compare } from 'dinero.js';
