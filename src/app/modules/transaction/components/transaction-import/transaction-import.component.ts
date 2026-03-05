@@ -48,14 +48,9 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
     customColumnSeparator: '',
     customLineSeparator: '',
   };
-  form: UntypedFormGroup;
+  form: UntypedFormGroup = this.formBuilder.group(this.formData);
   accountId: string | null = null;
   output: any;
-
-  constructor(
-  ) {
-    this.form = this.formBuilder.group(this.formData);
-  }
 
   ngAfterViewInit(): void { }
 

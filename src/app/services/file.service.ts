@@ -5,8 +5,6 @@ export class FileService {
   fileToUpload: File | null = null;
   private static readonly FILE_TYPE: string = 'application/json';
 
-  constructor() {}
-
   parseJsonFile(callback: Function) {
     if (this.fileToUpload != null) {
       var output: String = '';

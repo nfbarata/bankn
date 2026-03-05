@@ -6,6 +6,7 @@ import {
   ElementRef,
   Renderer2,
   Inject,
+  inject,
 } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
 import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -28,27 +29,25 @@ import { EntityService } from '../../../../services/entity.service';
     standalone: false
 })
 export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
+  private readonly renderer = inject(Renderer2);
+  private readonly banknService = inject(BanknService);
+  private readonly accountService = inject(AccountService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly formBuilder = inject(UntypedFormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly document = inject(DOCUMENT);
+
   importColumnTypes = Object.values(ImportColumnType);
   form: UntypedFormGroup;
   formData;
   account: Account | null = null;
   transactions: any[] | null = null;
-  document;
   submitDisabled: boolean = false;
 
   @ViewChild('submitHelpBlock', { static: false }) submitHelpBlock!: ElementRef;
 
-  constructor(
-    private renderer: Renderer2,
-    private banknService: BanknService,
-    private accountService: AccountService,
-    private transactionService: TransactionService,
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    @Inject(DOCUMENT) document: any
-  ) {
-    this.document = document;
+  constructor() {
     this.formData = {
       importData: null,
     };
@@ -109,7 +108,7 @@ export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
       this.transactionService.filterActions = [];
       var actions = this.transactions[0];
       actions.forEach((column: any, index: any) => {
-        var action = this.document.getElementById('action' + index);
+        var action = this.document.getElementById('action' + index) as HTMLSelectElement;
         if (action != null)
           this.transactionService.filterActions.push(action.value);
       });
@@ -118,7 +117,7 @@ export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
       this.transactionService.filterTransactions = [];
       try {
         this.transactions.forEach((row, i) => {
-          var dontIgnore = this.document.getElementById('dontIgnore' + i);
+          var dontIgnore = this.document.getElementById('dontIgnore' + i) as HTMLInputElement;
           if (this.account != null && dontIgnore.checked) {
             var amount: string | null = null;
             var date: Date | null = null;

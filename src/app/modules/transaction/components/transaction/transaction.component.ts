@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,6 +22,15 @@ import { UtilsService } from '../../../../services/utils.service';
     standalone: false
 })
 export class TransactionComponent implements OnInit {
+  private readonly eventsService = inject(EventsService);
+  private readonly banknService = inject(BanknService);
+  private readonly accountService = inject(AccountService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly mathService = inject(MathService);
+
   transactionTypes = Object.values(TransactionType);
   form: FormGroup;
 
@@ -31,16 +40,7 @@ export class TransactionComponent implements OnInit {
 
   transaction: Transaction | null = null;
 
-  constructor(
-    private eventsService: EventsService,
-    private banknService: BanknService,
-    private accountService: AccountService,
-    private transactionService: TransactionService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private mathService: MathService
-  ) {
+  constructor() {
     this.form = new FormGroup({
       accountId: new FormControl(),
       id: new FormControl(),

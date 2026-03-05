@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../../services/account.service';
@@ -13,6 +13,12 @@ import { Transaction } from '../../../../models/transaction';
     standalone: false
 })
 export class TransactionImportEditComponent implements OnInit {
+  private readonly accountService = inject(AccountService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly formBuilder = inject(UntypedFormBuilder);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+
   form: UntypedFormGroup;
   formData;
   account: Account | null = null;
@@ -21,11 +27,6 @@ export class TransactionImportEditComponent implements OnInit {
   submitDisabled: boolean = false;
 
   constructor(
-    private accountService: AccountService,
-    private transactionService: TransactionService,
-    private formBuilder: UntypedFormBuilder,
-    private route: ActivatedRoute,
-    private router: Router
   ) {
     this.formData = {
       importData: null,

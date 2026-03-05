@@ -12,8 +12,6 @@ export class EventsService {
   private entitiesChange: Subject<void> = new Subject<void>();
   private transactionPeriodChange: Subject<void> = new Subject<void>();
 
-  constructor() { }
-
   public subscribeBanknChange(callback: () => void): void {
     console.debug("banknChange subscribed");
     this.banknChange.subscribe(callback);

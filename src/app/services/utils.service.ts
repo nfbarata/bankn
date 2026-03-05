@@ -8,7 +8,7 @@ import comparison from 'string-comparison';
 })
 export class UtilsService {
   static minRating = 0.6;
-  private countries: any;
+  private readonly countries: any;
 
   constructor() {
     this.countries = UtilsService.getCountries();

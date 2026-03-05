@@ -1,5 +1,4 @@
-import { LOCALE_ID, inject } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { LOCALE_ID, inject, Injectable } from '@angular/core';
 
 import { EventsService } from './events.service';
 import { FileService } from './file.service';
@@ -17,9 +16,9 @@ import { CategoryService } from './category.service';
 @Injectable({ providedIn: 'root' })
 export class BanknService {
 
-  locale = inject(LOCALE_ID);
-  private eventsService = inject(EventsService);
-  private fileService = inject(FileService);
+  private readonly locale = inject(LOCALE_ID);
+  private readonly eventsService = inject(EventsService);
+  private readonly fileService = inject(FileService);
   private bankn: Bankn | null = null;
   private defaultCountryCode: string = 'null';
 
