@@ -147,7 +147,7 @@ export class TransactionComponent implements OnInit {
           this.transactionService.createTransaction(
             account,
             amount,
-            UtilsService.removeTime(new Date(this.form.value.date)),
+            new Date(this.form.value.date),
             this.form.value.type,
             this.form.value.entity,
             this.form.value.category,
@@ -161,7 +161,7 @@ export class TransactionComponent implements OnInit {
               account,
               this.transaction,
               amount,
-              UtilsService.removeTime(new Date(this.form.value.date)),
+              new Date(this.form.value.date),
               this.form.value.type,
               this.form.value.entity,
               this.form.value.category,

@@ -42,6 +42,7 @@ export class TransactionService {
     receiptReference?: string,
     description?: string
   ) {
+    date=UtilsService.removeTime(date);
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
@@ -51,7 +52,7 @@ export class TransactionService {
       UUID.UUID(),
       amount,
       type,
-      UtilsService.removeTime(date),
+      date,
       entity == null ? undefined : entity,
       category == null ? undefined : category,
       receiptReference,
@@ -72,7 +73,8 @@ export class TransactionService {
     receiptReference: string,
     description: string
   ) {
-
+    date=UtilsService.removeTime(date);
+    var dateChanged = transaction.date != date;
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
@@ -85,6 +87,11 @@ export class TransactionService {
     transaction.category = category == null ? undefined : category;
     transaction.receiptReference = receiptReference;
     transaction.description = description;
+
+    if(dateChanged){
+      // TODO optimize this
+      TransactionService.sortTransactions(account.transactions);
+    }
     this.eventsService.emitTransactionChange();
   }
 
@@ -144,6 +151,7 @@ export class TransactionService {
   }
 
   public static compareTransaction(a: Transaction, b: Transaction) {
+    // newer to older
     return b.date.getTime() - a.date.getTime();
   }
 
