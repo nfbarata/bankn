@@ -8,7 +8,7 @@ describe('EntityComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EntityComponent ]
+      imports: [ EntityComponent ]
     })
     .compileComponents();
 
