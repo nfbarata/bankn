@@ -6,7 +6,6 @@ import { TransactionService } from '../../services/transaction.service';
 import { Account } from '../../models/account';
 import { Transaction } from '../../models/transaction';
 import { Dinero, add, subtract } from 'dinero.js';
-import { TransactionType } from '../../models/enums';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, CommonModule } from '@angular/common';
 import { DineroPipe } from "../../pipes/dinero.pipe";

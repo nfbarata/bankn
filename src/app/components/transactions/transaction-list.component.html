@@ -68,7 +68,7 @@
       <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
         <td>{{ transaction.category | category }}&nbsp;</td>
         <td>{{ transaction.description }}&nbsp;</td>
-        <td class="text-end" scope="row">{{transaction | transaction | dinero }}</td>
+        <td class="text-end" scope="row">{{transaction | transaction }}</td>
       </tr>
       }
       }

@@ -8,12 +8,11 @@ import { Transaction } from '../../models/transaction';
 import { DatePipe, CommonModule } from '@angular/common';
 import { TransactionPipe } from "../../pipes/transaction.pipe";
 import { CategoryPipe } from "../../pipes/category.pipe";
-import { DineroPipe } from "../../pipes/dinero.pipe";
 
 @Component({
   selector: 'app-transaction-import-edit',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TransactionPipe, CategoryPipe, DineroPipe],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TransactionPipe, CategoryPipe],
   templateUrl: './transaction-import-edit.component.html',
   styleUrls: ['./transaction-import-edit.component.css']
 })
