@@ -4,21 +4,21 @@
   </div>
 </div>
 
-@if (accounts.length == 0) {
+@if (accounts.length === 0) {
   <div class="row">
     <div class="col-sm-5">
       <account-create-card></account-create-card>
     </div>
   </div>
 }
-@if (accounts.length > 0 && selectedAccounts.length == 0) {
+@if (accounts.length > 0 && selectedAccounts.length === 0) {
   <div class="row">
     <div class="col-sm-5">
       <account-select-card></account-select-card>
     </div>
   </div>
 }
-@if (accounts.length > 0 && selectedAccounts.length > 0 && transactions.length == 0) {
+@if (accounts.length > 0 && selectedAccounts.length > 0 && transactions.length === 0) {
   <div class="row">
     <div class="col-sm-5">
       <transaction-create-card></transaction-create-card>

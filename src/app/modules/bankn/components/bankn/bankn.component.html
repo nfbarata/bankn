@@ -1,4 +1,4 @@
-<h2>{{form.value.id==null?'Create bankn profile':'Edit bankn profile'}}</h2>
+<h2>{{form.value.id===null?'Create bankn profile':'Edit bankn profile'}}</h2>
 <br>
   <form [formGroup]="form" class="mb-3" (ngSubmit)="onSubmit()">
     <div class="row mb-3">
@@ -19,7 +19,7 @@
       </label>
         <select title="referenceCountry" class="form-select" formControlName="referenceCountry">
           @for (country of countries; track country) {
-            <option [selected]="country.alpha2==form.value.referenceCountry" [value]="country.alpha2">{{country.name}} - {{country.currencies[0]}}</option>
+            <option [selected]="country.alpha2===form.value.referenceCountry" [value]="country.alpha2">{{country.name}} - {{country.currencies[0]}}</option>
           }
         </select>
         <small id="refereenceCountryHelpBlock" class="form-text text-muted">
@@ -29,5 +29,5 @@
       </div>
     </div>
     <br>
-      <button class="btn btn-primary" type="submit" i18n>{{form.value.id==null?'Create':'Ok'}}</button>
+      <button class="btn btn-primary" type="submit" i18n>{{form.value.id===null?'Create':'Ok'}}</button>
     </form>

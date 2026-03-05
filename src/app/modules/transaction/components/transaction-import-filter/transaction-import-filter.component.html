@@ -11,7 +11,7 @@
                 Import?
               </th>
               <!-- column type options -->
-              @for (columnHeader of (transactions==null || transactions.length==0)?[]:transactions[0]; track
+              @for (columnHeader of (transactions===null || transactions.length===0)?[]:transactions[0]; track
               columnHeader; let h = $index) {
               <th scope="col">
                 <div style="max-width: 3.6rem;">

@@ -27,12 +27,12 @@
                 </td>
                 <td>
                   {{
-                  transaction.entity == undefined ? '' : transaction.entity.name
+                  transaction.entity === undefined ? '' : transaction.entity.name
                   }}
                 </td>
                 <td>
                   {{
-                  transaction.category == undefined
+                  transaction.category === undefined
                   ? ''
                   : (transaction.category | category)
                   }}

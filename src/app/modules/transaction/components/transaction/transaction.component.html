@@ -1,4 +1,4 @@
-<h2>{{form.value.id==null?'Create Transaction':'Edit Transaction'}}</h2>
+<h2>{{form.value.id===null?'Create Transaction':'Edit Transaction'}}</h2>
 <br>
 <form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -8,7 +8,7 @@
         <span class="input-group-text" i18n>Type</span>
         <select title="type" class="form-select" formControlName="type">
           @for (type of transactionTypes; track type) {
-          <option [selected]="form.value.type==type" [value]="type">{{type | transactionType}}</option>
+          <option [selected]="form.value.type===type" [value]="type">{{type | transactionType}}</option>
           }
         </select>
       </div>
@@ -25,8 +25,8 @@
       <div class="input-group">
         <span class="input-group-text" i18n>Account</span>
         <select title="account" class="form-select" formControlName="accountId">
-          @for (account of (accounts==null?[]:accounts); track account) {
-          <option [selected]="account.id==form.value.accountId" [value]="account.id">{{account.name}}</option>
+          @for (account of (accounts===null?[]:accounts); track account) {
+          <option [selected]="account.id===form.value.accountId" [value]="account.id">{{account.name}}</option>
           }
         </select>
       </div>
@@ -46,7 +46,7 @@
         <span class="input-group-text" i18n>Entity</span>
         <input title="entity" type="text" id="entity" class="form-control" list="entityList" formControlName="entity" />
         <datalist id="entityList">
-          @for (entity of (entities==null?[]:entities); track entity) {
+          @for (entity of (entities===null?[]:entities); track entity) {
           <option [value]="entity.name">{{entity.name}}</option>
           }
         </datalist>
@@ -59,7 +59,7 @@
         <input title="category" type="text" id="category" class="form-control" list="categoryList"
           formControlName="category" />
         <datalist id="categoryList">
-          @for (category of (categories==null?[]:categories); track category) {
+          @for (category of (categories===null?[]:categories); track category) {
           <option [value]="category | category">{{category | category}}</option>
           }
         </datalist>
@@ -88,8 +88,8 @@
   </div>
 
   <div style="display:flex; gap:0.5rem;">
-    <button class="btn btn-primary" type="submit" i18n>{{form.value.id==null?'Create':'Ok'}}</button>
-    @if (form.value.id!=null) {
+    <button class="btn btn-primary" type="submit" i18n>{{form.value.id===null?'Create':'Ok'}}</button>
+    @if (form.value.id!==null) {
     <a class="btn btn-danger text-white" role="button" (click)="onDelete(form.value.accountId,form.value.id);"
       i18n>Delete</a>
     }

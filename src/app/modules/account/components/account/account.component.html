@@ -1,4 +1,4 @@
-<h2>{{form.value.id==null?'Create Account':'Edit Account'}}</h2>
+<h2>{{form.value.id===null?'Create Account':'Edit Account'}}</h2>
 <br>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="container">
@@ -22,8 +22,8 @@
       <div class="col-sm-4 mb-3">
         <select title="referenceCountry" class="form-select me-2" formControlName="referenceCountry">
           @for (country of countries; track country) {
-          <option [selected]="country.alpha2==form.value.referenceCountry" [value]="country.alpha2"
-            [disabled]="country.alpha2!=form.value.referenceCountry">
+          <option [selected]="country.alpha2===form.value.referenceCountry" [value]="country.alpha2"
+            [disabled]="country.alpha2!==form.value.referenceCountry">
             {{country.name}} - {{country.currencies[0]}}
           </option>
           }
@@ -46,8 +46,8 @@
   </div>
 
   <div style="display:flex; gap:0.5rem;">
-    <button class="btn btn-primary" type="submit" i18n>{{form.value.id==null?'Create':'Ok'}}</button>
-    @if (form.value.id!=null) {
+    <button class="btn btn-primary" type="submit" i18n>{{form.value.id===null?'Create':'Ok'}}</button>
+    @if (form.value.id!==null) {
     <a class="btn btn-danger text-white" role="button" (click)="onDelete(form.value.id);" i18n>Delete</a>
     }
     <button type="button" class="btn btn-primary" (click)="onCancel();" i18n>Cancel</button>

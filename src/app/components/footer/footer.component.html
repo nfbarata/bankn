@@ -21,14 +21,14 @@
       </button>
       <div class="btn-group">
         <button class="btn btn-secondary d-none d-sm-block" type="submit"
-          [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!=null?newTransactionSelectedAccount:'')]"
+          [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!==null?newTransactionSelectedAccount:'')]"
           title="New Transaction" i18n>
           <span class="oi oi-plus"></span>
         </button>
         <select title="account" class="form-control d-none d-md-inline"
           (change)="onNewTransactionAccountChangeHandler($event)">
           @for (account of accounts; track account) {
-          <option [selected]="newTransactionSelectedAccount!=null && account.id==newTransactionSelectedAccount"
+          <option [selected]="newTransactionSelectedAccount!==null && account.id===newTransactionSelectedAccount"
             value="{{account.id}}">{{account.name}}</option>
           }
         </select>
