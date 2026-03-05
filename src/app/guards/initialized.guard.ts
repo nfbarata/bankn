@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 import { BanknService } from '../services/bankn.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class InitializedGuard  {
   private router = inject(Router);
   private banknService = inject(BanknService);

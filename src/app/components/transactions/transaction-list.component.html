@@ -1,0 +1,84 @@
+<div class="row d-flex align-items-center">
+  <div class="col-auto me-auto">
+    <h2 i18n>Transactions</h2>
+  </div>
+  @if (hasRealTransactions) {
+  <div class="col-auto">
+    <div class="btn-group">
+      <button class="btn btn-primary" type="submit"
+        [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!==null?newTransactionSelectedAccount:'')]"
+        [disabled]="accounts.length===0" title="New Transaction" i18n>
+        <span class="oi oi-plus"></span>
+      </button>
+      <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
+        @for (account of selectedAccounts; track account) {
+        <option [selected]="newTransactionSelectedAccount!==null && account.id===newTransactionSelectedAccount"
+          value="{{account.id}}">{{account.name}}</option>
+        }
+      </select>
+    </div>
+  </div>
+  }
+</div>
+<br />
+
+@if (accounts.length===0) {
+<div class="row">
+  <div class="col-sm-5">
+    <account-create-card></account-create-card>
+  </div>
+</div>
+}
+@if (accounts.length>0&&selectedAccounts.length===0) {
+<div class="row">
+  <div class="col-sm-5">
+    <account-select-card></account-select-card>
+  </div>
+</div>
+}
+@if (accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions) {
+<div class="row">
+  <div class="col-sm-5">
+    <transaction-create-card></transaction-create-card>
+  </div>
+  <div class="col-sm-2">
+    &nbsp;
+  </div>
+  <div class="col-sm-5">
+    <transactions-import-card></transactions-import-card>
+  </div>
+</div>
+}
+
+@if (hasRealTransactions) {
+<div class="table-responsive">
+  <table class="table table-sm table-hover">
+    <tbody>
+      @for (transaction of transactions; track transaction; let i = $index) {
+      <!-- header group -->
+      @if (transaction.hide!==true && (i===0 || i>0 && transaction.date.getTime()!==transactions[i-1].date.getTime())) {
+      <tr class="table-active">
+        <th scope="col" width="20%">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="70%"></th>
+        <th class="text-end" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
+      </tr>
+      }
+      <!-- detail group -->
+      @if (transaction.hide!==true) {
+      <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
+        <td>{{ transaction.category | category }}&nbsp;</td>
+        <td>{{ transaction.description }}&nbsp;</td>
+        <td class="text-end" scope="row">{{transaction | transaction | dinero }}</td>
+      </tr>
+      }
+      }
+    </tbody>
+    <tfoot class="table-group-divider">
+      <tr class="table-active">
+        <td class="" colspan="2">Initial value</td>
+        <td class="text-end" scope="row">{{ initialBalance | dinero}}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+}

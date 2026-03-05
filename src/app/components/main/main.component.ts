@@ -2,10 +2,10 @@ import { ApplicationRef, Component, OnInit, inject } from '@angular/core';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
-import { MenuComponent } from '../menu/menu.component';
+import { MenuComponent } from './main-menu.component';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { FileUploadComponent } from '../../modules/shared/components/file-upload/file-upload.component';
-import { FooterComponent } from '../footer/footer.component';
+import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
+import { FooterComponent } from './main-footer.component';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faSquare, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import {

@@ -17,7 +17,6 @@ import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app/app-routing.module';
-import { SharedModule } from './app/modules/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './app/components/main/main.component';
 import { registerLocaleData } from '@angular/common';
@@ -63,7 +62,7 @@ if (environment.production) {
 bootstrapApplication(MainComponent, {
   providers: [
     importProvidersFrom(BrowserModule, //.withServerTransition({ appId: 'serverApp' })
-      FormsModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, SharedModule, RouterModule),
+      FormsModule, ReactiveFormsModule, FontAwesomeModule, AppRoutingModule, RouterModule),
     EventsService,
     FileService,
     BanknService,
@@ -71,8 +70,8 @@ bootstrapApplication(MainComponent, {
     TransactionService,
     //{provide: APP_BASE_HREF, useValue : '/' },
     { provide: LOCALE_ID, useValue: LANG },
-    //    { provide: ACCOUNT_SERVICE, useExisting: AccountService },
-    //    { provide: TRANSACTION_SERVICE, useExisting: TransactionService },
+//    { provide: ACCOUNT_SERVICE, useExisting: AccountService },
+//    { provide: TRANSACTION_SERVICE, useExisting: TransactionService },
     { provide: 'FirebaseApp', useValue: app },
     { provide: 'FirebaseAnalytics', useValue: analytics },
     InitializedGuard,

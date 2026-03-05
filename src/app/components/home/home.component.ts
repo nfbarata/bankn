@@ -2,11 +2,11 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { BanknService} from '../../services/bankn.service';
 import { AccountService} from '../../services/account.service';
 import { EventsService} from '../../services/events.service';
-import { BanknCreateCardComponent } from '../../modules/shared/components/bankn-create-card/bankn-create-card.component';
-import { FileOpenCardComponent } from '../../modules/shared/components/file-open-card/file-open-card.component';
-import { TransactionCreateCardComponent } from '../../modules/shared/components/transaction-create-card/transaction-create-card.component';
-import { TransactionsImportCardComponent } from '../../modules/shared/components/transactions-import-card/transactions-import-card.component';
-import { AccountCreateCardComponent } from '../../modules/shared/components/account-create-card/account-create-card.component';
+import { BanknCreateCardComponent } from '../shared/bankn-create-card/bankn-create-card.component';
+import { FileOpenCardComponent } from '../shared/file-open-card/file-open-card.component';
+import { TransactionCreateCardComponent } from '../shared/transaction-create-card/transaction-create-card.component';
+import { TransactionsImportCardComponent } from '../shared/transactions-import-card/transactions-import-card.component';
+import { AccountCreateCardComponent } from '../shared/account-create-card/account-create-card.component';
 
 @Component({
     selector: 'app-home',

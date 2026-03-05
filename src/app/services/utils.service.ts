@@ -3,21 +3,19 @@ import { Injectable } from '@angular/core';
 import { countries } from 'country-data-list';
 import comparison from 'string-comparison';
 
+const COUNTRIES = countries.all.filter(function (country: any) {
+  return country.currencies.length > 0;
+});
+
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
+
   static minRating = 0.6;
-  private readonly countries = UtilsService.getCountries();
 
   getCountries() {
-    return this.countries;
-  }
-
-  static getCountries() {
-    return countries.all.filter(function (country: any) {
-      return country.currencies.length > 0;
-    });
+    return COUNTRIES;
   }
 
   static calculateSimilarityRating(

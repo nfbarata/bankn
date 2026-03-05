@@ -285,4 +285,26 @@ export class TransactionService {
       return results;
     }, new Map<string, Dinero<number>>());
   }
+
+  public static applyBalanceToTransactions(
+    transactions: Transaction[],
+    initialValue: Dinero<number>
+  ): void {
+    //update meta sum for all accounts and invert order
+    var accumulatedBalance = initialValue;
+
+    //add meta balance for this account
+    for (let i = transactions.length - 1; i >= 0; i--) {
+      transactions[i].balanceBefore = accumulatedBalance;
+      switch (transactions[i].type) {
+        case TransactionType.CREDIT:
+          accumulatedBalance = add(accumulatedBalance, transactions[i].amount);
+          break;
+        case TransactionType.DEBIT:
+          accumulatedBalance = subtract(accumulatedBalance, transactions[i].amount);
+          break;
+      }
+      transactions[i].balanceAfter = accumulatedBalance;
+    }
+  }
 }

@@ -2,21 +2,18 @@ import { Injectable, inject } from '@angular/core';
 import { BanknService } from './bankn.service';
 import { Dinero, dinero, Currency, toDecimal } from 'dinero.js';
 import * as currencies from '@dinero.js/currencies';
-import { UtilsService } from './utils.service';
+import { countries } from 'country-data-list';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MathService {
   private banknService = inject(BanknService);
-  private utilsService = inject(UtilsService);
-
 
   static getCurrencyOfCountry(countryCode: string): string {
-    var country = null;
-    var countries = UtilsService.getCountries();
-    for (let i = 0; i < countries.length && country == null; i++) {
-      if (countries[i].alpha2 == countryCode) return countries[i].currencies[0];
+    for (var country of countries.all) {
+      if (country.alpha2 == countryCode) 
+        return country.currencies[0];
     }
     throw new Error(countryCode + ' not found in list of countries');
   }
@@ -31,7 +28,7 @@ export class MathService {
     return MathService.toCurrency(currencyCode);
   }
 
-  public static toCurrency(currencyCode: string): Currency<number> {
+  static toCurrency(currencyCode: string): Currency<number> {
     return currencies[currencyCode as keyof typeof currencies];
   }
 
