@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Entity } from 'src/app/models/entity';
 import { BanknService } from 'src/app/services/bankn.service';
 import { EntityService } from 'src/app/services/entity.service';
@@ -12,13 +12,11 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class EntityListComponent implements OnInit {
 
-  entities: Entity[] = [];
+    private readonly eventsService = inject(EventsService);
+    private readonly entityService = inject(EntityService);
+    private readonly banknService = inject(BanknService);
 
-  constructor(
-    private eventsService: EventsService,
-    private entityService: EntityService,
-    private banknService: BanknService
-  ) { }
+  entities: Entity[] = [];
 
   ngOnInit() {
     this.refreshEntities();

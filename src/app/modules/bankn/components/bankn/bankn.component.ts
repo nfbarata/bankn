@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsService } from "../../../../services/utils.service";
@@ -11,6 +11,10 @@ import { BanknService } from "../../../../services/bankn.service";
     standalone: false
 })
 export class BanknComponent implements OnInit {
+  private readonly router = inject(Router);
+  private readonly banknService = inject(BanknService);
+  private readonly utilsService = inject(UtilsService);
+  private readonly route = inject(ActivatedRoute);
   
   countries: any;//used on UI
   form = new UntypedFormGroup({
@@ -19,12 +23,7 @@ export class BanknComponent implements OnInit {
     referenceCountry: new UntypedFormControl()
   });
 
-  constructor(
-    private router: Router,
-    private banknService: BanknService,
-    private utilsService: UtilsService,
-    private route: ActivatedRoute
-  ) {
+  constructor() {
     this.countries = this.utilsService.getCountries();
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,26 +16,22 @@ import { MathService } from '../../../../services/math.service';
 })
 export class AccountComponent implements OnInit {
 
-  form: FormGroup;
-  countries: any; //used on UI
+  private readonly banknService = inject(BanknService);
+  private readonly accountService = inject(AccountService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly utilsService = inject(UtilsService);
 
-  constructor(
-    private banknService: BanknService,
-    private accountService: AccountService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private location: Location,
-    private utilsService: UtilsService,
-  ) {
-    this.form = new FormGroup({
-      id: new FormControl(),
-      name: new FormControl('', [Validators.required]),
-      referenceAmount: new FormControl('', [Validators.required]),
-      referenceCountry: new FormControl('', [Validators.required]),
-      referenceDate: new FormControl('', [Validators.required]),
-      description: new FormControl(),
-    });
-  }
+  form: FormGroup = new FormGroup({
+    id: new FormControl(),
+    name: new FormControl('', [Validators.required]),
+    referenceAmount: new FormControl('', [Validators.required]),
+    referenceCountry: new FormControl('', [Validators.required]),
+    referenceDate: new FormControl('', [Validators.required]),
+    description: new FormControl(),
+  });
+  countries: any; //used on UI
 
   ngOnInit() {
     this.countries = this.utilsService.getCountries();

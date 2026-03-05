@@ -7,12 +7,8 @@ import { FileService } from '../../../../services/file.service';
     styleUrls: ['./file-upload.component.css'],
     standalone: false
 })
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   private fileService = inject(FileService);
-
-
-  ngOnInit() {
-  }
 
   handleFileInput(event: any) {
     if(event.target!=null && event.target.files!=null)

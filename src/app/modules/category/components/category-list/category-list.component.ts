@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Category } from 'src/app/models/category';
 import { BanknService } from 'src/app/services/bankn.service';
 import { CategoryService } from 'src/app/services/category.service';
@@ -12,13 +12,11 @@ import { EventsService } from 'src/app/services/events.service';
 })
 export class CategoryListComponent implements OnInit {
 
-  categories: Category[] = [];
+  private readonly eventsService = inject(EventsService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly banknService = inject(BanknService);
 
-  constructor(
-    private eventsService: EventsService,
-    private categoryService: CategoryService,
-    private banknService: BanknService
-  ) { }
+  categories: Category[] = [];
 
   ngOnInit() {
     this.refreshCategories();

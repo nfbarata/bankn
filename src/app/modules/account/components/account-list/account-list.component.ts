@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
@@ -10,12 +10,10 @@ import { Account } from "../../../../models/account";
     standalone: false
 })
 export class AccountListComponent implements OnInit {
+  private readonly eventsService = inject(EventsService);
+  private readonly accountService = inject(AccountService);
+  
   accounts: Account[] = [];
-
-  constructor(
-    private eventsService: EventsService,
-    private accountService: AccountService
-  ) { }
 
   ngOnInit() {
     this.refreshAccounts();

@@ -28,7 +28,7 @@ import { EntityService } from '../../../../services/entity.service';
     styleUrls: ['./transaction-import-filter.component.css'],
     standalone: false
 })
-export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
+export class TransactionImportFilterComponent implements OnInit {
   private readonly renderer = inject(Renderer2);
   private readonly banknService = inject(BanknService);
   private readonly accountService = inject(AccountService);
@@ -53,12 +53,7 @@ export class TransactionImportFilterComponent implements OnInit, AfterViewInit {
     };
     this.form = this.formBuilder.group(this.formData);
   }
-  ngAfterViewInit(): void {
-    /**ngIf(this.transactions.length>0){
-      this.clearTable();
-      this.fillTable(this.transactions);
-    }*/
-  }
+
   ngOnInit() {
     this.account = null;
     this.transactions = this.transactionService.importTransactions;

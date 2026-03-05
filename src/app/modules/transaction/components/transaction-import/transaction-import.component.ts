@@ -21,7 +21,7 @@ import { TransactionService } from '../../../../services/transaction.service';
   styleUrls: ['./transaction-import.component.css'],
   standalone: false
 })
-export class TransactionImportComponent implements OnInit, AfterViewInit {
+export class TransactionImportComponent implements OnInit {
 
   private renderer = inject(Renderer2);
   private transactionService = inject(TransactionService);
@@ -51,8 +51,6 @@ export class TransactionImportComponent implements OnInit, AfterViewInit {
   form: UntypedFormGroup = this.formBuilder.group(this.formData);
   accountId: string | null = null;
   output: any;
-
-  ngAfterViewInit(): void { }
 
   ngOnInit() {
     this.transactionService.importTransactions = [];

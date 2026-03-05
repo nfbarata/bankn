@@ -3,7 +3,8 @@ import {
   ElementRef,
   Component,
   OnInit,
-  AfterViewInit
+  AfterViewInit,
+  inject
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../../services/account.service';
@@ -28,6 +29,13 @@ import {
   standalone: false
 })
 export class ChartListComponent implements OnInit, AfterViewInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly eventsService = inject(EventsService);
+  private readonly accountService = inject(AccountService);
+  private readonly mathService = inject(MathService);
+  private readonly transactionService = inject(TransactionService);
+  private readonly dineroPipe = inject(DineroPipe);
+
   transactions: Transaction[] = [];
   selectedAccounts: Account[] = [];
   accounts: Account[] = [];
@@ -37,15 +45,6 @@ export class ChartListComponent implements OnInit, AfterViewInit {
   form = new UntypedFormGroup({
     groupBy: new UntypedFormControl(),
   });
-
-  constructor(
-    private route: ActivatedRoute,
-    private eventsService: EventsService,
-    private accountService: AccountService,
-    private mathService: MathService,
-    private transactionService: TransactionService,
-    private dineroPipe: DineroPipe,
-  ) { }
 
   ngOnInit() {
 

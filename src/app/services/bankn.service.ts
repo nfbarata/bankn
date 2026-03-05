@@ -20,16 +20,6 @@ export class BanknService {
   private readonly eventsService = inject(EventsService);
   private readonly fileService = inject(FileService);
   private bankn: Bankn | null = null;
-  private defaultCountryCode: string = 'null';
-
-  constructor() {
-    const locale = this.locale;
-
-    if (locale != null && locale.split('-').length > 1) {
-      this.defaultCountryCode = locale.split('-')[1].toUpperCase();
-    }
-    //console.log('default countryCode: ' + this.defaultCountryCode + ' - ' + locale);
-  }
 
   initialized(): boolean {
     return this.bankn != null;
@@ -152,7 +142,11 @@ export class BanknService {
   }
 
   getDefaultCountryCode(): string {
-    return this.defaultCountryCode;
+    const locale = this.locale;
+    if (locale != null && locale.split('-').length > 1) {
+      return locale.split('-')[1].toUpperCase();
+    }
+    return 'null';
   }
 
   getReferenceCountry(): string {

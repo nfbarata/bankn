@@ -6,11 +6,6 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./bankn-create-card.component.css'],
     standalone: false
 })
-export class BanknCreateCardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
+export class BanknCreateCardComponent  {
 
 }
