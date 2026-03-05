@@ -9,17 +9,15 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountListComponent } from './components/account-list/account-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule, ReactiveFormsModule,
-    AccountsRoutingModule,
-    SharedModule
-  ],
-  declarations: [ 
-    AccountComponent, 
-    AccountListComponent
-  ],
-  exports: []
+    imports: [
+        CommonModule,
+        FormsModule, ReactiveFormsModule,
+        AccountsRoutingModule,
+        SharedModule,
+        AccountComponent,
+        AccountListComponent
+    ],
+    exports: []
 })
 export class AccountModule { 
   

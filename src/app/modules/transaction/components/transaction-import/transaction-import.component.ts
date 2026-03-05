@@ -8,7 +8,7 @@ import {
   inject,
 } from '@angular/core';
 import { Location } from '@angular/common';
-import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -16,10 +16,10 @@ import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
 
 @Component({
-  selector: 'transaction-import',
-  templateUrl: './transaction-import.component.html',
-  styleUrls: ['./transaction-import.component.css'],
-  standalone: false
+    selector: 'transaction-import',
+    templateUrl: './transaction-import.component.html',
+    styleUrls: ['./transaction-import.component.css'],
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class TransactionImportComponent implements OnInit {
 

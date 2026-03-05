@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -14,12 +14,14 @@ import { Category } from '../../../../models/category';
 import { MathService } from '../../../../services/math.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { UtilsService } from '../../../../services/utils.service';
+import { TransactionTypePipe } from '../../../shared/pipes/transactionType.pipe';
+import { CategoryPipe } from '../../../shared/pipes/category.pipe';
 
 @Component({
     selector: 'transaction',
     templateUrl: './transaction.component.html',
     styleUrls: ['./transaction.component.css'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, TransactionTypePipe, CategoryPipe]
 })
 export class TransactionComponent implements OnInit {
   private readonly eventsService = inject(EventsService);

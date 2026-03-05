@@ -1,10 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ImportColumnType } from '../../../models/enums';
 
-@Pipe({
-    name: 'importColumnType',
-    standalone: false
-})
+@Pipe({ name: 'importColumnType' })
 export class ImportColumnTypePipe implements PipeTransform {
   transform(value: string /*| ImportColumnType*/, args?: any): String {
     var e: ImportColumnType;

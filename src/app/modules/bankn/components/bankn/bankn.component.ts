@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtilsService } from "../../../../services/utils.service";
 import { BanknService } from "../../../../services/bankn.service";
@@ -8,7 +8,7 @@ import { BanknService } from "../../../../services/bankn.service";
     selector: "bankn",
     templateUrl: "./bankn.component.html",
     styleUrls: ["./bankn.component.css"],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class BanknComponent implements OnInit {
   private readonly router = inject(Router);

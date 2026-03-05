@@ -12,22 +12,20 @@ import { TransactionImportFilterComponent } from './components/transaction-impor
 import { TransactionImportEditComponent } from './components/transaction-import-edit/transaction-import-edit.component'
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule, ReactiveFormsModule,
-    TransactionRoutingModule,
-    SharedModule
-  ],
-  declarations: [
-    TransactionListComponent,
-    TransactionImportComponent,
-    TransactionComponent,
-    TransactionImportFilterComponent,
-    TransactionImportEditComponent
-  ],
-  exports: [
-    TransactionImportComponent,TransactionComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule, ReactiveFormsModule,
+        TransactionRoutingModule,
+        SharedModule,
+        TransactionListComponent,
+        TransactionImportComponent,
+        TransactionComponent,
+        TransactionImportFilterComponent,
+        TransactionImportEditComponent
+    ],
+    exports: [
+        TransactionImportComponent, TransactionComponent
+    ]
 })
 export class TransactionModule {
   

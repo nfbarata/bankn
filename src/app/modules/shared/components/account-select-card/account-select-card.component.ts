@@ -2,12 +2,13 @@ import { Component, OnInit, inject } from '@angular/core';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'account-select-card',
     templateUrl: './account-select-card.component.html',
     styleUrls: ['./account-select-card.component.css'],
-    standalone: false
+    imports: [FormsModule]
 })
 export class AccountSelectCardComponent implements OnInit {
   private eventsService = inject(EventsService);

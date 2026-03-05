@@ -3,10 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import coinify from 'coinify';
 import { Dinero, toDecimal } from 'dinero.js';
 
-@Pipe({
-    name: 'dinero',
-    standalone: false
-})
+@Pipe({ name: 'dinero' })
 export class DineroPipe implements PipeTransform {
   transform(value: Dinero<number> | null, args?: any): String {
     if (value == null) return '';

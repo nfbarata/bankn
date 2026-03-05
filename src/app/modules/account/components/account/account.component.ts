@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BanknService } from '../../../../services/bankn.service';
@@ -12,7 +12,7 @@ import { MathService } from '../../../../services/math.service';
     selector: 'account',
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.css'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class AccountComponent implements OnInit {
 

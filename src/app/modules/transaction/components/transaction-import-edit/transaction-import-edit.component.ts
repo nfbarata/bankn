@@ -1,16 +1,19 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
 import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
+import { DatePipe } from '@angular/common';
+import { TransactionPipe } from '../../../shared/pipes/transaction.pipe';
+import { CategoryPipe } from '../../../shared/pipes/category.pipe';
 
 @Component({
     selector: 'app-transaction-import-edit',
     templateUrl: './transaction-import-edit.component.html',
     styleUrls: ['./transaction-import-edit.component.css'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, DatePipe, TransactionPipe, CategoryPipe]
 })
 export class TransactionImportEditComponent implements OnInit {
   private readonly accountService = inject(AccountService);

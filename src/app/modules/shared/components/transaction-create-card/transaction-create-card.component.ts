@@ -2,12 +2,14 @@ import { Component, OnInit, inject } from '@angular/core';
 import { AccountService } from '../../../../services/account.service';
 import { EventsService } from '../../../../services/events.service';
 import { Account } from "../../../../models/account";
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'transaction-create-card',
     templateUrl: './transaction-create-card.component.html',
     styleUrls: ['./transaction-create-card.component.css'],
-    standalone: false
+    imports: [FormsModule, RouterLink]
 })
 export class TransactionCreateCardComponent implements OnInit {
   private accountService = inject(AccountService);

@@ -3,12 +3,13 @@ import { Category } from 'src/app/models/category';
 import { BanknService } from 'src/app/services/bankn.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { EventsService } from 'src/app/services/events.service';
+import { CategoryPipe } from '../../../shared/pipes/category.pipe';
 
 @Component({
     selector: 'app-category-list',
     templateUrl: './category-list.component.html',
     styleUrls: ['./category-list.component.css'],
-    standalone: false
+    imports: [CategoryPipe]
 })
 export class CategoryListComponent implements OnInit {
 

@@ -15,18 +15,17 @@ import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
 import Chart, { TooltipItem } from 'chart.js/auto';
 import { DineroPipe } from 'src/app/modules/shared/pipes/dinero.pipe';
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AccountCreateCardComponent } from '../../../shared/components/account-create-card/account-create-card.component';
+import { AccountSelectCardComponent } from '../../../shared/components/account-select-card/account-select-card.component';
+import { TransactionCreateCardComponent } from '../../../shared/components/transaction-create-card/transaction-create-card.component';
+import { TransactionsImportCardComponent } from '../../../shared/components/transactions-import-card/transactions-import-card.component';
 
 @Component({
-  selector: 'app-chart-list',
-  templateUrl: './chart-list.component.html',
-  styleUrls: ['./chart-list.component.css'],
-  standalone: false
+    selector: 'app-chart-list',
+    templateUrl: './chart-list.component.html',
+    styleUrls: ['./chart-list.component.css'],
+    imports: [AccountCreateCardComponent, AccountSelectCardComponent, TransactionCreateCardComponent, TransactionsImportCardComponent, FormsModule, ReactiveFormsModule]
 })
 export class ChartListComponent implements OnInit, AfterViewInit {
   private readonly route = inject(ActivatedRoute);

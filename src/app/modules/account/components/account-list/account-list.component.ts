@@ -2,12 +2,14 @@ import { Component, OnInit, inject } from '@angular/core';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
 import { Account } from "../../../../models/account";
+import { RouterLink } from '@angular/router';
+import { AccountCreateCardComponent } from '../../../shared/components/account-create-card/account-create-card.component';
 
 @Component({
     selector: 'account-list',
     templateUrl: './account-list.component.html',
     styleUrls: ['./account-list.component.css'],
-    standalone: false
+    imports: [RouterLink, AccountCreateCardComponent]
 })
 export class AccountListComponent implements OnInit {
   private readonly eventsService = inject(EventsService);

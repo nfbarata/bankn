@@ -3,12 +3,13 @@ import { Entity } from 'src/app/models/entity';
 import { BanknService } from 'src/app/services/bankn.service';
 import { EntityService } from 'src/app/services/entity.service';
 import { EventsService } from 'src/app/services/events.service';
+import { CategoryPipe } from '../../../shared/pipes/category.pipe';
 
 @Component({
     selector: 'app-entity-list',
     templateUrl: './entity-list.component.html',
     styleUrls: ['./entity-list.component.css'],
-    standalone: false
+    imports: [CategoryPipe]
 })
 export class EntityListComponent implements OnInit {
 

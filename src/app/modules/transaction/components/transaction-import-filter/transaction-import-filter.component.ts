@@ -9,7 +9,7 @@ import {
   inject,
 } from '@angular/core';
 import { Location, DOCUMENT } from '@angular/common';
-import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { BanknService } from '../../../../services/bankn.service';
@@ -21,12 +21,13 @@ import { UUID } from 'angular2-uuid';
 import { ImportColumnType, TransactionType } from '../../../../models/enums';
 import { CategoryService } from '../../../../services/category.service';
 import { EntityService } from '../../../../services/entity.service';
+import { ImportColumnTypePipe } from '../../../shared/pipes/importColumnType.pipe';
 
 @Component({
     selector: 'app-transaction-import-filter',
     templateUrl: './transaction-import-filter.component.html',
     styleUrls: ['./transaction-import-filter.component.css'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, ImportColumnTypePipe]
 })
 export class TransactionImportFilterComponent implements OnInit {
   private readonly renderer = inject(Renderer2);

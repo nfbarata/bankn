@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { EventsService } from '../../../../services/events.service';
 import { AccountService } from '../../../../services/account.service';
 import { TransactionService } from '../../../../services/transaction.service';
@@ -7,12 +7,21 @@ import { Account } from '../../../../models/account';
 import { Transaction } from '../../../../models/transaction';
 import { Dinero, add, subtract } from 'dinero.js';
 import { TransactionType } from '../../../../models/enums';
+import { FormsModule } from '@angular/forms';
+import { AccountCreateCardComponent } from '../../../shared/components/account-create-card/account-create-card.component';
+import { AccountSelectCardComponent } from '../../../shared/components/account-select-card/account-select-card.component';
+import { TransactionCreateCardComponent } from '../../../shared/components/transaction-create-card/transaction-create-card.component';
+import { TransactionsImportCardComponent } from '../../../shared/components/transactions-import-card/transactions-import-card.component';
+import { DatePipe } from '@angular/common';
+import { DineroPipe } from '../../../shared/pipes/dinero.pipe';
+import { TransactionPipe } from '../../../shared/pipes/transaction.pipe';
+import { CategoryPipe } from '../../../shared/pipes/category.pipe';
 
 @Component({
-  selector: 'app-transaction-list',
-  templateUrl: './transaction-list.component.html',
-  styleUrls: ['./transaction-list.component.css'],
-  standalone: false
+    selector: 'app-transaction-list',
+    templateUrl: './transaction-list.component.html',
+    styleUrls: ['./transaction-list.component.css'],
+    imports: [RouterLink, FormsModule, AccountCreateCardComponent, AccountSelectCardComponent, TransactionCreateCardComponent, TransactionsImportCardComponent, DatePipe, DineroPipe, TransactionPipe, CategoryPipe]
 })
 export class TransactionListComponent implements OnInit {
 

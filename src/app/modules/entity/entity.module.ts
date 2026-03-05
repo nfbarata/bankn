@@ -8,14 +8,12 @@ import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [
-    EntityListComponent,
-    EntityComponent
-  ],
-  imports: [
-    CommonModule,
-    EntityRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        EntityRoutingModule,
+        SharedModule,
+        EntityListComponent,
+        EntityComponent
+    ]
 })
 export class EntityModule { }

@@ -8,14 +8,12 @@ import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
-  declarations: [
-    CategoryListComponent,
-    CategoryComponent
-  ],
-  imports: [
-    CommonModule,
-    CategoryRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        CategoryRoutingModule,
+        SharedModule,
+        CategoryListComponent,
+        CategoryComponent
+    ]
 })
 export class CategoryModule { }

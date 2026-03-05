@@ -8,13 +8,13 @@ import { SharedModule } from '../shared/shared.module';
 import { ChartListComponent } from './components/chart-list/chart-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ChartRoutingModule,
-    SharedModule,
-  ],
-  declarations: [ChartListComponent],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ChartRoutingModule,
+        SharedModule,
+        ChartListComponent,
+    ],
 })
 export class ChartModule {}

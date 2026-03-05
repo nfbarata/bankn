@@ -17,48 +17,46 @@ import { ImportColumnTypePipe } from './pipes/importColumnType.pipe';
 import { CategoryPipe } from './pipes/category.pipe';
 
 @NgModule({
-  imports: [
-    CommonModule, 
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-    AccountCreateCardComponent, 
-    AccountSelectCardComponent, 
-    FileUploadComponent, 
-    FileOpenCardComponent, 
-    BanknCreateCardComponent, 
-    TransactionsImportCardComponent, 
-    TransactionCreateCardComponent, 
-    DineroPipe, 
-    TransactionPipe, 
-    TransactionTypePipe, 
-    ImportColumnTypePipe, 
-    CategoryPipe,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  declarations: [
-    AccountCreateCardComponent, 
-    AccountSelectCardComponent, 
-    FileUploadComponent, 
-    FileOpenCardComponent, 
-    BanknCreateCardComponent, 
-    TransactionsImportCardComponent, 
-    TransactionCreateCardComponent, 
-    DineroPipe, 
-    TransactionPipe, 
-    TransactionTypePipe, 
-    ImportColumnTypePipe, 
-    CategoryPipe
-  ],
-  providers: [
-    DineroPipe, 
-    TransactionPipe, 
-    TransactionTypePipe, 
-    ImportColumnTypePipe, 
-    CategoryPipe
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AccountCreateCardComponent,
+        AccountSelectCardComponent,
+        FileUploadComponent,
+        FileOpenCardComponent,
+        BanknCreateCardComponent,
+        TransactionsImportCardComponent,
+        TransactionCreateCardComponent,
+        DineroPipe,
+        TransactionPipe,
+        TransactionTypePipe,
+        ImportColumnTypePipe,
+        CategoryPipe
+    ],
+    exports: [
+        AccountCreateCardComponent,
+        AccountSelectCardComponent,
+        FileUploadComponent,
+        FileOpenCardComponent,
+        BanknCreateCardComponent,
+        TransactionsImportCardComponent,
+        TransactionCreateCardComponent,
+        DineroPipe,
+        TransactionPipe,
+        TransactionTypePipe,
+        ImportColumnTypePipe,
+        CategoryPipe,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    providers: [
+        DineroPipe,
+        TransactionPipe,
+        TransactionTypePipe,
+        ImportColumnTypePipe,
+        CategoryPipe
+    ]
 })
 export class SharedModule { }

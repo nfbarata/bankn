@@ -8,17 +8,14 @@ import { SharedModule } from '../shared/shared.module';
 import { BanknComponent } from './components/bankn/bankn.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule, ReactiveFormsModule,
-    BanknRoutingModule,
-    SharedModule
-  ],
-  declarations: [ 
-    BanknComponent
-  ],
-  exports: [
-  ]
+    imports: [
+        CommonModule,
+        FormsModule, ReactiveFormsModule,
+        BanknRoutingModule,
+        SharedModule,
+        BanknComponent
+    ],
+    exports: []
 })
 export class BanknModule { 
 

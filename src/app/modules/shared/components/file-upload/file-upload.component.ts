@@ -4,8 +4,7 @@ import { FileService } from '../../../../services/file.service';
 @Component({
     selector: 'file-upload',
     templateUrl: './file-upload.component.html',
-    styleUrls: ['./file-upload.component.css'],
-    standalone: false
+    styleUrls: ['./file-upload.component.css']
 })
 export class FileUploadComponent {
   private fileService = inject(FileService);

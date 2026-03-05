@@ -87,38 +87,35 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
 @NgModule({
-  imports: [
-    BrowserModule, //.withServerTransition({ appId: 'serverApp' })
-    FormsModule,
-    ReactiveFormsModule,
-    FontAwesomeModule,
-    AppRoutingModule,
-    SharedModule,
-    RouterModule,
-    //GoogleChartsModule,
-  ],
-  exports: [],
-  declarations: [
-    MainComponent,
-    MenuComponent,
-    FooterComponent,
-    HomeComponent,
-  ],
-  bootstrap: [MainComponent],
-  providers: [
-    EventsService,
-    FileService,
-    BanknService,
-    AccountService,
-    TransactionService,
-    //{provide: APP_BASE_HREF, useValue : '/' },
-    { provide: LOCALE_ID, useValue: LANG },
-    { provide: ACCOUNT_SERVICE, useExisting: AccountService },
-    { provide: TRANSACTION_SERVICE, useExisting: TransactionService },
-    { provide: 'FirebaseApp', useValue: app },
-    { provide: 'FirebaseAnalytics', useValue: analytics },
-    InitializedGuard,
-  ],
+    imports: [
+        BrowserModule, //.withServerTransition({ appId: 'serverApp' })
+        FormsModule,
+        ReactiveFormsModule,
+        FontAwesomeModule,
+        AppRoutingModule,
+        SharedModule,
+        RouterModule,
+        MenuComponent,
+        FooterComponent,
+        HomeComponent,
+    ],
+    exports: [],
+    declarations: [MainComponent],
+    bootstrap: [MainComponent],
+    providers: [
+        EventsService,
+        FileService,
+        BanknService,
+        AccountService,
+        TransactionService,
+        //{provide: APP_BASE_HREF, useValue : '/' },
+        { provide: LOCALE_ID, useValue: LANG },
+        { provide: ACCOUNT_SERVICE, useExisting: AccountService },
+        { provide: TRANSACTION_SERVICE, useExisting: TransactionService },
+        { provide: 'FirebaseApp', useValue: app },
+        { provide: 'FirebaseAnalytics', useValue: analytics },
+        InitializedGuard,
+    ],
 })
 export class AppModule {
   private library = inject(FaIconLibrary);

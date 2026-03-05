@@ -3,12 +3,14 @@ import { AccountService } from '../../services/account.service';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { Account } from "../../models/account";
+import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-main-menu',
     templateUrl: './menu.component.html',
     styleUrls: ['./menu.component.css'],
-    standalone: false
+    imports: [RouterLink, FormsModule]
 })
 export class MenuComponent implements OnInit {
   private banknService = inject(BanknService);

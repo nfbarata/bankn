@@ -4,10 +4,7 @@ import { Transaction } from '../../../models/transaction';
 import { TransactionType } from '../../../models/enums';
 import { dinero, toDecimal, compare  } from 'dinero.js';
 
-@Pipe({
-    name: 'transaction',
-    standalone: false
-})
+@Pipe({ name: 'transaction' })
 export class TransactionPipe implements PipeTransform {
   private dinero = inject(DineroPipe);
 

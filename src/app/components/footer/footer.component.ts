@@ -1,16 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
 import { UtilsService } from '../../services/utils.service';
 import { Account } from '../../models/account';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.css'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, RouterLink]
 })
 export class FooterComponent implements OnInit {
   private banknService = inject(BanknService);
