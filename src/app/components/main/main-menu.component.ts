@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+
+import { ChangeDetectorRef, Component, HostListener, OnInit, inject } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -21,6 +22,16 @@ export class MenuComponent implements OnInit {
   
   accounts:Account[] = [];
   hasBankn:Boolean = false;
+  isDesktop: boolean = this.isDesktopView();
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.isDesktop = this.isDesktopView();
+  }
+
+  isDesktopView(): boolean {
+    return window.innerWidth >= 992; // matching the bootstrap lg breakpoint
+  }
 
   ngOnInit() {
     this.refreshData();

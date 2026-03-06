@@ -11,15 +11,15 @@
           <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" i18n>File</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink1">
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/bankn']" i18n>New</a>
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/bankn']" i18n>New</a>
             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#uploadModal" i18n>Open...</a>
             @if (hasBankn) {
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" (click)="onSaveAs()" i18n>Save as...</a>
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/bankn/current']" i18n>Edit</a>
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/bankn/current']" i18n>Edit</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/categories']" i18n>Categories</a>
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/entities']" i18n>Entities</a>
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/categories']" i18n>Categories</a>
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/entities']" i18n>Entities</a>
             }
           </div>
         </li>
@@ -29,7 +29,7 @@
           @if (hasBankn) {
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
             <!-- hack to prevent inside clicks to close -->
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null"
               [routerLink]="['/accounts/account']" i18n="@@menu-manage">New</a>
             <div class="dropdown-divider"></div>
             <form>
@@ -44,21 +44,21 @@
               }
             </form>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            <a class="dropdown-item" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null"
               [routerLink]="['/accounts']" i18n="@@menu-manage">Manage</a>
           </div>
           }
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ accounts.length!==0 ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/transactions']"
+          <a class="nav-link {{ accounts.length!==0 ? 'active' : '' }}" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/transactions']"
             i18n="@@menu-transactions">Transactions</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ accounts.length!==0 ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" [routerLink]="['/charts']"
+          <a class="nav-link {{ accounts.length!==0 ? 'active' : '' }}" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" [routerLink]="['/charts']"
             i18n="@@menu-charts">Charts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" i18n="@@menu-help">Help</a>
+          <a class="nav-link" [attr.data-bs-toggle]="!isDesktop ? 'collapse' : null" [attr.data-bs-target]="!isDesktop ? '#navbarNavDropdown' : null" i18n="@@menu-help">Help</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown"
