@@ -9,39 +9,40 @@
   </div>
 </div>
 <br>
-  @if (accounts.length===0) {
-    <div class="row">
-      <div class="col-sm-5">
-        <account-create-card></account-create-card>
-      </div>
-    </div>
-  }
-  <div class="table-responsive">
-    @if (accounts.length>0) {
-      <table class="table table-sm table-hover">
-        <thead>
-          <tr class="table-active">
-            <th scope="col" class="" width="0%">Name</th>
-            <th scope="col" class="">Description</th>
-            <th scope="col" class="text-end" width="0%">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (account of accounts; track account) {
-            <tr>
-              <td scope="row"[routerLink]="['/accounts/account',account.id]">{{ account.name }}&nbsp;</td>
-              <td [routerLink]="['/accounts/account',account.id]">{{ account.description }}&nbsp;</td>
-              <td class="text-end">
-                <button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" title="Edit" i18n>
-          <span class="oi oi-pencil"></span>
-        </button>&nbsp;
-                <button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" title="Transactions" i18n>
-          <span class="oi oi-list-rich"></span>
-        </button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    }
+@if (accounts.length===0) {
+<div class="row">
+  <div class="col-sm-5">
+    <account-create-card></account-create-card>
   </div>
+</div>
+}
+<div class="table-responsive">
+  @if (accounts.length>0) {
+  <table class="table table-sm table-hover">
+    <thead>
+      <tr class="table-active">
+        <th scope="col" class="" width="0%">Name</th>
+        <th scope="col" class="">Description</th>
+        <th scope="col" class="text-end" width="0%">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (account of accounts; track account) {
+      <tr>
+        <td scope="row" [routerLink]="['/accounts/account',account.id]" class="align-middle">{{ account.name }}&nbsp;
+        </td>
+        <td [routerLink]="['/accounts/account',account.id]" class="align-middle">{{ account.description }}&nbsp;</td>
+        <td class="text-end align-middle">
+          <button class="btn btn-primary" [routerLink]="['/accounts/account',account.id]" title="Edit" i18n>
+            <span class="oi oi-pencil"></span>
+          </button>&nbsp;
+          <button class="btn btn-secondary" [routerLink]="['/transactions/',account.id]" title="Transactions" i18n>
+            <span class="oi oi-list-rich"></span>
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</div>

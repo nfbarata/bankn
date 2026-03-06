@@ -58,25 +58,25 @@
       <!-- header group -->
       @if (transaction.hide!==true && (i===0 || i>0 && transaction.date.getTime()!==transactions[i-1].date.getTime())) {
       <tr class="table-active">
-        <th scope="col" width="20%">{{transaction.date | date:'shortDate'}}&nbsp;</th>
-        <th scope="col" width="70%"></th>
-        <th class="text-end" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
+        <th scope="col" width="20%" class="align-middle">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="70%" class="align-middle"></th>
+        <th class="text-end align-middle" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
       </tr>
       }
       <!-- detail group -->
       @if (transaction.hide!==true) {
       <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
-        <td>{{ transaction.category | category }}&nbsp;</td>
-        <td>{{ transaction.description }}&nbsp;</td>
-        <td class="text-end" scope="row">{{transaction | transaction }}</td>
+        <td class="align-middle">{{ transaction.category | category }}&nbsp;</td>
+        <td class="align-middle">{{ transaction.description }}&nbsp;</td>
+        <td class="text-end align-middle" scope="row">{{transaction | transaction }}</td>
       </tr>
       }
       }
     </tbody>
     <tfoot class="table-group-divider">
       <tr class="table-active">
-        <td class="" colspan="2">Initial value</td>
-        <td class="text-end" scope="row">{{ initialBalance | dinero}}</td>
+        <td class="align-middle" colspan="2">Initial value</td>
+        <td class="text-end align-middle" scope="row">{{ initialBalance | dinero}}</td>
       </tr>
     </tfoot>
   </table>
