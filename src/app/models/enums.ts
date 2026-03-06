@@ -1,7 +1,7 @@
 export enum TransactionType {
   CREDIT = 'c',
   DEBIT = 'd',
-  TRANSFER = 't',
+  // TODO TRANSFER = 't',
 }
 
 export enum ImportColumnType {

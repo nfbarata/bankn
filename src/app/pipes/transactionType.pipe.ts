@@ -13,8 +13,8 @@ export class TransactionTypePipe implements PipeTransform {
         return 'Credit'; //TODO I18n
       case TransactionType.DEBIT:
         return 'Debit';
-      case TransactionType.TRANSFER:
-        return 'Transfer';
+      //case TransactionType.TRANSFER:
+      //  return 'Transfer';
     }
   }
 }
