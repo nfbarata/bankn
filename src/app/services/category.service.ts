@@ -63,7 +63,7 @@ export class CategoryService {
         parentCategory = currentCategory as Category;
     }
 
-    if (currentCategory) {
+    if (currentCategory && description) {
         CategoryService.upsertDescriptionPatterns(currentCategory, description);
     }
 

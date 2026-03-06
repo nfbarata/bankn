@@ -46,7 +46,7 @@ export class TransactionService {
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
-    var entity = this.entityService.upsertEntity(entityName, description, category);
+    var entity = this.entityService.upsertEntitySimple(entityName, description, category);
 
     var transaction = new Transaction(
       UUID.UUID(),
@@ -79,7 +79,7 @@ export class TransactionService {
     // Create Category if not exist
     const category = this.categoryService.upsertCategory(categoryFullName, description);
     // Create Entity if not exist
-    const entity = this.entityService.upsertEntity(entityName, description, category);
+    const entity = this.entityService.upsertEntitySimple(entityName, description, category);
 
     transaction.amount = amount;
     transaction.type = type;

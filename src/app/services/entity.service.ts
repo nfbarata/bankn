@@ -12,9 +12,68 @@ import { UtilsService } from './utils.service';
 export class EntityService {
   private banknService = inject(BanknService);
   private utilsService = inject(UtilsService);
+  private categoryService = inject(CategoryService);
 
+  getEntities(): Entity[] {
+    const bankn = this.banknService.getBankn();
+    return bankn ? bankn.entities : [];
+  }
+
+  getEntity(id: string): Entity | null {
+    const bankn = this.banknService.getBankn();
+    if (bankn) {
+      return bankn.entities.find(e => e.id === id) || null;
+    }
+    return null;
+  }
+
+  deleteEntity(id: string): void {
+    const bankn = this.banknService.getBankn();
+    if (bankn) {
+      const index = bankn.entities.findIndex(e => e.id === id);
+      if (index > -1) {
+        bankn.entities.splice(index, 1);
+      }
+    }
+  }
 
   upsertEntity(
+    id: string | null,
+    name: string,
+    descriptionPatterns: string[],
+    referenceCategoryFullName: string
+  ): Entity | null {
+    
+    //Guard
+    if (name == null || name == undefined || name.trim().length == 0) 
+      return null;
+
+    const bankn = this.banknService.getBankn()!;
+
+    let entity: Entity | undefined;
+    if (id) {
+      entity = bankn.entities.find(e => e.id === id);
+    }
+
+    // Create Category if not exist
+    const category = this.categoryService.upsertCategory(referenceCategoryFullName);
+
+    if (entity) {
+      // Update
+      entity.name = name;
+      entity.descriptionPatterns = descriptionPatterns.filter(p => p.trim() !== '');
+      entity.referenceCategory = category?? undefined;
+    } else {
+      // Create
+      entity = new Entity(name);
+      entity.descriptionPatterns = descriptionPatterns.filter(p => p.trim() !== '');
+      entity.referenceCategory = category?? undefined;
+      this.banknService.addEntity(entity);
+    }
+    return entity;
+  }
+
+  upsertEntitySimple(
     entityName?: string,
     description?: string,
     referenceCategory: Category | null = null
