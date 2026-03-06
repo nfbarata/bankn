@@ -57,7 +57,7 @@ export class BanknService {
 
   saveToFile(): void {
     if (this.bankn != null)
-      this.fileService.downloadJsonFile(BanknService.toJson(this.bankn));
+      this.fileService.downloadZipFile(BanknService.toJson(this.bankn), this.bankn.name + '.zip');
     else console.error('No bankn');
   }
 

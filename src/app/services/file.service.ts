@@ -1,102 +1,66 @@
 import { Injectable } from '@angular/core';
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
   fileToUpload: File | null = null;
-  private static readonly FILE_TYPE: string = 'application/json';
 
   parseJsonFile(callback: Function) {
     if (this.fileToUpload != null) {
-      var output: String = '';
       if (window.File && window.FileReader && window.FileList && window.Blob) {
-        // Great success! All the File APIs are supported.
-        //Only plain text
-        if (!this.fileToUpload.type.match(FileService.FILE_TYPE)) {
-          alert('Invalid file format'); //i18n
-        } else {
-          var picReader = new FileReader();
+        const reader = new FileReader();
 
-          picReader.addEventListener('load', function (event) {
-            if (event.target != null && event.target.result != null) {
-              //console.log(textFile.result);
-              var object = JSON.parse(event.target.result.toString());
+        reader.onload = (event) => {
+          if (!event.target?.result) {
+            console.error('No file content read.');
+            return;
+          }
+          const buffer = event.target.result as ArrayBuffer;
+
+          JSZip.loadAsync(buffer)
+            .then(zip => {
+              const fileInZip = zip.file('bankn.json');
+              if (fileInZip) {
+                return fileInZip.async('string');
+              } else {
+                throw new Error('bankn.json not found in zip.');
+              }
+            })
+            .then(content => {
+              const object = JSON.parse(content);
               callback(object);
-            } else {
-              console.error('No event target.');
-            }
-          });
+            })
+            .catch(() => {
+              // If it fails at any point (not a zip, no bankn.json, or not valid json inside zip)
+              // we assume it may be a plain json file.
+              try {
+                const text = new TextDecoder().decode(buffer);
+                const object = JSON.parse(text);
+                callback(object);
+              } catch (e) {
+                alert('File must be a bankn zip file or a valid JSON file.');
+                console.error('Failed to parse file as zip or json.', e);
+              }
+            });
+        };
 
-          //Read the text file
-          picReader.readAsText(this.fileToUpload);
-        }
+        reader.readAsArrayBuffer(this.fileToUpload);
       } else {
-        alert('The File APIs are not fully supported in this browser.'); //i18n
+        alert('The File APIs are not fully supported in this browser.');
       }
     } else {
       console.error('No file selected.');
     }
   }
 
-  downloadJsonFile(object: Object, filename = 'bankn.json') {
-    var output = JSON.stringify(object);
-    let blob = new Blob(['\ufeff' + output], {
-      type: FileService.FILE_TYPE + ';charset=utf-8;',
+  downloadZipFile(object: Object, filename = 'bankn.zip') {
+    const zip = new JSZip();
+    const json = JSON.stringify(object);
+    zip.file('bankn.json', json);
+
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      saveAs(content, filename);
     });
-    let dwldLink = document.createElement('a');
-    let url = URL.createObjectURL(blob);
-    let isSafariBrowser =
-      navigator.userAgent.indexOf('Safari') != -1 &&
-      navigator.userAgent.indexOf('Chrome') == -1;
-    if (isSafariBrowser) {
-      //if Safari open in new window to save file with random filename.
-      dwldLink.setAttribute('target', '_blank');
-    }
-    dwldLink.setAttribute('href', url);
-    dwldLink.setAttribute('download', filename);
-    dwldLink.style.visibility = 'hidden';
-    document.body.appendChild(dwldLink);
-    dwldLink.click();
-    document.body.removeChild(dwldLink);
   }
-  /*
-  downloadFile(data, headerList, filename='data') : void {
-    let csvData = this.convertToCSV(data, headerList);
-    console.log(csvData)
-    let blob = new Blob(['\ufeff' + csvData], { type: 'text/csv;charset=utf-8;' });
-    let dwldLink = document.createElement("a");
-    let url = URL.createObjectURL(blob);
-    let isSafariBrowser = navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1;
-    if (isSafariBrowser) {  //if Safari open in new window to save file with random filename.
-        dwldLink.setAttribute("target", "_blank");
-    }
-    dwldLink.setAttribute("href", url);
-    dwldLink.setAttribute("download", filename + ".csv");
-    dwldLink.style.visibility = "hidden";
-    document.body.appendChild(dwldLink);
-    dwldLink.click();
-    document.body.removeChild(dwldLink);
-  }
-
-  convertToCSV(objArray, headerList) : String {
-    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    let str = '';
-    let row = 'S.No,';
-
-    for (let index in headerList) {
-        row += headerList[index] + ',';
-    }
-    row = row.slice(0, -1);
-    str += row + '\r\n';
-    for (let i = 0; i < array.length; i++) {
-        let line = (i+1)+'';
-        for (let index in headerList) {
-          let head = headerList[index];
-
-            line += ',' + array[i][head];
-        }
-        str += line + '\r\n';
-    }
-    return str;
-  }
-  */
 }
