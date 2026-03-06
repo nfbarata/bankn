@@ -68,6 +68,7 @@ export class MainComponent implements OnInit {
 
   onOpen() {
     this.banknService.loadFromFile();
+    this.router.navigate(['']);
   }
 
   onAppReady() {
