@@ -1,7 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { Location, CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EventsService } from '../../services/events.service';
 import { BanknService } from '../../services/bankn.service';
 import { AccountService } from '../../services/account.service';
@@ -18,13 +19,13 @@ import { CategoryPipe } from "../../pipes/category.pipe";
 import { TransactionTypePipe } from "../../pipes/transactionType.pipe";
 
 @Component({
-    selector: 'transaction',
-    standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CategoryPipe, TransactionTypePipe],
-    templateUrl: './transaction.component.html',
-    styleUrls: ['./transaction.component.css']
+  selector: 'transaction',
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, CategoryPipe, TransactionTypePipe],
+  templateUrl: './transaction.component.html',
+  styleUrls: ['./transaction.component.css']
 })
-export class TransactionComponent implements OnInit {
+export class TransactionComponent implements OnInit, OnDestroy {
   private readonly eventsService = inject(EventsService);
   private readonly banknService = inject(BanknService);
   private readonly accountService = inject(AccountService);
@@ -33,6 +34,8 @@ export class TransactionComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly mathService = inject(MathService);
+
+  private subscriptions = new Subscription();
 
   transactionTypes = Object.values(TransactionType);
   form: FormGroup;
@@ -58,14 +61,16 @@ export class TransactionComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.refreshAccounts();
     this.refreshCategories();
     this.refreshEntities();
-    this.eventsService.subscribeAccountsChange(() => this.refreshAccounts());
-    this.eventsService.subscribeEntitiesChange(() => this.refreshEntities());
-    this.eventsService.subscribeCategoriesChange(() => this.refreshCategories());
+    this.subscriptions.add(this.eventsService.subscribeAccountsChange(() => this.refreshAccounts()));
+    this.subscriptions.add(this.eventsService.subscribeEntitiesChange(() => this.refreshEntities()));
+    this.subscriptions.add(this.eventsService.subscribeCategoriesChange(() => this.refreshCategories()));
 
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.add(this.route.paramMap.subscribe((params) => {
+      this.form.controls['accountId'].enable();
       if (this.accounts != null) {
         var account: Account | null;
         var accountId = params.get('accountId');
@@ -108,6 +113,7 @@ export class TransactionComponent implements OnInit {
                 receiptReference: this.transaction.receiptReference,
                 description: this.transaction.description,
               });
+              this.form.controls['accountId'].disable();
             } else {
               console.error('No transaction with that id');
               this.router.navigate(['/transactions']);
@@ -118,7 +124,11 @@ export class TransactionComponent implements OnInit {
           this.router.navigate(['/accounts']);
         }
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   refreshAccounts() {
@@ -135,9 +145,10 @@ export class TransactionComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      var account = this.accountService.getAccount(
-        this.form.value.accountId
-      );
+
+      var account = this.transaction != null ?
+        this.transaction.account :
+        this.accountService.getAccount(this.form.value.accountId);
 
       if (account != null) {
         var amount = this.accountService.fromInputValue(

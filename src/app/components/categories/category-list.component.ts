@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Category } from '../../models/category';
 import { BanknService } from '../../services/bankn.service';
 import { EventsService } from '../../services/events.service';
@@ -13,16 +14,21 @@ import { RouterModule } from '@angular/router';
     templateUrl: './category-list.component.html',
     styleUrls: ['./category-list.component.css']
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent implements OnInit, OnDestroy {
 
   private readonly eventsService = inject(EventsService);
   private readonly banknService = inject(BanknService);
 
+  private subscriptions = new Subscription();
   categories: Category[] = [];
 
   ngOnInit() {
     this.refreshCategories();
-    this.eventsService.subscribeCategoriesChange(() => this.refreshCategories());
+    this.subscriptions.add(this.eventsService.subscribeCategoriesChange(() => this.refreshCategories()));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
   
   refreshCategories(){

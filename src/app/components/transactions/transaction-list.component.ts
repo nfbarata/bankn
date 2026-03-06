@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
 import { TransactionService } from '../../services/transaction.service';
 import { Account } from '../../models/account';
 import { Transaction } from '../../models/transaction';
-import { Dinero, add, subtract } from 'dinero.js';
+import { Dinero } from 'dinero.js';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, CommonModule } from '@angular/common';
 import { DineroPipe } from "../../pipes/dinero.pipe";
@@ -23,11 +24,13 @@ import { AccountCreateCardComponent } from "../shared/account-create-card/accoun
     templateUrl: './transaction-list.component.html',
     styleUrls: ['./transaction-list.component.css']
 })
-export class TransactionListComponent implements OnInit {
+export class TransactionListComponent implements OnInit, OnDestroy {
 
   private route = inject(ActivatedRoute);
   private eventsService = inject(EventsService);
   private accountService = inject(AccountService);
+
+  private subscriptions = new Subscription();
 
   hasRealTransactions: boolean = false;
   transactions: Transaction[] = [];
@@ -39,11 +42,11 @@ export class TransactionListComponent implements OnInit {
   ngOnInit() {
     this.refreshAccounts()
 
-    this.eventsService.subscribeAccountSelectionChange(() => this.refreshData());
-    this.eventsService.subscribeAccountsChange(() => this.refreshAccounts());
-    this.eventsService.subscribeTransactionPeriodChange(() => this.refreshData());
+    this.subscriptions.add(this.eventsService.subscribeAccountSelectionChange(() => this.refreshData()));
+    this.subscriptions.add(this.eventsService.subscribeAccountsChange(() => this.refreshAccounts()));
+    this.subscriptions.add(this.eventsService.subscribeTransactionPeriodChange(() => this.refreshData()));
 
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.add(this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
       if (accountId == null || accountId.trim().length == 0) {
         //do nothing
@@ -58,18 +61,19 @@ export class TransactionListComponent implements OnInit {
           }
         });
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   refreshAccounts() {
-    //console.debug("refreshAccounts")
     this.accounts = this.accountService.getAccounts();
     this.refreshData();
   }
 
   refreshData() {
-    //console.debug("refreshData")
-    //clear
     while (this.transactions.length > 0)
       this.transactions.pop();
 
@@ -89,13 +93,10 @@ export class TransactionListComponent implements OnInit {
           this.hasRealTransactions = true;
       });
 
-      //get initial value
       let initialValue = this.accountService.getInitialValueMultipleForCurrentPeriod(this.selectedAccounts);
 
-      //sort (from multiple accounts)
       TransactionService.sortTransactions(newTransactions);
 
-      //calculate balances
       TransactionService.applyBalanceToTransactions(newTransactions, initialValue);
 
       this.transactions = newTransactions;

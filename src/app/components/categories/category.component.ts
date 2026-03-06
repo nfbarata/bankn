@@ -1,5 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
@@ -12,11 +13,13 @@ import { Category } from '../../models/category';
     templateUrl: './category.component.html',
     styleUrls: ['./category.component.css']
 })
-export class CategoryComponent implements OnInit {
+export class CategoryComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly categoryService = inject(CategoryService);
+
+  private subscriptions = new Subscription();
 
   form: FormGroup = new FormGroup({
     id: new FormControl(),
@@ -28,46 +31,25 @@ export class CategoryComponent implements OnInit {
   categories: Category[] = [];
 
   ngOnInit() {
-    //this.categories = this.categoryService.getCategories();
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.add(this.route.paramMap.subscribe((params) => {
       var categoryId = params.get('categoryId');
       if (categoryId) {
-        /*const category = this.categoryService.getCategory(categoryId);
-        if(category){
-          this.form.setValue({
-            id: category.id,
-            name: category.name,
-            parent: category.parent ? category.parent.id : null,
-            isDebit: category.isDebit,
-          });
-        }*/
+        //... 
       } 
-    });
+    }));
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   onSubmit() {
     if (this.form.valid) {
-      /*if (this.form.value.id) {
-        this.categoryService.updateCategory(
-          this.form.value.id,
-          this.form.value.name,
-          this.form.value.parent,
-          this.form.value.isDebit
-        );
-      } else {
-        this.categoryService.createCategory(
-          this.form.value.name,
-          this.form.value.parent,
-          this.form.value.isDebit
-        );
-      }
-      this.form.reset();
-      this.router.navigate(['/categories']);*/
+      //...
     }
   }
 
   onDelete(categoryId: string) {
-    //this.categoryService.deleteCategory(categoryId);
     this.location.back();
   }
 

@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Location, CommonModule } from '@angular/common';
 import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -14,7 +15,7 @@ import { MathService } from '../../services/math.service';
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnDestroy {
 
   private readonly banknService = inject(BanknService);
   private readonly accountService = inject(AccountService);
@@ -22,6 +23,8 @@ export class AccountComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly location = inject(Location);
   private readonly utilsService = inject(UtilsService);
+
+  private subscriptions = new Subscription();
 
   form: FormGroup = new FormGroup({
     id: new FormControl(),
@@ -35,7 +38,7 @@ export class AccountComponent implements OnInit {
 
   ngOnInit() {
     this.countries = this.utilsService.getCountries();
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.add(this.route.paramMap.subscribe((params) => {
       var accountId = params.get('accountId');
 
       if (accountId == null || accountId.trim().length == 0) {
@@ -60,7 +63,11 @@ export class AccountComponent implements OnInit {
           });
         }
       }
-    });
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   onSubmit() {
@@ -74,17 +81,17 @@ export class AccountComponent implements OnInit {
         this.accountService.createAccount(
           this.form.value.name,
           this.form.value.description,
-          UtilsService.removeTime(new Date(this.form.value.referenceDate)),
+          new Date(this.form.value.referenceDate),
           this.form.value.referenceCountry,
-          amount //.toObject(),
+          amount
         );
       } else {
         this.accountService.updateAccount(
           this.form.value.id,
           this.form.value.name,
           this.form.value.description,
-          amount, //.toObject(),
-          UtilsService.removeTime(new Date(this.form.value.referenceDate)),
+          amount,
+          new Date(this.form.value.referenceDate),
           this.form.value.referenceCountry
         );
       }

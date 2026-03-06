@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { EventsService } from '../../services/events.service';
 import { AccountService } from '../../services/account.service';
 import { Account } from "../../models/account";
@@ -8,19 +9,25 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'account-list',
+    standalone: true,
     imports: [CommonModule, RouterLink, AccountCreateCardComponent],
     templateUrl: './account-list.component.html',
     styleUrls: ['./account-list.component.css']
 })
-export class AccountListComponent implements OnInit {
+export class AccountListComponent implements OnInit, OnDestroy {
   private readonly eventsService = inject(EventsService);
   private readonly accountService = inject(AccountService);
   
+  private subscriptions = new Subscription();
   accounts: Account[] = [];
 
   ngOnInit() {
     this.refreshAccounts();
-    this.eventsService.subscribeAccountsChange(() => this.refreshAccounts());
+    this.subscriptions.add(this.eventsService.subscribeAccountsChange(() => this.refreshAccounts()));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
   refreshAccounts(){

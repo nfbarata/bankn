@@ -12,6 +12,7 @@ import { TransactionService } from './transaction.service';
 import { TransactionType } from '../models/enums';
 import { MathService } from './math.service';
 import { Bankn } from '../models/bankn';
+import { UtilsService } from './utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -31,7 +32,7 @@ export class AccountService {
       name,
       description,
       referenceAmount === undefined ? this.toDinero(0, null) : referenceAmount,
-      referenceDate,
+      UtilsService.removeTime(referenceDate),
       referenceCountry,
       [],
       true
@@ -53,7 +54,7 @@ export class AccountService {
       account.name = name;
       account.description = description;
       account.referenceAmount = referenceAmount;
-      account.referenceDate = referenceDate;
+      account.referenceDate = UtilsService.removeTime(referenceDate);
       account.referenceCountry = referenceCountry;
       this.eventsService.emitAccountsChange();
     }

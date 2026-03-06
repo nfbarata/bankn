@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EventsService {
@@ -12,9 +12,9 @@ export class EventsService {
   private entitiesChange: Subject<void> = new Subject<void>();
   private transactionPeriodChange: Subject<void> = new Subject<void>();
 
-  public subscribeBanknChange(callback: () => void): void {
+  public subscribeBanknChange(callback: () => void): Subscription {
     console.debug("banknChange subscribed");
-    this.banknChange.subscribe(callback);
+    return this.banknChange.subscribe(callback);
   }
 
   public emitBanknChange(): void {
@@ -22,9 +22,9 @@ export class EventsService {
     this.banknChange.next();
   }
 
-  public subscribeAccountsChange(callback: () => void): void {
+  public subscribeAccountsChange(callback: () => void): Subscription {
     console.debug("accountsChange subscribed");
-    this.accountsChange.subscribe(callback);
+    return this.accountsChange.subscribe(callback);
   }
 
   public emitAccountsChange(): void {
@@ -32,9 +32,9 @@ export class EventsService {
     this.accountsChange.next();
   }
 
-  public subscribeAccountSelectionChange(callback: () => void): void {
+  public subscribeAccountSelectionChange(callback: () => void): Subscription {
     console.debug("accountSelectionChange subscribed");
-    this.accountSelectionChange.subscribe(callback);
+    return this.accountSelectionChange.subscribe(callback);
   }
 
   public emitAccountSelectionChange(): void {
@@ -42,9 +42,9 @@ export class EventsService {
     this.accountSelectionChange.next();
   }
 
-  public subscribeAccountTransactionsChange(callback: () => void): void {
+  public subscribeAccountTransactionsChange(callback: () => void): Subscription {
     console.debug("accountTransactionsChange subscribed");
-    this.accountTransactionsChange.subscribe(callback);
+    return this.accountTransactionsChange.subscribe(callback);
   }
 
   public emitAccountTransactionsChange(): void {
@@ -52,9 +52,9 @@ export class EventsService {
     this.accountTransactionsChange.next();
   }
 
-  public subscribeTransactionChange(callback: () => void): void {
+  public subscribeTransactionChange(callback: () => void): Subscription {
     console.debug("transactionChange subscribed");
-    this.transactionChange.subscribe(callback);
+    return this.transactionChange.subscribe(callback);
   }
 
   public emitTransactionChange(): void {
@@ -62,9 +62,9 @@ export class EventsService {
     this.transactionChange.next();
   }
 
-  public subscribeCategoriesChange(callback: () => void): void {
+  public subscribeCategoriesChange(callback: () => void): Subscription {
     console.debug("categoriesChange subscribed");
-    this.categoriesChange.subscribe(callback);
+    return this.categoriesChange.subscribe(callback);
   }
 
   public emitCategoriesChange(): void {
@@ -72,9 +72,9 @@ export class EventsService {
     this.categoriesChange.next();
   }
 
-  public subscribeEntitiesChange(callback: () => void): void {
+  public subscribeEntitiesChange(callback: () => void): Subscription {
     console.debug("entitiesChange subscribed");
-    this.entitiesChange.subscribe(callback);
+    return this.entitiesChange.subscribe(callback);
   }
 
   public emitEntitiesChange(): void {
@@ -82,9 +82,9 @@ export class EventsService {
     this.entitiesChange.next();
   }
 
-  public subscribeTransactionPeriodChange(callback: () => void): void {
+  public subscribeTransactionPeriodChange(callback: () => void): Subscription {
     console.debug("transactionPeriodChange subscribed");
-    this.transactionPeriodChange.subscribe(callback);
+    return this.transactionPeriodChange.subscribe(callback);
   }
 
   public emitTransactionPeriodChange(): void {
