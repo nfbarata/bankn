@@ -7,9 +7,10 @@ txns:
   filter by category/entity/description
   fix filter by date initial value should take consideration all transactions
   transfer to account
+  when entity selected select category if null
 
 entities:
-  create menu&screens
+  on delete find transactions
 
 categories:
   create menu&screens
