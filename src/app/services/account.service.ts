@@ -145,9 +145,24 @@ export class AccountService {
 
   addTransaction(account: Account, transaction: Transaction) {
     transaction.account = account;
-    account.transactions.push(transaction); //TODO try to optimize and don't need to sort
-    TransactionService.sortTransactions(account.transactions);
+    const index = this.findInsertionIndex(account.transactions, transaction);
+    account.transactions.splice(index, 0, transaction);
     this.eventsService.emitAccountTransactionsChange();
+  }
+
+  private findInsertionIndex(transactions: Transaction[], newTransaction: Transaction): number {
+    let low = 0;
+    let high = transactions.length;
+
+    while (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        if (TransactionService.compareTransaction(transactions[mid], newTransaction) > 0) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
   }
 
   getCurrentPeriodTransactions(account: Account) {

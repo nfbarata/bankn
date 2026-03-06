@@ -73,25 +73,33 @@ export class TransactionService {
     receiptReference: string,
     description: string
   ) {
-    date=UtilsService.removeTime(date);
-    var dateChanged = transaction.date != date;
-    //create Category if not exist
-    var category = this.categoryService.upsertCategory(categoryFullName, description);
-    //create Entity if not exist
-    var entity = this.entityService.upsertEntity(entityName, description, category);
+    const newDate = UtilsService.removeTime(date);
+    const dateChanged = transaction.date.getTime() !== newDate.getTime();
+
+    // Create Category if not exist
+    const category = this.categoryService.upsertCategory(categoryFullName, description);
+    // Create Entity if not exist
+    const entity = this.entityService.upsertEntity(entityName, description, category);
 
     transaction.amount = amount;
-    transaction.date = date;
     transaction.type = type;
-    transaction.entity = entity == null ? undefined : entity;
-    transaction.category = category == null ? undefined : category;
+    transaction.entity = entity ?? undefined;
+    transaction.category = category ?? undefined;
     transaction.receiptReference = receiptReference;
     transaction.description = description;
 
-    if(dateChanged){
-      // TODO optimize this
-      TransactionService.sortTransactions(account.transactions);
+    if (dateChanged) {
+      // The date has changed, so the transaction needs to be moved.
+      const index = account.transactions.findIndex(t => t.id === transaction.id);
+      if (index > -1) {
+        account.transactions.splice(index, 1);
+      }
+      transaction.date = newDate;
+      this.accountService.addTransaction(account, transaction);
+    } else {
+      transaction.date = newDate;
     }
+
     this.eventsService.emitTransactionChange();
   }
 
