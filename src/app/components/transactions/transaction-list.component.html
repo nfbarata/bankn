@@ -58,16 +58,21 @@
       <!-- header group -->
       @if (transaction.hide!==true && (i===0 || i>0 && transaction.date.getTime()!==transactions[i-1].date.getTime())) {
       <tr class="table-active">
-        <th scope="col" width="20%" class="align-middle">{{transaction.date | date:'shortDate'}}&nbsp;</th>
-        <th scope="col" width="70%" class="align-middle"></th>
+        <th scope="col" width="10%" class="align-middle">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="80%" class="align-middle"></th>
         <th class="text-end align-middle" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
       </tr>
       }
       <!-- detail group -->
       @if (transaction.hide!==true) {
-      <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]">
-        <td class="align-middle">{{ transaction.category | category }}&nbsp;</td>
-        <td class="align-middle">{{ transaction.description }}&nbsp;</td>
+      <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]" title="{{ transaction.description }}">
+        <td class="align-middle">{{ transaction.entity?.name }}&nbsp;</td>
+        <td class="align-middle">
+          @if(transaction.category ){
+            <a title="{{transaction.category | category}}" [routerLink]="['/categories/category/'+transaction.category.id]">#{{transaction.category.name}}</a>
+          }
+          &nbsp;
+        </td>
         <td class="text-end align-middle" scope="row">{{transaction | transaction }}</td>
       </tr>
       }
