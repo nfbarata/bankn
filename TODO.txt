@@ -5,9 +5,10 @@ txns:
   add menu with import
   select with button, select multiple
   filter by category/entity/description
-  fix filter by date initial value should take consideration all transactions
   transfer to account
   when entity selected select category if null
+  edit multiple
+  multiple categories
 
 entities:
   on delete find transactions
@@ -17,6 +18,7 @@ categories:
   #Casa #Contas
           #Água
         #Despesas
+  lidar com delete de categorias, o que fazer com as txns?
 
 charts:
   different charts

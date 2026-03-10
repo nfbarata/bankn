@@ -10,6 +10,27 @@ import { UtilsService } from './utils.service';
 export class CategoryService {
   private banknService = inject(BanknService);
 
+  getCategory(id: string): Category | null {
+    const bankn = this.banknService.getBankn();
+    if (bankn) {
+      return CategoryService.getAllCategories(bankn).find(e => e.id === id) || null;
+    }
+    return null;
+  }
+
+  deleteCategory(id: string): void {
+    const bankn = this.banknService.getBankn();
+    if (bankn) {
+      bankn.categories = bankn.categories.filter(e => e.id !== id);
+      for( var account of bankn.accounts){
+        for(var txn of account.transactions){
+          if(txn.category && txn.category.id == id){
+            txn.category = undefined;
+          }
+        }
+      }
+    }
+  }
 
   static getFullCategoryName(category: Category): string {
     if (category.topLevelCategory) {
@@ -38,33 +59,33 @@ export class CategoryService {
 
     const categoryNames = categoryFullName.split('.').filter(name => name.trim().length > 0);
     if (categoryNames.length === 0) {
-        return null;
+      return null;
     }
 
     let currentCategory: Category | null = null;
     let parentCategory: Category | undefined = undefined;
 
     for (let i = 0; i < categoryNames.length; i++) {
-        const categoryName = categoryNames[i];
-        if (i === 0) {
-            currentCategory = CategoryService.searchCategory(this.banknService.getBankn()!, categoryName);
-            if (!currentCategory) {
-                currentCategory = new Category(categoryName);
-                this.banknService.addCategory(currentCategory);
-            }
-        } else {
-            let childCategory = CategoryService.getDirectChildCategory(parentCategory!, categoryName);
-            if (!childCategory) {
-                childCategory = new Category(categoryName, parentCategory);
-                parentCategory!.innerCategories.push(childCategory);
-            }
-            currentCategory = childCategory;
+      const categoryName = categoryNames[i];
+      if (i === 0) {
+        currentCategory = CategoryService.searchCategory(this.banknService.getBankn()!, categoryName);
+        if (!currentCategory) {
+          currentCategory = new Category(categoryName);
+          this.banknService.addCategory(currentCategory);
         }
-        parentCategory = currentCategory as Category;
+      } else {
+        let childCategory = CategoryService.getDirectChildCategory(parentCategory!, categoryName);
+        if (!childCategory) {
+          childCategory = new Category(categoryName, parentCategory);
+          parentCategory!.innerCategories.push(childCategory);
+        }
+        currentCategory = childCategory;
+      }
+      parentCategory = currentCategory as Category;
     }
 
     if (currentCategory && description) {
-        CategoryService.upsertDescriptionPatterns(currentCategory, description);
+      CategoryService.upsertDescriptionPatterns(currentCategory, description);
     }
 
     return currentCategory;
