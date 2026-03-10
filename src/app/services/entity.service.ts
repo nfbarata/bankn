@@ -30,9 +30,13 @@ export class EntityService {
   deleteEntity(id: string): void {
     const bankn = this.banknService.getBankn();
     if (bankn) {
-      const index = bankn.entities.findIndex(e => e.id === id);
-      if (index > -1) {
-        bankn.entities.splice(index, 1);
+      bankn.entities = bankn.entities.filter(e => e.id !== id);
+      for( var account of bankn.accounts){
+        for(var txn of account.transactions){
+          if(txn.entity && txn.entity.id == id){
+            txn.entity = undefined;
+          }
+        }
       }
     }
   }
