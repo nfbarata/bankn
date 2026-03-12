@@ -15,15 +15,15 @@
     <thead>
       <tr class="table-active">
         <th scope="col" class="align-middle" width="0%">Name</th>
-        <th scope="col" class="align-middle">Category</th>
+        <th scope="col" class="align-middle">Default Category</th>
         <th scope="col" class="text-end" width="0%">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
       @for (entity of entities; track entity) {
       <tr>
-        <td scope="row" class="align-middle" [routerLink]="['/entities/entity',entity.id]">{{entity.name}}&nbsp;</td>
-        <td class="align-middle" [routerLink]="['/entities/entity',entity.id]">
+        <td scope="row" class="align-middle">{{entity.name}}&nbsp;</td>
+        <td class="align-middle">
           @if(entity.referenceCategory){
           <a title="{{entity.referenceCategory | category}}" [routerLink]="['/categories/category/'+entity.referenceCategory.id]">#{{entity.referenceCategory.name}}</a>
           }

@@ -1,98 +1,115 @@
-<h2>{{form.value.id===null?'Create Transaction':'Edit Transaction'}}</h2>
-<br>
-<form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
+<div class="container">
+ 
+  <form class="container" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-  <div class="row mb-3">
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Type</span>
-        <select title="type" class="form-select" formControlName="type">
-          @for (type of transactionTypes; track type) {
-          <option [selected]="form.value.type===type" [value]="type">{{type | transactionType}}</option>
-          }
-        </select>
+    <div class="row">
+      <div class="col">
+        <h2>{{form.value.id===null?'Create Transaction':'Edit Transaction'}}</h2>
+      </div>
+      <div class="col text-end">
+        <button class="btn btn-danger" type="button" (click)="onDelete(form.value.accountId,form.value.id)" [disabled]="!form.value.id" i18n>
+          <span class="oi oi-trash"></span>
+        </button>
       </div>
     </div>
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Amount</span>
-        <input title="amount" class="form-control" id="amount" type="text" formControlName="amount">
-      </div>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Account</span>
-        <select title="account" class="form-select" formControlName="accountId">
-          @for (account of (accounts===null?[]:accounts); track account) {
-          <option [selected]="account.id===form.value.accountId" [value]="account.id">{{account.name}}</option>
-          }
-        </select>
-      </div>
-    </div>
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Date</span>
-        <input title="date" class="form-control" id="date" type="date" formControlName="date">
-      </div>
-      <!--small id="yearHelpBlock" class="form-text text-muted" i18n>day/month/year</small-->
-    </div>
-  </div>
+    <br />
 
-  <div class="row mb-3">
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Entity</span>
-        <input title="entity" type="text" id="entity" class="form-control" list="entityList" formControlName="entity" />
-        <datalist id="entityList">
-          @for (entity of (entities===null?[]:entities); track entity) {
-          <option [value]="entity.name">{{entity.name}}</option>
-          }
-        </datalist>
-        <button class="btn btn-outline-secondary" type="button" i18n>Edit</button>
+    <div class="row mb-3">
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Type</span>
+          <select title="type" class="form-select" formControlName="type">
+            @for (type of transactionTypes; track type) {
+            <option [selected]="form.value.type===type" [value]="type">{{type | transactionType}}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Amount</span>
+          <input title="amount" class="form-control" id="amount" type="text" formControlName="amount">
+        </div>
       </div>
     </div>
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Category</span>
-        <input title="category" type="text" id="category" class="form-control" list="categoryList"
-          formControlName="category" />
-        <datalist id="categoryList">
-          @for (category of (categories===null?[]:categories); track category) {
-          <option [value]="category | category">{{category | category}}</option>
-          }
-        </datalist>
-        <button class="btn btn-outline-secondary" type="button" i18n>Edit</button>
+    <div class="row mb-3">
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Account</span>
+          <select title="account" class="form-select" formControlName="accountId">
+            @for (account of (accounts===null?[]:accounts); track account) {
+            <option [selected]="account.id===form.value.accountId" [value]="account.id">{{account.name}}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Date</span>
+          <input title="date" class="form-control" id="date" type="date" formControlName="date">
+        </div>
+        <!--small id="yearHelpBlock" class="form-text text-muted" i18n>day/month/year</small-->
       </div>
     </div>
-  </div>
 
-  <div class="row mb-3">
-    <div class="col-sm-6 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Receipt #</span>
-        <input title="receipt #" type="text" class="form-control" id="receiptReference"
-          formControlName="receiptReference" />
+    <div class="row mb-3">
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Entity</span>
+          <input title="entity" type="text" id="entity" class="form-control" list="entityList"
+            formControlName="entity" />
+          <datalist id="entityList">
+            @for (entity of (entities===null?[]:entities); track entity) {
+            <option [value]="entity.name">{{entity.name}}</option>
+            }
+          </datalist>
+          <button class="btn btn-outline-secondary" type="button"
+            [routerLink]="['/entities/entity',form.value.entity.id]">
+            <span class="oi oi-pencil"></span>
+          </button>
+        </div>
+      </div>
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Category</span>
+          <input title="category" type="text" id="category" class="form-control" list="categoryList"
+            formControlName="category" />
+          <datalist id="categoryList">
+            @for (category of (categories===null?[]:categories); track category) {
+            <option [value]="category | category">{{category | category}}</option>
+            }
+          </datalist>
+          <button class="btn btn-outline-secondary" type="button"
+            [routerLink]="['/categories/category',form.value.category.id]">
+            <span class="oi oi-pencil"></span>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="row mb-3">
-    <div class="col-sm-12 col-12 mb-3">
-      <div class="input-group">
-        <span class="input-group-text" i18n>Description</span>
-        <textarea title="description" class="form-control" id="description" formControlName="description"></textarea>
+    <div class="row mb-3">
+      <div class="col-sm-6 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Receipt #</span>
+          <input title="receipt #" type="text" class="form-control" id="receiptReference"
+            formControlName="receiptReference" />
+        </div>
       </div>
     </div>
-  </div>
 
-  <div style="display:flex; gap:0.5rem;">
-    <button class="btn btn-primary" type="submit" i18n>{{form.value.id===null?'Create':'Ok'}}</button>
-    @if (form.value.id!==null) {
-    <a class="btn btn-danger text-white" role="button" (click)="onDelete(form.value.accountId,form.value.id);"
-      i18n>Delete</a>
-    }
-    <button type="button" class="btn btn-primary" (click)="onCancel();" i18n>Cancel</button>
-  </div>
-</form>
+    <div class="row mb-3">
+      <div class="col-sm-12 col-12 mb-3">
+        <div class="input-group">
+          <span class="input-group-text" i18n>Description</span>
+          <textarea title="description" class="form-control" id="description" formControlName="description"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:0.5rem;">
+      <button class="btn btn-primary" type="submit" i18n>{{form.value.id===null?'Create':'Ok'}}</button>
+      &nbsp;
+      <button type="button" class="btn btn-primary" (click)="onCancel();" i18n>Cancel</button>
+    </div>
+  </form>
+</div>

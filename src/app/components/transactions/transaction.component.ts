@@ -70,11 +70,11 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.eventsService.subscribeCategoriesChange(() => this.refreshCategories()));
 
     this.subscriptions.add(this.route.paramMap.subscribe((params) => {
-      this.form.controls['accountId'].enable();
+      //this.form.controls['accountId'].enable();
       if (this.accounts != null) {
         var account: Account | null;
         var accountId = params.get('accountId');
-        if (accountId == null || accountId.trim().length == 0) {
+        if (accountId == null || accountId.trim().length == 0 ) {
           var selected = this.accountService.getSelectedAccounts();
           if (selected.length > 0) account = selected[0];
           else account = this.accounts[0];
@@ -113,7 +113,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
                 receiptReference: this.transaction.receiptReference,
                 description: this.transaction.description,
               });
-              this.form.controls['accountId'].disable();
+              //this.form.controls['accountId'].disable();
             } else {
               console.error('No transaction with that id');
               this.router.navigate(['/transactions']);
