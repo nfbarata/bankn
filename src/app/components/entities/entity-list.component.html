@@ -23,8 +23,12 @@
       @for (entity of entities; track entity) {
       <tr>
         <td scope="row" class="align-middle" [routerLink]="['/entities/entity',entity.id]">{{entity.name}}&nbsp;</td>
-        <td class="align-middle" [routerLink]="['/entities/entity',entity.id]">{{ entity.referenceCategory | category
-          }}&nbsp;</td>
+        <td class="align-middle" [routerLink]="['/entities/entity',entity.id]">
+          @if(entity.referenceCategory){
+          <a title="{{entity.referenceCategory | category}}" [routerLink]="['/categories/category/'+entity.referenceCategory.id]">#{{entity.referenceCategory.name}}</a>
+          }
+          &nbsp;
+        </td>
         <td class="text-end">
           <button class="btn btn-primary" [routerLink]="['/entities/entity',entity.id]" title="Edit" i18n>
             <span class="oi oi-pencil"></span>
