@@ -70,7 +70,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
     this.subscriptions.add(this.eventsService.subscribeCategoriesChange(() => this.refreshCategories()));
 
     this.subscriptions.add(this.route.paramMap.subscribe((params) => {
-      //this.form.controls['accountId'].enable();
+      this.form.controls['accountId'].enable();
       if (this.accounts != null) {
         var account: Account | null;
         var accountId = params.get('accountId');
@@ -113,7 +113,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
                 receiptReference: this.transaction.receiptReference,
                 description: this.transaction.description,
               });
-              //this.form.controls['accountId'].disable();
+              this.form.controls['accountId'].disable();
             } else {
               console.error('No transaction with that id');
               this.router.navigate(['/transactions']);
@@ -145,28 +145,29 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
+      const formValue = this.form.getRawValue(); //acountId disable donsn't return value 
 
       var account = this.transaction != null ?
         this.transaction.account :
-        this.accountService.getAccount(this.form.value.accountId);
+        this.accountService.getAccount(formValue.accountId);
 
       if (account != null) {
         var amount = this.accountService.fromInputValue(
-          this.form.value.amount,
+          formValue.amount,
           account
         );
 
-        if (this.form.controls['id'].value == null) {
+        if (formValue.id == null) {
           //create
           this.transactionService.createTransaction(
             account,
             amount,
-            new Date(this.form.value.date),
-            this.form.value.type,
-            this.form.value.entity,
-            this.form.value.category,
-            this.form.value.receiptReference,
-            this.form.value.description
+            new Date(formValue.date),
+            formValue.type,
+            formValue.entity,
+            formValue.category,
+            formValue.receiptReference,
+            formValue.description
           );
         } else {
           //update
@@ -175,12 +176,12 @@ export class TransactionComponent implements OnInit, OnDestroy {
               account,
               this.transaction,
               amount,
-              new Date(this.form.value.date),
-              this.form.value.type,
-              this.form.value.entity,
-              this.form.value.category,
-              this.form.value.receiptReference,
-              this.form.value.description
+              new Date(formValue.date),
+              formValue.type,
+              formValue.entity,
+              formValue.category,
+              formValue.receiptReference,
+              formValue.description
             );
           }
         }
@@ -192,8 +193,9 @@ export class TransactionComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDelete(accountId: string, transactionId: string) {
-    this.transactionService.deleteTransactionId(accountId, transactionId);
+  onDelete() {
+    const formValue = this.form.getRawValue(); //acountId disable donsn't return value 
+    this.transactionService.deleteTransactionId(formValue.accountId, formValue.id);
     this.location.back();
     //this.router.navigate([Paths.transactions]);
   }
