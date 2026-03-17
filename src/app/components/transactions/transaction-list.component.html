@@ -10,12 +10,16 @@
         [disabled]="accounts.length===0" title="New Transaction" i18n>
         <span class="oi oi-plus"></span>
       </button>
-      <select title="account" class="form-control" (change)="onNewTransactionAccountChangeHandler($event)">
+      <select title="account" class="form-select" (change)="onNewTransactionAccountChangeHandler($event)">
         @for (account of selectedAccounts; track account) {
         <option [selected]="newTransactionSelectedAccount!==null && account.id===newTransactionSelectedAccount"
           value="{{account.id}}">{{account.name}}</option>
         }
       </select>
+      <button class="btn btn-secondary d-block" type="submit" title="Import new transactions"
+        [routerLink]="['/transactions/import/'+(newTransactionSelectedAccount!==null?newTransactionSelectedAccount:'')]">
+        <span class="oi oi-data-transfer-download"></span>
+      </button>
     </div>
   </div>
   }
