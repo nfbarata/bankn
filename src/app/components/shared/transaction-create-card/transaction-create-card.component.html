@@ -1,20 +1,20 @@
 <div class="card">
-  <!--div class="card-header" i18n>
-  No accounts created
-</div-->
-<div class="card-body">
-  <h5 class="card-title" i18n>Create transaction</h5>
-  <p class="card-text" i18n>Create a new transactions to selected account</p>
-  <!--form [formGroup]="form" (ngSubmit)="onSubmit(form.value)"-->
-  <div class="mb-3">
-    <select title="account" class="form-select me-2" (change)="onAccountChangeHandler($event)"><!--formControlName="account">-->
-      @for (account of accounts; track account) {
-        <option [selected]="selectedAccount!==null && account.id===selectedAccount.id" value="{{account.id}}">{{account.name}}</option>
-      }
-    </select>
+  <div class="card-body">
+    <h5 class="card-title" i18n>Create transaction</h5>
+    <p class="card-text" i18n>Create a new transactions to selected account</p>
+      <div class="btn-group w-100">
+        <button class="btn btn-secondary d-block" type="submit"
+          [routerLink]="['/transactions/transaction/'+(newSelectedAccount!==null?newSelectedAccount:'')]"
+          [disabled]="accounts.length===0" title="New Transaction">
+          <span class="oi oi-plus"></span>
+        </button>
+        <select title="account" class="form-select d-inline" (change)="onAccountChangeHandler($event)">
+          @for (account of accounts; track account) {
+          <option [selected]="selectedAccount!==null && account.id===selectedAccount.id" value="{{account.id}}">
+            {{account.name}}
+          </option>
+          }
+        </select>
+      </div>
   </div>
-  <a class="btn btn-secondary text-white" [routerLink]="['/transactions/transaction/'+(newSelectedAccount!==null?newSelectedAccount:'')]" i81n>Create</a>
-
-  <!--/form-->
-</div>
 </div>

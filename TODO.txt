@@ -1,24 +1,19 @@
 general:
-  pipe category link and last node view
-
+  
 txns:
   add menu with import
-  select with button, select multiple
+  select with button, select multiple, edit multiple
   filter by category/entity/description
   transfer to account
   when entity selected select category if null
-  edit multiple
   multiple categories
 
 entities:
-  on delete find transactions
 
 categories:
-  create menu&screens
   #Casa #Contas
           #Água
         #Despesas
-  lidar com delete de categorias, o que fazer com as txns?
 
 charts:
   different charts
@@ -36,23 +31,17 @@ tests:
 
 mobile view
   import screens not friendly -> a column at a time
-  min length on column
 
 import screens 
   save last options on account/bank
   edit entity/category inplace & data
 
 popup generico, input card
-txn list com quick link import(popup comm escolha de conta)
 
 money format - simbolo pode ser antes por exemplo
-date format
-visual
 i18n
 
 receipt# as customizable field
-
-save zip contents
 
 movimentos com diferentes moedas (escolher e fazer cambio)
 

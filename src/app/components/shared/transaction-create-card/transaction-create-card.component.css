@@ -1,0 +1,11 @@
+/* ensure select within btn-group behaves like a button and has correct radius */
+.btn-group select.form-select {
+    border-radius: 0 .25rem .25rem 0;
+    /* rounded right corners only */
+    min-width: auto;
+}
+
+/* remove additional focus outline stacking issues */
+.btn-group select.form-select:focus {
+    z-index: 1;
+}
