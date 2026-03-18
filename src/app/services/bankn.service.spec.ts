@@ -39,10 +39,10 @@ describe('BanknService', () => {
     service.setBankn(bankn);
     expect(service.getAccounts().length).toBe(0);
     expect(service.getBankn()!.accounts.length).toBe(0);
-    service.addAccount(account);
+    service._addAccount(account);
     expect(service.getAccounts().length).toBe(1);
     expect(service.getBankn()!.accounts.length).toBe(1);
-    service.deleteAccountId(account.id);
+    service._deleteAccount(account);
     expect(service.getAccounts().length).toBe(0);
     expect(service.getBankn()!.accounts.length).toBe(0);
   });
@@ -125,11 +125,11 @@ describe('BanknService', () => {
     let bankn = new Bankn("", "", "");
     service.setBankn(bankn);
     expect(bankn.categories.length).toBe(0);
-    service.addCategory(new Category("cat"));
+    service._addCategory(new Category("cat"));
     expect(bankn.categories.length).toBe(1);
-    service.addCategory(new Category("cat"));
+    service._addCategory(new Category("cat"));
     expect(bankn.categories.length).toBe(2);
-    service.addCategory(new Category("cat2"));
+    service._addCategory(new Category("cat2"));
     expect(bankn.categories.length).toBe(3);
   });
 
@@ -137,11 +137,11 @@ describe('BanknService', () => {
     let bankn = new Bankn("","","");
     service.setBankn(bankn);
     expect(bankn.entities.length).toBe(0);
-    service.addEntity(new Entity("ent"));
+    service._addEntity(new Entity("ent"));
     expect(bankn.entities.length).toBe(1);
-    service.addEntity(new Entity("ent"));
+    service._addEntity(new Entity("ent"));
     expect(bankn.entities.length).toBe(2);
-    service.addEntity(new Entity("ent2"));
+    service._addEntity(new Entity("ent2"));
     expect(bankn.entities.length).toBe(3);
   });
 });

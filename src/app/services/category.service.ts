@@ -3,6 +3,7 @@ import { Bankn } from '../models/bankn';
 import { Category } from '../models/category';
 import { BanknService } from './bankn.service';
 import { UtilsService } from './utils.service';
+import { log } from 'node:console';
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +20,23 @@ export class CategoryService {
   }
 
   deleteCategory(id: string): void {
-    const bankn = this.banknService.getBankn();
-    if (bankn) {
-      bankn.categories = bankn.categories.filter(e => e.id !== id);
-      for( var account of bankn.accounts){
-        for(var txn of account.transactions){
-          if(txn.category && txn.category.id == id){
-            txn.category = undefined;
+    var category = this.getCategory(id);
+    if (category){
+      // clear category from transactions
+      const bankn = this.banknService.getBankn();
+      if (bankn) {
+        for( var account of bankn.accounts){
+          for(var txn of account.transactions){
+            if(txn.category && txn.category.id == category.id){
+              txn.category = undefined;
+            }
           }
         }
       }
+      this.banknService._deleteCategory(category);
     }
+    else
+      console.error("category not found: " + id);
   }
 
   static getFullCategoryName(category: Category): string {
@@ -71,7 +78,7 @@ export class CategoryService {
         currentCategory = CategoryService.searchCategory(this.banknService.getBankn()!, categoryName);
         if (!currentCategory) {
           currentCategory = new Category(categoryName);
-          this.banknService.addCategory(currentCategory);
+          this.banknService._addCategory(currentCategory);
         }
       } else {
         let childCategory = CategoryService.getDirectChildCategory(parentCategory!, categoryName);

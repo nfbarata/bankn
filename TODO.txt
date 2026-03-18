@@ -1,5 +1,6 @@
 general:
-  
+  account listbox max size
+
 txns:
   add menu with import
   select with button, select multiple, edit multiple

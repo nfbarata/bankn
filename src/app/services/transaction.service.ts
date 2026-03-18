@@ -163,13 +163,10 @@ export class TransactionService {
     return b.date.getTime() - a.date.getTime();
   }
 
-  deleteTransactionId(accountId: string, transactionId: string) {
+  deleteTransaction(accountId: string, transactionId: string) {
     var account = this.accountService.getAccount(accountId);
-    if (account != null) this.deleteTransaction(account, transactionId);
-  }
-
-  deleteTransaction(account: Account, transactionId: string) {
-    this.accountService.deleteTransactionId(account, transactionId);
+    if (account != null) 
+      this.accountService.deleteTransaction(account, transactionId);
   }
 
   parse(

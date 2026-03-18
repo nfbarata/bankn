@@ -19,10 +19,10 @@ describe('AccountService', () => {
 
   beforeEach(() => {
     banknServiceMock = {
-      addAccount: jest.fn(),
+      _addAccount: jest.fn(),
       getAccounts: jest.fn().mockReturnValue([]),
       getBankn: jest.fn().mockReturnValue({ transactionsStartDate: new Date() }),
-      deleteAccountId: jest.fn(),
+      _deleteAccount: jest.fn(),
     };
 
     mathServiceMock = {
@@ -57,17 +57,17 @@ describe('AccountService', () => {
 
   it('createAccount works', () => {
     var account = service.createAccount("teste", "teste", new Date(), "PT");
-    expect(banknServiceMock.addAccount).toHaveBeenCalled();
+    expect(banknServiceMock._addAccount).toHaveBeenCalled();
     expect(account.id).toBeDefined();
   });
 
-  it('addTransaction deleteTransactionId works', () => {
+  it('addTransaction deleteTransaction works', () => {
     var account = service.createAccount("teste", "teste", new Date(), "PT");
     var transaction = new Transaction("teste", dinero({ amount: 0, currency: EUR }), TransactionType.DEBIT);
     service.addTransaction(account, transaction);
     expect(account.transactions.length).toBe(1);
     expect(transaction.account.id).toBe(account.id);
-    service.deleteTransactionId(account, transaction.id);
+    service.deleteTransaction(account, transaction.id);
     expect(account.transactions.length).toBe(0);
   });
 
@@ -84,7 +84,7 @@ describe('AccountService', () => {
     service.addTransaction(account, new Transaction("t4", dinero({ amount: 700, currency: EUR }), TransactionType.CREDIT, UtilsService.addDays(account.referenceDate, 1)));
     expect(toDecimal(AccountService.getInitialValue(account))).toBe("25.00");
 
-    service.deleteTransactionId(account, transaction.id);
+    service.deleteTransaction(account, transaction.id);
     expect(toDecimal(AccountService.getInitialValue(account))).toBe("36.00");
   });
 

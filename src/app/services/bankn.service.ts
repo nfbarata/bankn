@@ -96,30 +96,42 @@ export class BanknService {
     }
   }
 
-  addAccount(account: Account): void {
+  _addAccount(account: Account): void {
     if (this.bankn != null) {
       this.bankn.accounts.push(account);
       this.eventsService.emitAccountsChange();
     }
   }
 
-  deleteAccountId(accountId: string) {
+  _deleteAccount(account: Account) {
     if (this.bankn != null) {
-      this.bankn.accounts = this.bankn.accounts.filter(function (account) {
-        return account.id != accountId;
+      this.bankn.accounts = this.bankn.accounts.filter(function (a) {
+        return a.id != account.id;
       });
       this.eventsService.emitAccountsChange();
     }
   }
 
-  addCategory(category: Category): void {
+  _deleteCategory(category: Category): void {
+    if (this.bankn != null) {
+      this.bankn.categories = this.bankn.categories.filter(e => e.id !== category.id);
+    }
+  }
+
+  _deleteEntity(entity: Entity): void {
+    if (this.bankn != null) {
+      this.bankn.entities = this.bankn.entities.filter(e => e.id !== entity.id);
+    }
+  }
+
+  _addCategory(category: Category): void {
     if (this.bankn != null) {
       this.bankn.categories.push(category);
       this.eventsService.emitCategoriesChange();
     }
   }
 
-  addEntity(entity: Entity): void {
+  _addEntity(entity: Entity): void {
     if (this.bankn != null) {
       this.bankn.entities.push(entity);
       this.eventsService.emitEntitiesChange();

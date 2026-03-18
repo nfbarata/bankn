@@ -101,7 +101,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
   onDelete(accountId: string) {
-    this.accountService.deleteAccountId(accountId);
+    this.accountService.deleteAccount(accountId);
     this.location.back();
   }
 

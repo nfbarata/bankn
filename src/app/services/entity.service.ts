@@ -28,17 +28,23 @@ export class EntityService {
   }
 
   deleteEntity(id: string): void {
-    const bankn = this.banknService.getBankn();
-    if (bankn) {
-      bankn.entities = bankn.entities.filter(e => e.id !== id);
-      for( var account of bankn.accounts){
-        for(var txn of account.transactions){
-          if(txn.entity && txn.entity.id == id){
-            txn.entity = undefined;
+    var entity = this.getEntity(id);
+    if(entity){
+      // clear entity from transactions
+      const bankn = this.banknService.getBankn();
+      if (bankn) {
+        for( var account of bankn.accounts){
+          for(var txn of account.transactions){
+            if(txn.entity && txn.entity.id == id){
+              txn.entity = undefined;
+            }
           }
         }
       }
+      this.banknService._deleteEntity(entity);
     }
+    else
+      console.error("entity not found: " + id);
   }
 
   upsertEntity(
@@ -72,7 +78,7 @@ export class EntityService {
       entity = new Entity(name);
       entity.descriptionPatterns = descriptionPatterns.filter(p => p.trim() !== '');
       entity.referenceCategory = category?? undefined;
-      this.banknService.addEntity(entity);
+      this.banknService._addEntity(entity);
     }
     return entity;
   }
@@ -90,7 +96,7 @@ export class EntityService {
     var entity = EntityService.getEntity(this.banknService.getBankn()! ,entityName);
     if (entity == null) {
       entity = new Entity(entityName);
-      this.banknService.addEntity(entity);
+      this.banknService._addEntity(entity);
     }
 
     EntityService.upsertDescriptionPatterns(entity, description);

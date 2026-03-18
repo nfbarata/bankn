@@ -195,7 +195,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   onDelete() {
     const formValue = this.form.getRawValue(); //acountId disable donsn't return value 
-    this.transactionService.deleteTransactionId(formValue.accountId, formValue.id);
+    this.transactionService.deleteTransaction(formValue.accountId, formValue.id);
     this.location.back();
     //this.router.navigate([Paths.transactions]);
   }

@@ -37,7 +37,7 @@ export class AccountService {
       [],
       true
     );
-    this.banknService.addAccount(account);
+    this.banknService._addAccount(account);
     return account;
   }
 
@@ -80,12 +80,12 @@ export class AccountService {
     return i + '';
   }
 
-  deleteAccountId(accountId: string) {
-    this.banknService.deleteAccountId(accountId);
-  }
-
-  deleteAccount(account: Account) {
-    this.deleteAccountId(account.id);
+  deleteAccount(id: string) {
+    var account = this.getAccount(id);
+    if(account){
+      // TODO: remove transactions and check transfers
+      this.banknService._deleteAccount(account);
+    }
   }
 
   getAccounts(): Account[] {
@@ -174,7 +174,7 @@ export class AccountService {
     });
   }
 
-  deleteTransactionId(account: Account, transactionId: string) {
+  deleteTransaction(account: Account, transactionId: string) {
     account.transactions = account.transactions.filter(function (transaction) {
       return transaction.id != transactionId;
     });
