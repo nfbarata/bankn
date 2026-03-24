@@ -1,0 +1,18 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title" i18n>No accounts selected</h5>
+    <p class="card-text" i18n>Select accounts to see its transactions:</p>
+    <form>
+      @for (item of items; track item) {
+        <div>
+          <div class="form-check my-1 me-sm-2">
+            <input class="form-check-input" type="checkbox" id="{{item.id}}" [checked]="item.selected" (change)="onCheck(item, $event)">
+            <label class="form-check-label" for="{{item.id}}">{{ item.name }}</label>
+          </div>
+        </div>
+      }
+    </form>
+    <br>
+      <a class="btn btn-primary text-white" (click)="onAccountsSelected()" i81n>Ok</a>
+    </div>
+  </div>

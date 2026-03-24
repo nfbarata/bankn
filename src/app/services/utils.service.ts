@@ -3,25 +3,19 @@ import { Injectable } from '@angular/core';
 import { countries } from 'country-data-list';
 import comparison from 'string-comparison';
 
+const COUNTRIES = countries.all.filter(function (country: any) {
+  return country.currencies.length > 0;
+});
+
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-  static minRating = 0.6;
-  private countries: any;
 
-  constructor() {
-    this.countries = UtilsService.getCountries();
-  }
+  static minRating = 0.6;
 
   getCountries() {
-    return this.countries;
-  }
-
-  static getCountries() {
-    return countries.all.filter(function (country: any) {
-      return country.currencies.length > 0;
-    });
+    return COUNTRIES;
   }
 
   static calculateSimilarityRating(
@@ -30,7 +24,7 @@ export class UtilsService {
   ): number {
     if (descriptionPatterns.length == 0) return 0;
     var results = comparison.levenshtein.sortMatch(description, descriptionPatterns);
-    return results[results.length-1].rating;
+    return results[results.length - 1].rating;
   }
 
   static formatDate(date: Date, format: string): string {
@@ -46,5 +40,17 @@ export class UtilsService {
 
   static removeTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  static addDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  static removeDays(date: Date, days: number): Date {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
   }
 }

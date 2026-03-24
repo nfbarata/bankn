@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title" i18n>Import transactions</h5>
+    <p class="card-text" i18n>Import new transactions to selected account</p>
+    <div class="btn-group w-100">
+      <button class="btn btn-primary d-block" type="submit" title="Import new transactions"
+        [routerLink]="['/transactions/import/'+(newSelectedAccount!==null?newSelectedAccount:'')]">
+        <span class="oi oi-data-transfer-download"></span>
+      </button>
+      <select title="account" class="form-select d-inline" (change)="onAccountChangeHandler($event)">
+        @for (account of accounts; track account) {
+        <option [selected]="selectedAccount!==null && account.id===selectedAccount.id" value="{{account.id}}">
+          {{account.name}}
+        </option>
+        }
+      </select>
+    </div>
+  </div>
+</div>

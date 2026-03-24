@@ -1,0 +1,67 @@
+<h2>Edit transactions</h2>
+<br />
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive-xl">
+        <table
+          class="
+            table table-sm table-bordered
+            small
+            font-weight-lighter
+            text-truncate
+          "
+          >
+          <tbody id="parsedData">
+            <tr>
+              <th i18n>Date</th>
+              <th i18n>Entity</th>
+              <th i18n>Category</th>
+              <th i18n>Description</th>
+              <th i18n>Amount</th>
+            </tr>
+            @for (transaction of transactions; track transaction; let t = $index) {
+              <tr>
+                <td>
+                  {{ transaction.date | date: 'shortDate' }}
+                </td>
+                <td>
+                  {{
+                  transaction.entity === undefined ? '' : transaction.entity.name
+                  }}
+                </td>
+                <td>
+                  {{
+                  transaction.category === undefined
+                  ? ''
+                  : (transaction.category | category)
+                  }}
+                </td>
+                <td>
+                  {{ transaction.description }}
+                </td>
+                <td>
+                  {{ transaction | transaction }}
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-12">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        i18n
+        [disabled]="submitDisabled"
+        >
+        Import
+      </button>
+    </div>
+  </div>
+</form>
+<br />

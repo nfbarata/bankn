@@ -1,0 +1,82 @@
+<h2>Import transactions</h2>
+<br>
+<form class="container" [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <!--TODO pegar os dados da área de transferencia e colar já formatada com as colunas com header dinamicos e com opçãoao para ignorar linhas
+headers, categora entidade (data mont e descricao obrig)
+ dar opção de upload de csv-->
+
+  <div class="row mb-3">
+    <div class="col-12 form-group" mwlTextInputHighlightContainer>
+      <label class="form-label fs-6" for="importData" i18n>
+        External transactions:
+      </label>
+      <br>
+      <textarea #importData class="form-control form-control-sm fw-light lh-1" formControlName="importData" id="importData" wrap="off" rows="6"
+        (keyup)="onInputChange()" (paste)="onInputChange()"></textarea>
+      <small id="importDataHelpBlock" class="form-text text-muted" i18n>Copy paste data from your homebanking</small>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-6 form-group">
+      <select #columnSeparator title="columnSeparator" class="form-control" formControlName="columnSeparator"
+        (change)="onInputChange()">
+        <option value="9">tab</option>
+        <option value="44">comma</option>
+        <option value="59">semicolon</option>
+        <option value="32">space</option>
+        <option value="">custom</option>
+      </select>
+      <small id="customColumnSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()">
+        Column separator
+      </small>
+    </div>
+    <div class="col-6 form-group">
+      <select #lineSeparator title="lineSeparator" class="form-control" formControlName="lineSeparator"
+        (change)="onInputChange()">
+        <option value="10">\n</option>
+        <option value="">custom</option>
+      </select>
+      <small id="lineSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()">
+        Row separator
+      </small>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-6 form-group">
+      <input #customColumnSeparator title="customColumnSeparator" class="form-control"
+        formControlName="customColumnSeparator" [hidden]="columnSeparator.value!==''" (keyup)="onInputChange()"
+        (paste)="onInputChange()">
+      <small id="customColumnSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()"
+        [hidden]="columnSeparator.value!==''">
+        Custom column separator
+      </small>
+    </div>
+    <div class="col-6 form-group">
+      <input #customLineSeparator title="customLineSeparator" class="form-control" formControlName="customLineSeparator"
+        [hidden]="lineSeparator.value!==''" (keyup)="onInputChange()" (paste)="onInputChange()">
+      <small id="lineSeparatorHelpBlock" class="form-text text-muted" (change)="onInputChange()"
+        [hidden]="lineSeparator.value!==''">
+        Custom row separator
+      </small>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary d-inline p-2" type="submit" i18n [disabled]="submitDisabled">Import</button>
+      <small #submitHelpBlock id="submitHelpBlock" class="d-inline p-2 form-text text-muted">Enter some text to
+        import</small>
+    </div>
+  </div>
+</form>
+<br>
+
+<div class="row mb-3">
+  <div class="col-12">
+    <div class="table-responsive-xl">
+      <table class="table table-sm table-bordered small text-truncate" style="width:0%">
+        <tbody #parsedData id="parsedData">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

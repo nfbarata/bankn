@@ -1,0 +1,93 @@
+<div class="row d-flex align-items-center">
+  <div class="col-auto me-auto">
+    <h2 i18n>Transactions</h2>
+  </div>
+  @if (hasRealTransactions) {
+  <div class="col-auto">
+    <div class="btn-group">
+      <button class="btn btn-primary" type="submit"
+        [routerLink]="['/transactions/transaction/'+(newTransactionSelectedAccount!==null?newTransactionSelectedAccount:'')]"
+        [disabled]="accounts.length===0" title="New Transaction" i18n>
+        <span class="oi oi-plus"></span>
+      </button>
+      <select title="account" class="form-select" (change)="onNewTransactionAccountChangeHandler($event)">
+        @for (account of selectedAccounts; track account) {
+        <option [selected]="newTransactionSelectedAccount!==null && account.id===newTransactionSelectedAccount"
+          value="{{account.id}}">{{account.name}}</option>
+        }
+      </select>
+      <button class="btn btn-secondary d-block" type="submit" title="Import new transactions"
+        [routerLink]="['/transactions/import/'+(newTransactionSelectedAccount!==null?newTransactionSelectedAccount:'')]">
+        <span class="oi oi-data-transfer-download"></span>
+      </button>
+    </div>
+  </div>
+  }
+</div>
+<br />
+
+@if (accounts.length===0) {
+<div class="row">
+  <div class="col-sm-5">
+    <account-create-card></account-create-card>
+  </div>
+</div>
+}
+@if (accounts.length>0&&selectedAccounts.length===0) {
+<div class="row">
+  <div class="col-sm-5">
+    <account-select-card></account-select-card>
+  </div>
+</div>
+}
+@if (accounts.length>0&&selectedAccounts.length>0&&!hasRealTransactions) {
+<div class="row">
+  <div class="col-sm-5">
+    <transaction-create-card></transaction-create-card>
+  </div>
+  <div class="col-sm-2">
+    &nbsp;
+  </div>
+  <div class="col-sm-5">
+    <transactions-import-card></transactions-import-card>
+  </div>
+</div>
+}
+
+@if (hasRealTransactions) {
+<div class="table-responsive">
+  <table class="table table-sm table-hover">
+    <tbody>
+      @for (transaction of transactions; track transaction; let i = $index) {
+      <!-- header group -->
+      @if (transaction.hide!==true && (i===0 || i>0 && transaction.date.getTime()!==transactions[i-1].date.getTime())) {
+      <tr class="table-active">
+        <th scope="col" width="10%" class="align-middle">{{transaction.date | date:'shortDate'}}&nbsp;</th>
+        <th scope="col" width="80%" class="align-middle"></th>
+        <th class="text-end align-middle" scope="col" width="10%">{{transaction.balanceAfter | dinero}}&nbsp;</th>
+      </tr>
+      }
+      <!-- detail group -->
+      @if (transaction.hide!==true) {
+      <tr [routerLink]="['/transactions/transaction/'+transaction.account.id+'/'+transaction.id]" title="{{ transaction.description }}">
+        <td class="align-middle">{{ transaction.entity?.name }}&nbsp;</td>
+        <td class="align-middle">
+          @if(transaction.category ){
+            <a title="{{transaction.category | category}}" [routerLink]="['/categories/category/'+transaction.category.id]">#{{transaction.category.name}}</a>
+          }
+          &nbsp;
+        </td>
+        <td class="text-end align-middle" scope="row">{{transaction | transaction }}</td>
+      </tr>
+      }
+      }
+    </tbody>
+    <tfoot class="table-group-divider">
+      <tr class="table-active">
+        <td class="align-middle" colspan="2">Initial value</td>
+        <td class="text-end align-middle" scope="row">{{ initialBalance | dinero}}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+}

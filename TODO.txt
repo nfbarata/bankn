@@ -1,55 +1,54 @@
 general:
-  pipe category link and last node view
+  account listbox max size
 
 txns:
   add menu with import
-  select with button, select multiple
+  select with button, select multiple, edit multiple
+  filter by category/entity/description
+  transfer to account
+  when entity selected select category if null
+  multiple categories
 
 entities:
-  create menu&screens
 
 categories:
-  create menu&screens
   #Casa #Contas
           #Água
         #Despesas
 
 charts:
   different charts
-  value labels
+  info with count
   labels bottom
+  link to transactions with filtered by selected one
 
 footer:
   dates allways mid
   button next to dates to default values
+  add currency selector to left
 
 tests:
   test toJson
 
 mobile view
   import screens not friendly -> a column at a time
-  min length on column
 
 import screens 
   save last options on account/bank
   edit entity/category inplace & data
 
 popup generico, input card
-txn list com quick link import(popup comm escolha de conta)
 
 money format - simbolo pode ser antes por exemplo
-date format
-visual
 i18n
 
 receipt# as customizable field
 
-save zip contents
-
 movimentos com diferentes moedas (escolher e fazer cambio)
 
 definir limites mensais de acordo com tipos
-transfer to account
+
+upgrade dinero
 
 DATA OPERAÇÃO	DATA VALOR	TIPO	DESCRIÇÃO	DÉBITO	CRÉDITO	SALDO CONTROLO
 2020-03-04	2020-03-04	TPA	COMPRA CARTAO 9080000* FORTUNY FOOD LDA 2740-244 PORTO SA	6,95	-	1.484,71

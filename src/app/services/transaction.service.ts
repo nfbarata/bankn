@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { UUID } from 'angular2-uuid';
 
@@ -18,6 +18,12 @@ import { UtilsService } from './utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private accountService = inject(AccountService);
+  private categoryService = inject(CategoryService);
+  private entityService = inject(EntityService);
+
 
   //
   //Volatile - for use between screens
@@ -25,14 +31,6 @@ export class TransactionService {
   importTransactions: any[] = [];
   filterTransactions: any[] = [];
   filterActions: any[] = [];
-
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private accountService: AccountService,
-    private categoryService: CategoryService,
-    private entityService: EntityService
-  ) { }
 
   createTransaction(
     account: Account,
@@ -44,16 +42,17 @@ export class TransactionService {
     receiptReference?: string,
     description?: string
   ) {
+    date=UtilsService.removeTime(date);
     //create Category if not exist
     var category = this.categoryService.upsertCategory(categoryFullName, description);
     //create Entity if not exist
-    var entity = this.entityService.upsertEntity(entityName, description, category);
+    var entity = this.entityService.upsertEntitySimple(entityName, description, category);
 
     var transaction = new Transaction(
       UUID.UUID(),
       amount,
       type,
-      UtilsService.removeTime(date),
+      date,
       entity == null ? undefined : entity,
       category == null ? undefined : category,
       receiptReference,
@@ -74,20 +73,34 @@ export class TransactionService {
     receiptReference: string,
     description: string
   ) {
+    const newDate = UtilsService.removeTime(date);
+    const dateChanged = transaction.date.getTime() !== newDate.getTime();
 
-    //create Category if not exist
-    var category = this.categoryService.upsertCategory(categoryFullName, description);
-    //create Entity if not exist
-    var entity = this.entityService.upsertEntity(entityName, description, category);
+    // Create Category if not exist
+    const category = this.categoryService.upsertCategory(categoryFullName, description);
+    // Create Entity if not exist
+    const entity = this.entityService.upsertEntitySimple(entityName, description, category);
 
     transaction.amount = amount;
-    transaction.date = date;
     transaction.type = type;
-    transaction.entity = entity == null ? undefined : entity;
-    transaction.category = category == null ? undefined : category;
+    transaction.entity = entity ?? undefined;
+    transaction.category = category ?? undefined;
     transaction.receiptReference = receiptReference;
     transaction.description = description;
-    this.eventsService.transactionChange.emit();
+
+    if (dateChanged) {
+      // The date has changed, so the transaction needs to be moved.
+      const index = account.transactions.findIndex(t => t.id === transaction.id);
+      if (index > -1) {
+        account.transactions.splice(index, 1);
+      }
+      transaction.date = newDate;
+      this.accountService.addTransaction(account, transaction);
+    } else {
+      transaction.date = newDate;
+    }
+
+    this.eventsService.emitTransactionChange();
   }
 
   fromJson(
@@ -146,16 +159,14 @@ export class TransactionService {
   }
 
   public static compareTransaction(a: Transaction, b: Transaction) {
+    // newer to older
     return b.date.getTime() - a.date.getTime();
   }
 
-  deleteTransactionId(accountId: string, transactionId: string) {
+  deleteTransaction(accountId: string, transactionId: string) {
     var account = this.accountService.getAccount(accountId);
-    if (account != null) this.deleteTransaction(account, transactionId);
-  }
-
-  deleteTransaction(account: Account, transactionId: string) {
-    this.accountService.deleteTransactionId(account, transactionId);
+    if (account != null) 
+      this.accountService.deleteTransaction(account, transactionId);
   }
 
   parse(
@@ -278,5 +289,27 @@ export class TransactionService {
       }
       return results;
     }, new Map<string, Dinero<number>>());
+  }
+
+  public static applyBalanceToTransactions(
+    transactions: Transaction[],
+    initialValue: Dinero<number>
+  ): void {
+    //update meta sum for all accounts and invert order
+    var accumulatedBalance = initialValue;
+
+    //add meta balance for this account
+    for (let i = transactions.length - 1; i >= 0; i--) {
+      transactions[i].balanceBefore = accumulatedBalance;
+      switch (transactions[i].type) {
+        case TransactionType.CREDIT:
+          accumulatedBalance = add(accumulatedBalance, transactions[i].amount);
+          break;
+        case TransactionType.DEBIT:
+          accumulatedBalance = subtract(accumulatedBalance, transactions[i].amount);
+          break;
+      }
+      transactions[i].balanceAfter = accumulatedBalance;
+    }
   }
 }

@@ -1,0 +1,58 @@
+<h2>Filter transactions</h2>
+<br>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)">
+  <div class="row mb-3">
+    <div class="col-12">
+      <div class="table-responsive-xl">
+        <table class="table table-sm table-bordered small fw-light lh-1 text-truncate" style="width:0%;">
+          <thead id="parsedData">
+            <tr>
+              <th class="align-middle text-center" scope="col">
+                Import?
+              </th>
+              <!-- column type options -->
+              @for (columnHeader of (transactions===null || transactions.length===0)?[]:transactions[0]; track
+              columnHeader; let h = $index) {
+              <th scope="col">
+                <div style="max-width: 3.6rem;">
+                  <select title="columnType" class="form-control form-control-sm d-inline" id="action{{h}}">
+                    @for (type of importColumnTypes; track type) {
+                    <option value="{{type}}">{{type | importColumnType}}</option>
+                    }
+                  </select>
+                </div>
+              </th>
+              }
+            </tr>
+          </thead>
+          <tbody id="parsedData">
+            @for (transaction of transactions; track transaction; let t = $index) {
+            <tr>
+              <td class="text-center align-middle">
+                <input title="ignore" type="checkbox" checked class="custom-centered-checkbox" id="dontIgnore{{t}}"
+                  aria-label="dontIgnore{{t}}">
+              </td>
+              @for (column of transaction; track column) {
+              <td class="align-middle">
+                <div class="content-wrapper fw-light lh-1" title="{{column}}">
+                  {{column}}
+                </div>
+              </td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary d-inline p-2" type="submit" i18n [disabled]="submitDisabled">Filter</button>
+      <small #submitHelpBlock id="submitHelpBlock" class="form-text text-muted d-inline p-2">Classify each relevant
+        column</small>
+    </div>
+  </div>
+</form>
+<br>

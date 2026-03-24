@@ -1,5 +1,4 @@
-import { LOCALE_ID, Inject } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { LOCALE_ID, inject, Injectable } from '@angular/core';
 
 import { EventsService } from './events.service';
 import { FileService } from './file.service';
@@ -17,19 +16,10 @@ import { CategoryService } from './category.service';
 @Injectable({ providedIn: 'root' })
 export class BanknService {
 
+  private readonly locale = inject(LOCALE_ID);
+  private readonly eventsService = inject(EventsService);
+  private readonly fileService = inject(FileService);
   private bankn: Bankn | null = null;
-  private defaultCountryCode: string = 'null';
-
-  constructor(
-    @Inject(LOCALE_ID) public locale: string,
-    private eventsService: EventsService,
-    private fileService: FileService
-  ) {
-    if (locale != null && locale.split('-').length > 0) {
-      this.defaultCountryCode = locale.split('-')[0].toUpperCase();
-    }
-    console.log('default countryCode: ' + this.defaultCountryCode);
-  }
 
   initialized(): boolean {
     return this.bankn != null;
@@ -67,7 +57,7 @@ export class BanknService {
 
   saveToFile(): void {
     if (this.bankn != null)
-      this.fileService.downloadJsonFile(BanknService.toJson(this.bankn));
+      this.fileService.downloadZipFile(BanknService.toJson(this.bankn), this.bankn.name + '.zip');
     else console.error('No bankn');
   }
 
@@ -106,33 +96,45 @@ export class BanknService {
     }
   }
 
-  addAccount(account: Account): void {
+  _addAccount(account: Account): void {
     if (this.bankn != null) {
       this.bankn.accounts.push(account);
-      this.eventsService.accountsChange.emit();
+      this.eventsService.emitAccountsChange();
     }
   }
 
-  deleteAccountId(accountId: string) {
+  _deleteAccount(account: Account) {
     if (this.bankn != null) {
-      this.bankn.accounts = this.bankn.accounts.filter(function (account) {
-        return account.id != accountId;
+      this.bankn.accounts = this.bankn.accounts.filter(function (a) {
+        return a.id != account.id;
       });
-      this.eventsService.accountsChange.emit();
+      this.eventsService.emitAccountsChange();
     }
   }
 
-  addCategory(category: Category): void {
+  _deleteCategory(category: Category): void {
+    if (this.bankn != null) {
+      this.bankn.categories = this.bankn.categories.filter(e => e.id !== category.id);
+    }
+  }
+
+  _deleteEntity(entity: Entity): void {
+    if (this.bankn != null) {
+      this.bankn.entities = this.bankn.entities.filter(e => e.id !== entity.id);
+    }
+  }
+
+  _addCategory(category: Category): void {
     if (this.bankn != null) {
       this.bankn.categories.push(category);
-      this.eventsService.categoriesChange.emit();
+      this.eventsService.emitCategoriesChange();
     }
   }
 
-  addEntity(entity: Entity): void {
+  _addEntity(entity: Entity): void {
     if (this.bankn != null) {
       this.bankn.entities.push(entity);
-      this.eventsService.entitiesChange.emit();
+      this.eventsService.emitEntitiesChange();
     }
   }
 
@@ -152,7 +154,11 @@ export class BanknService {
   }
 
   getDefaultCountryCode(): string {
-    return this.defaultCountryCode;
+    const locale = this.locale;
+    if (locale != null && locale.split('-').length > 1) {
+      return locale.split('-')[1].toUpperCase();
+    }
+    return 'null';
   }
 
   getReferenceCountry(): string {
@@ -218,6 +224,6 @@ export class BanknService {
       return;
     this.bankn!.transactionsStartDate = startDate;
     this.bankn!.transactionsEndDate = endDate;
-    this.eventsService.transactionPeriodChange.emit();
+    this.eventsService.emitTransactionPeriodChange();
   }
 }

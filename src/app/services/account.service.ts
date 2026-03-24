@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { BanknService } from './bankn.service';
 import { EventsService } from './events.service';
@@ -12,14 +12,13 @@ import { TransactionService } from './transaction.service';
 import { TransactionType } from '../models/enums';
 import { MathService } from './math.service';
 import { Bankn } from '../models/bankn';
+import { UtilsService } from './utils.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  constructor(
-    private banknService: BanknService,
-    private eventsService: EventsService,
-    private mathService: MathService
-  ) {}
+  private banknService = inject(BanknService);
+  private eventsService = inject(EventsService);
+  private mathService = inject(MathService);
 
   createAccount(
     name: string,
@@ -33,12 +32,12 @@ export class AccountService {
       name,
       description,
       referenceAmount === undefined ? this.toDinero(0, null) : referenceAmount,
-      referenceDate,
+      UtilsService.removeTime(referenceDate),
       referenceCountry,
       [],
       true
     );
-    this.banknService.addAccount(account);
+    this.banknService._addAccount(account);
     return account;
   }
 
@@ -55,9 +54,9 @@ export class AccountService {
       account.name = name;
       account.description = description;
       account.referenceAmount = referenceAmount;
-      account.referenceDate = referenceDate;
+      account.referenceDate = UtilsService.removeTime(referenceDate);
       account.referenceCountry = referenceCountry;
-      this.eventsService.accountsChange.emit();
+      this.eventsService.emitAccountsChange();
     }
   }
 
@@ -81,12 +80,12 @@ export class AccountService {
     return i + '';
   }
 
-  deleteAccountId(accountId: string) {
-    this.banknService.deleteAccountId(accountId);
-  }
-
-  deleteAccount(account: Account) {
-    this.deleteAccountId(account.id);
+  deleteAccount(id: string) {
+    var account = this.getAccount(id);
+    if(account){
+      // TODO: remove transactions and check transfers
+      this.banknService._deleteAccount(account);
+    }
   }
 
   getAccounts(): Account[] {
@@ -128,7 +127,7 @@ export class AccountService {
   selectAccount(account: Account) {
     if (!account.selected) {
       account.selected = true;
-      this.eventsService.accountSelectionChange.emit();
+      this.eventsService.emitAccountSelectionChange();
     }
   }
 
@@ -140,18 +139,33 @@ export class AccountService {
   unselectAccount(account: Account) {
     if (account.selected) {
       account.selected = false;
-      this.eventsService.accountSelectionChange.emit();
+      this.eventsService.emitAccountSelectionChange();
     }
   }
 
   addTransaction(account: Account, transaction: Transaction) {
     transaction.account = account;
-    account.transactions.push(transaction);
-    TransactionService.sortTransactions(account.transactions);
-    this.eventsService.accountTransactionsChange.emit();
+    const index = this.findInsertionIndex(account.transactions, transaction);
+    account.transactions.splice(index, 0, transaction);
+    this.eventsService.emitAccountTransactionsChange();
   }
 
-  getCurrentPeriodTransactions(account: Account){
+  private findInsertionIndex(transactions: Transaction[], newTransaction: Transaction): number {
+    let low = 0;
+    let high = transactions.length;
+
+    while (low < high) {
+        const mid = Math.floor((low + high) / 2);
+        if (TransactionService.compareTransaction(transactions[mid], newTransaction) > 0) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+  }
+
+  getCurrentPeriodTransactions(account: Account) {
     var bankn = this.banknService.getBankn()!;
     return account.transactions.filter(transaction => {
       const afterStartDate = !bankn.transactionsStartDate || transaction.date >= bankn.transactionsStartDate;
@@ -160,53 +174,72 @@ export class AccountService {
     });
   }
 
-  deleteTransactionId(account: Account, transactionId: string) {
+  deleteTransaction(account: Account, transactionId: string) {
     account.transactions = account.transactions.filter(function (transaction) {
       return transaction.id != transactionId;
     });
-    this.eventsService.transactionChange.emit();
-    this.eventsService.accountTransactionsChange.emit();
+    this.eventsService.emitTransactionChange();
+    this.eventsService.emitAccountTransactionsChange();
   }
 
   static getInitialValue(account: Account): Dinero<number> {
-    var initialBalance = account.referenceAmount;
+    var initialValue = account.referenceAmount;
 
-    //calculate initial balance
     for (let i = account.transactions.length - 1; i >= 0; i--) {
-      if (
-        account.referenceDate.getTime() > account.transactions[i].date.getTime()
-      ) {
+      if (account.transactions[i].date.getTime() < account.referenceDate.getTime()) {
         switch (account.transactions[i].type) {
           case TransactionType.CREDIT:
-            initialBalance = subtract(
-              initialBalance,
-              account.transactions[i].amount
-            );
+            initialValue = subtract(initialValue, account.transactions[i].amount);
             break;
           case TransactionType.DEBIT:
-            initialBalance = add(
-              initialBalance,
-              account.transactions[i].amount
-            );
+            initialValue = add(initialValue, account.transactions[i].amount);
             break;
         }
       } else {
-        //no need to continue
+        // optimization (transactions are ordered)
         break;
       }
     }
-    return initialBalance;
+    return initialValue;
+  }
+
+  static getInitialValueForCurrentPeriod(account: Account, startTime: Date): Dinero<number> {
+    var initialValue = AccountService.getInitialValue(account);
+
+    for (let i = account.transactions.length - 1; i >= 0; i--) {
+      if (account.transactions[i].date.getTime() < startTime.getTime()) {
+        switch (account.transactions[i].type) {
+          case TransactionType.DEBIT:
+            initialValue = subtract(initialValue, account.transactions[i].amount);
+            break;
+          case TransactionType.CREDIT:
+            initialValue = add(initialValue, account.transactions[i].amount);
+            break;
+        }
+      } else {
+        // optimization (transactions are ordered)
+        break;
+      }
+    }
+    return initialValue;
   }
 
   getInitialValueMultiple(accounts: Account[]): Dinero<number> {
-    var initialBalance = this.toDinero(
-      0,
-      accounts[0] //TODO dif currencies
-    );
+    var initialBalance = this.toDinero(0, accounts[0]);//TODO dif currencies
+    accounts.forEach((account) => {
+      initialBalance = add(initialBalance, AccountService.getInitialValue(account));
+    });
+    return initialBalance;
+  }
+
+  getInitialValueMultipleForCurrentPeriod(accounts: Account[]): Dinero<number> {
+    var initialBalance = this.toDinero(0, accounts[0]);//TODO dif currencies
     accounts.forEach((account) => {
       initialBalance = add(
         initialBalance,
-        AccountService.getInitialValue(account)
+        this.banknService.getBankn()!.transactionsStartDate ?
+          AccountService.getInitialValueForCurrentPeriod(account, this.banknService.getBankn()!.transactionsStartDate!) :
+          AccountService.getInitialValue(account)
       );
     });
     return initialBalance;
@@ -265,17 +298,19 @@ export class AccountService {
       json.rowSeparator,
       json.customRowSeparator
     );
-    if (json.transactions)
+    if (json.transactions) {
       json.transactions.forEach((transaction: any) => {
         account.transactions.push(
           TransactionService.fromJson(transaction, account, bankn)
         );
       });
+      TransactionService.sortTransactions(account.transactions);
+    }
     // console.log('Parsed account', account);
     return account;
   }
 
-  public getSelectedAccountsCurrency(): Currency<number> {  
+  public getSelectedAccountsCurrency(): Currency<number> {
     var accounts: Account[] = this.getSelectedAccounts();
     if (accounts.length > 0) {
       return this.getCurrency(accounts[0]);

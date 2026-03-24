@@ -1,0 +1,54 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col">
+        <h2>{{form.value.id===null?'Create Entity':'Edit Entity'}}</h2>
+      </div>
+      <div class="col text-end">
+        <button class="btn btn-danger" type="button" (click)="onDelete(form.value.id)" [disabled]="!form.value.id" i18n>
+          <span class="oi oi-trash"></span>
+        </button>
+      </div>
+    </div>
+    <br />
+
+    <div class="row mb-3">
+      <div class="col-12 form-group">
+        <label for="name" class="form-label" i18n>Name</label>
+        <input type="text" id="name" class="form-control" formControlName="name" />
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12 form-group">
+        <label for="descriptionPatterns" class="form-label" i18n>Description Patterns</label>
+        <textarea id="descriptionPatterns" class="form-control" formControlName="descriptionPatterns"
+          rows="3"></textarea>
+        <small class="form-text text-muted" i18n>
+          One pattern per line.
+        </small>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-12 form-group">
+        <label for="referenceCategory" class="form-label" i18n>Default Category</label>
+        <input title="referenceCategory" type="text" id="referenceCategory" class="form-control" list="categoryList"
+          formControlName="referenceCategory" />
+        <datalist id="categoryList">
+          @for (category of (categories===null?[]:categories); track category) {
+          <option [value]="category | category">{{category | category}}</option>
+          }
+        </datalist>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid" i18n>Save</button>
+        &nbsp;
+        <button class="btn btn-secondary" type="button" (click)="onCancel()" i18n>Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
