@@ -13,7 +13,8 @@ import { TransactionType } from '../../models/enums';
 import { Entity } from '../../models/entity';
 import { Category } from '../../models/category';
 import { MathService } from '../../services/math.service';
-import { CategoryService } from 'src/app/services/category.service';
+import { CategoryService } from '../../services/category.service';
+import { EntityService } from '../../services/entity.service';
 import { UtilsService } from '../../services/utils.service';
 import { CategoryPipe } from "../../pipes/category.pipe";
 import { TransactionTypePipe } from "../../pipes/transactionType.pipe";
@@ -28,6 +29,8 @@ import { TransactionTypePipe } from "../../pipes/transactionType.pipe";
 export class TransactionComponent implements OnInit, OnDestroy {
   private readonly eventsService = inject(EventsService);
   private readonly banknService = inject(BanknService);
+  private readonly categoryService = inject(CategoryService);
+  private readonly entityService = inject(EntityService);
   private readonly accountService = inject(AccountService);
   private readonly transactionService = inject(TransactionService);
   private readonly route = inject(ActivatedRoute);
@@ -145,7 +148,7 @@ export class TransactionComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.valid) {
-      const formValue = this.form.getRawValue(); //acountId disable donsn't return value 
+      const formValue = this.getFormValue();
 
       var account = this.transaction != null ?
         this.transaction.account :
@@ -194,13 +197,34 @@ export class TransactionComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    const formValue = this.form.getRawValue(); //acountId disable donsn't return value 
+    const formValue = this.getFormValue();
     this.transactionService.deleteTransaction(formValue.accountId, formValue.id);
     this.location.back();
-    //this.router.navigate([Paths.transactions]);
   }
 
   onCancel() {
     this.location.back();
   }
+
+  getFormValue() : any{
+    return this.form.getRawValue(); //acountId disable donsn't return value 
+  }
+
+  onEditCategory() {
+    const formValue = this.getFormValue();
+    var category = this.categoryService.upsertCategory(formValue.category, formValue.description);
+    if(category)
+      this.router.navigate(['/categories/category', category.id]);
+  }
+
+  onEditEntity() {
+    const formValue = this.getFormValue();
+    var category = this.categoryService.upsertCategory(formValue.category, formValue.description);
+    if(category){
+      var entity = this.entityService.upsertEntitySimple(formValue.entity, formValue.description, category);
+      if(entity)
+        this.router.navigate(['/entities/entity', entity.id]);
+    }
+  }
+
 }
