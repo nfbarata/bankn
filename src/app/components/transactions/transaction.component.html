@@ -63,8 +63,7 @@
             <option [value]="entity.name">{{entity.name}}</option>
             }
           </datalist>
-          <button class="btn btn-outline-secondary" type="button"
-            [routerLink]="['/entities/entity',form.value.entity.id]">
+          <button class="btn btn-outline-secondary" type="button" (click)="onEditEntity();">
             <span class="oi oi-pencil"></span>
           </button>
         </div>
@@ -79,8 +78,7 @@
             <option [value]="category | category">{{category | category}}</option>
             }
           </datalist>
-          <button class="btn btn-outline-secondary" type="button"
-            [routerLink]="['/categories/category',form.value.category.id]">
+          <button class="btn btn-outline-secondary" type="button" (click)="onEditCategory();">
             <span class="oi oi-pencil"></span>
           </button>
         </div>
